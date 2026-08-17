@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
+import { CartProvider } from "@/lib/cart";
+import CartDrawer from "@/components/cart/CartDrawer";
+import DemoModal from "@/components/cart/DemoModal";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -30,10 +33,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-scroll-behavior="smooth"
     >
       <body className="bg-paper-1 text-ink-900 min-h-full flex flex-col">
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <CartProvider>
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <CartDrawer />
+          <DemoModal />
+        </CartProvider>
       </body>
     </html>
   );
 }
+

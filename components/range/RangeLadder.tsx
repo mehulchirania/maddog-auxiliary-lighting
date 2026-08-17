@@ -60,10 +60,10 @@ export default function RangeLadder({ ladder }: { ladder: Product[] }) {
   return (
     <div>
       {/* Interactive Filter Pills */}
-      <div className="bg-paper-1 border-b border-ink-900/10 py-5">
-        <div className="mx-auto max-w-[1600px] px-5 sm:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter lights by riding category">
+      <div className="bg-paper-1 border-b border-ink-900/10 py-4 sm:py-5 sticky top-16 z-30 backdrop-blur-md bg-paper-1/95">
+        <div className="mx-auto max-w-[1600px] px-4 sm:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 sm:pb-0 sm:flex-wrap" role="tablist" aria-label="Filter lights by riding category">
               {FILTERS.map((f) => {
                 const active = f.id === activeFilter;
                 return (
@@ -74,7 +74,7 @@ export default function RangeLadder({ ladder }: { ladder: Product[] }) {
                     aria-selected={active}
                     onClick={() => setActiveFilter(f.id)}
                     className={cn(
-                      "inline-flex items-center gap-2 rounded-full px-4 py-2 font-medium tracking-wide transition-all text-[13px]",
+                      "inline-flex shrink-0 items-center gap-2 rounded-full px-3.5 py-1.5 sm:px-4 sm:py-2 font-medium tracking-wide transition-all text-xs sm:text-[13px] whitespace-nowrap",
                       active
                         ? "bg-ink-900 text-bone shadow-sm"
                         : "bg-paper-0 text-ink-700 hover:text-ink-950 border border-ink-900/10 hover:border-ink-900/25",

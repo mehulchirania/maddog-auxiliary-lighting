@@ -65,7 +65,7 @@ export default function TechnicalTeardown() {
                 TIR OPTIC / IP-67
               </span>
             </div>
-            <div className="relative aspect-[2.2/1] w-full">
+            <div className="relative aspect-[16/10] sm:aspect-[2.2/1] w-full">
               <Image
                 src={rage.photometrics}
                 alt="Rage exploded assembly — front enclosure, IP-67 rated gasket, optical lens, LED PCB, thermal paste, aluminium housing, and stainless steel clamp"

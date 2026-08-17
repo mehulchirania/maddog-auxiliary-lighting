@@ -24,7 +24,7 @@ export default function BeamDiagrams({
                 </span>
                 <span className="font-mono text-signal-400 text-[11px]">9 Sub-Assemblies</span>
               </div>
-              <div className="relative aspect-[2/1] w-full">
+              <div className="relative aspect-[16/10] sm:aspect-[2/1] w-full">
                 <Image
                   src={photometrics}
                   alt={`${name} exploded assembly render`}
@@ -49,7 +49,7 @@ export default function BeamDiagrams({
                 </span>
                 <span className="font-mono text-signal-400 text-[11px]">Millimetre Scale</span>
               </div>
-              <div className="relative aspect-[2/1] w-full">
+              <div className="relative aspect-[16/10] sm:aspect-[2/1] w-full">
                 <Image
                   src={dimensions}
                   alt={`${name} dimension line drawing`}

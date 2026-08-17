@@ -218,7 +218,7 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
           <Reveal>
             <RatingBadge rating={product.rating} reviewCount={product.reviewCount} />
             <div className="mt-8">
-              <PurchasePanel price={product.price} />
+              <PurchasePanel product={product} />
             </div>
           </Reveal>
         </Container>
