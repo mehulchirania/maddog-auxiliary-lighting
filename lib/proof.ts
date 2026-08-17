@@ -9,6 +9,7 @@
 export interface Creator {
   channel: string;
   product: string;
+  url?: string;
 }
 
 /** All 18 creators listed on the live /videos/reviews page. */

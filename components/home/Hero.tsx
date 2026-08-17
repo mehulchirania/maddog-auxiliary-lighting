@@ -1,42 +1,50 @@
 import Link from "next/link";
 import Container from "@/components/ui/Container";
-import Cta from "@/components/ui/Cta";
+import Reveal from "@/components/ui/Reveal";
 import BeamCompare from "./BeamCompare";
+import HeroBrandVisual from "./HeroBrandVisual";
+import ShinyText from "@/components/animations/ShinyText";
+import SpotlightCard from "@/components/animations/SpotlightCard";
+import CountUp from "@/components/animations/CountUp";
 
 export default function Hero() {
   return (
     <section
-      className="bg-ink-900 text-bone relative flex flex-col justify-center overflow-hidden pt-20 pb-16 sm:pt-24 sm:pb-20"
+      className="bg-ink-900 text-bone relative flex flex-col justify-center overflow-hidden pt-16 pb-16 sm:pt-20 sm:pb-20"
       style={{ paddingBottom: "var(--section)" }}
     >
       <Container wide>
         {/* Above-fold Header */}
-        <div className="max-w-3xl mb-10 sm:mb-12">
-          <p className="eyebrow text-signal-500 mb-3">Maddog Industries — Bengaluru</p>
-          <h1
-            className="font-display leading-[1.03]"
-            style={{
-              fontSize: "var(--text-display)",
-              fontWeight: "var(--fw-display)",
-              letterSpacing: "var(--ls-display)",
-            }}
-          >
-            You see it before you feel it.
-          </h1>
-          <p
-            className="text-fog-300 mt-5 leading-relaxed"
-            style={{ fontSize: "var(--text-body-lg)" }}
-          >
-            Maddog was first in India to fit anti-glare TIR optics at 5000K as standard,
-            engineered so the beam lands on the road ahead of you, not in the eyes of the rider coming the other way.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Cta href="/fit/">Find lights for your bike</Cta>
-            <Cta href="/lights/" variant="outline">
-              See the range
-            </Cta>
-          </div>
+        <div className="max-w-4xl mb-8 sm:mb-10">
+          <Reveal>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="eyebrow text-signal-500">Maddog Industries — Bengaluru</span>
+              <span className="text-fog-500 font-mono text-xs">/</span>
+              <span className="font-mono text-fog-400 text-xs uppercase tracking-wider">Auxiliary Lighting &amp; Cockpit Systems</span>
+            </div>
+            <h1
+              className="font-display leading-[1.02]"
+              style={{
+                fontSize: "var(--text-display)",
+                fontWeight: "var(--fw-display)",
+                letterSpacing: "var(--ls-display)",
+              }}
+            >
+              <ShinyText text="You see it before you feel it." speed={5} />
+            </h1>
+            <p
+              className="text-fog-300 mt-4 leading-relaxed max-w-3xl"
+              style={{ fontSize: "var(--text-body-lg)" }}
+            >
+              First in India to fit calibrated 5000K anti-glare TIR optics as standard. Engineered so the beam projects on the road ahead with zero scatter into oncoming traffic.
+            </p>
+          </Reveal>
         </div>
+
+        {/* Interactive Brand Showcase Visual */}
+        <Reveal className="mb-10 sm:mb-14">
+          <HeroBrandVisual />
+        </Reveal>
 
         {/* Hero Bento Grid */}
         <div className="grid gap-5 lg:grid-cols-12 items-stretch">
@@ -48,7 +56,10 @@ export default function Hero() {
           {/* Right Bento Column: 3 Structured Engineering & Assurance Cards */}
           <div className="lg:col-span-4 grid sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-5">
             {/* Card 1: 5000K Anti-Glare TIR Optics */}
-            <div className="border hairline bg-ink-950/60 hover:bg-ink-950/90 hover:border-signal-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 shadow-sm">
+            <SpotlightCard
+              spotlightColor="rgba(255, 255, 255, 0.08)"
+              className="border hairline bg-ink-950/60 hover:bg-ink-950/90 rounded-2xl p-5 flex flex-col justify-between shadow-sm"
+            >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="eyebrow text-signal-500">Optical Standard</span>
@@ -62,13 +73,16 @@ export default function Hero() {
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t hairline flex items-center justify-between font-mono text-[11px] text-fog-500">
-                <span>Rain & Mist Penetration</span>
+                <span>Rain &amp; Mist Penetration</span>
                 <span className="text-signal-400 font-medium">Zero Scatter</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 2: 50,000h Nichia + IP67 Submersion */}
-            <div className="border hairline bg-ink-950/60 hover:bg-ink-950/90 hover:border-signal-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 shadow-sm">
+            <SpotlightCard
+              spotlightColor="rgba(237, 29, 36, 0.12)"
+              className="border hairline bg-ink-950/60 hover:bg-ink-950/90 rounded-2xl p-5 flex flex-col justify-between shadow-sm"
+            >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="eyebrow text-signal-500">Durability Telemetry</span>
@@ -76,7 +90,9 @@ export default function Hero() {
                 </div>
                 <div className="grid grid-cols-2 gap-3 my-2">
                   <div>
-                    <p className="tnum text-bone font-semibold font-mono" style={{ fontSize: "var(--text-h2)" }}>50,000h</p>
+                    <p className="tnum text-bone font-semibold font-mono" style={{ fontSize: "var(--text-h2)" }}>
+                      <CountUp to={50000} duration={2.5} suffix="h" />
+                    </p>
                     <p className="text-fog-500 font-mono text-[10px] uppercase">Nichia LED Life</p>
                   </div>
                   <div>
@@ -92,10 +108,13 @@ export default function Hero() {
                 <span>Bangalore Factory</span>
                 <span className="text-bone font-medium">18mo Warranty</span>
               </div>
-            </div>
+            </SpotlightCard>
 
             {/* Card 3: Direct Transparent Pricing */}
-            <div className="border hairline bg-ink-950/60 hover:bg-ink-950/90 hover:border-signal-500/40 rounded-2xl p-5 flex flex-col justify-between transition-all duration-200 shadow-sm sm:col-span-2 lg:col-span-1">
+            <SpotlightCard
+              spotlightColor="rgba(255, 255, 255, 0.08)"
+              className="border hairline bg-ink-950/60 hover:bg-ink-950/90 rounded-2xl p-5 flex flex-col justify-between shadow-sm sm:col-span-2 lg:col-span-1"
+            >
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="eyebrow text-signal-500">Integrity Policy</span>
@@ -114,7 +133,7 @@ export default function Hero() {
                 </Link>
                 <span className="text-fog-400">Fixed Fair Pricing</span>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
       </Container>

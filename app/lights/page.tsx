@@ -3,16 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
-import SectionHeading from "@/components/ui/SectionHeading";
-import { ladder } from "@/lib/products";
 import { heroBanner } from "@/lib/media";
-import RangeLadder from "@/components/range/RangeLadder";
-import CompareTable from "@/components/range/CompareTable";
+import RangeCatalogue from "@/components/range/RangeCatalogue";
 
 export const metadata: Metadata = {
-  title: "The Range — Maddog Auxiliary Lighting",
+  title: "The Range & Products — Maddog Auxiliary Lighting, Claw Mounts & Systems",
   description:
-    "Six auxiliary lights, laid out by output. Lumens, watts, beam distance and spot/flood split, compared side by side.",
+    "Explore the complete Maddog motorcycle ecosystem: 6-light output ladder, Claw smartphone mounts, CNC billet clamps, solid-state wiring harnesses, dimmers, and amber fog filters.",
 };
 
 export default function LightsPage() {
@@ -37,51 +34,32 @@ export default function LightsPage() {
 
         <Container className="pt-8 pb-14 sm:pt-10 sm:pb-16">
           <Reveal>
-            <p className="eyebrow text-signal-500 mb-3">Auxiliary Lighting Catalogue</p>
+            <p className="eyebrow text-signal-500 mb-3">Maddog Product Ecosystem</p>
             <h1
-              className="font-display max-w-2xl leading-[1.03]"
+              className="font-display max-w-3xl leading-[1.03]"
               style={{
                 fontSize: "var(--text-display)",
                 fontWeight: "var(--fw-display)",
                 letterSpacing: "var(--ls-display)",
               }}
             >
-              Six lights. One ladder.
+              Lights, Cockpit Mounts &amp; Power Systems.
             </h1>
             <p
               className="text-fog-300 mt-5 max-w-2xl leading-relaxed"
               style={{ fontSize: "var(--text-body-lg)" }}
             >
-              Climb it by output, not by price. Every model runs the same 5000K anti-glare TIR
-              optics — engineered to be seen with, not seen through. What changes rung to rung is
-              how far the beam reaches, how it is shaped, and how much control you get over it.
+              Explore our complete motorcycle performance ecosystem. From the 6-light output ladder and Claw vibration-damped phone mounts to CNC billet clamps, solid-state wiring harnesses, and selective amber fog filters.
             </p>
           </Reveal>
         </Container>
       </div>
 
-      {/* The Interactive Filterable Ladder */}
-      <RangeLadder ladder={ladder} />
-
-      {/* Side by side full specs comparison */}
-      <div className="bg-paper-1 border-t border-ink-900/10">
-        <Container wide className="py-16 sm:py-24">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Side by side telemetry"
-              title="Every specification, every model."
-              lede="Scroll to compare all six auxiliary lights on one row per metric."
-              tone="light"
-            />
-          </Reveal>
-          <Reveal className="mt-10 sm:mt-12">
-            <CompareTable />
-          </Reveal>
-        </Container>
-      </div>
+      {/* The Unified Ecosystem Catalogue with Claw Spotlight & Category Filters */}
+      <RangeCatalogue />
 
       {/* Fitment conversion bar */}
-      <div className="bg-paper-0 border-t border-ink-900/10">
+      <div className="bg-paper-0 border-t hairline-ink">
         <Container className="py-12 sm:py-16">
           <Reveal className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div>
@@ -89,7 +67,7 @@ export default function LightsPage() {
                 Need help picking the exact setup for your motorcycle?
               </p>
               <p className="text-ink-600 mt-1" style={{ fontSize: "var(--text-body)" }}>
-                Our fitment engine recommends the exact light, control switch and mount for your bike.
+                Our fitment engine matches the exact light, control switch, and clamp diameter for your bike chassis.
               </p>
             </div>
             <Link

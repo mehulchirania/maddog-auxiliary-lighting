@@ -7,6 +7,10 @@ import { useCart } from "@/lib/cart";
 import ProductRoleCard from "./ProductRoleCard";
 import { cn } from "@/lib/cn";
 
+import SpotlightCard from "@/components/animations/SpotlightCard";
+import MagneticButton from "@/components/animations/MagneticButton";
+import CountUp from "@/components/animations/CountUp";
+
 const FOCUS_RING =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-signal-500)]";
 
@@ -122,29 +126,34 @@ export default function SetupResult({
       </div>
 
       {/* System Total & Add to Cart Panel */}
-      <div className="hairline border bg-ink-900 mt-8 flex flex-col gap-6 rounded-xl p-5 sm:p-7 sm:flex-row sm:items-center sm:justify-between shadow-md">
+      <SpotlightCard
+        spotlightColor="rgba(237, 29, 36, 0.15)"
+        className="hairline border bg-ink-900 mt-8 flex flex-col gap-6 rounded-xl p-5 sm:p-7 sm:flex-row sm:items-center sm:justify-between shadow-md"
+      >
         <div>
           <span className="eyebrow text-signal-500">Certified System Total</span>
           <p className="tnum text-bone font-semibold mt-1" style={{ fontSize: "var(--text-stat)", fontWeight: "var(--fw-stat)" }}>
-            {formatPrice(total)}
+            ₹<CountUp to={total} duration={1.2} />
           </p>
           <p className="text-fog-400 mt-1 max-w-md leading-relaxed text-xs sm:text-sm">
             Includes {light.name} + {power.name} {mount ? `+ ${mount.name}` : ""} · 18-month warranty replacement programme.
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleAddBundle}
-          className={`inline-flex items-center justify-center gap-2.5 rounded-md bg-signal-600 hover:bg-signal-700 active:bg-signal-800 border border-signal-600 px-8 py-3.5 font-medium tracking-wide text-bone transition-all shadow-md hover:shadow-lg ${FOCUS_RING}`}
-          style={{ fontSize: "var(--text-caption)" }}
-        >
-          <span>{added ? "Added System Setup to Cart ✓" : "Add System Setup to Cart"}</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
+        <MagneticButton strength={0.25}>
+          <button
+            type="button"
+            onClick={handleAddBundle}
+            className={`inline-flex items-center justify-center gap-2.5 rounded-md bg-signal-600 hover:bg-signal-700 active:bg-signal-800 border border-signal-600 px-8 py-3.5 font-medium tracking-wide text-bone transition-all shadow-md hover:shadow-lg ${FOCUS_RING}`}
+            style={{ fontSize: "var(--text-caption)" }}
+          >
+            <span>{added ? "Added System Setup to Cart ✓" : "Add System Setup to Cart"}</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </MagneticButton>
+      </SpotlightCard>
 
       {/* Navigation Buttons */}
       <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs sm:text-sm">

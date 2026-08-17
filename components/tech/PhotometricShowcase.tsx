@@ -42,7 +42,7 @@ export default function PhotometricShowcase() {
               <figure className="border hairline panel-cad overflow-hidden rounded-lg">
                 <div className="relative aspect-[2/1] w-full p-2">
                   <Image
-                    src={p.photometrics}
+                    src={p.photometrics.diagram}
                     alt={`${p.name} exploded assembly CAD diagram`}
                     fill
                     className="object-contain p-2"
@@ -58,7 +58,7 @@ export default function PhotometricShowcase() {
               <figure className="border hairline panel-cad overflow-hidden rounded-lg">
                 <div className="relative aspect-[2/1] w-full p-2">
                   <Image
-                    src={p.dimensions}
+                    src={p.dimensions.blueprint}
                     alt={`${p.name} housing dimensions CAD line drawing`}
                     fill
                     className="object-contain p-2"

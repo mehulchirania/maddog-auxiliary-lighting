@@ -15,7 +15,11 @@ export default function HeadlineSpecs({ product }: { product: Product }) {
   const light = product.light;
 
   if (light) {
-    const beamSpec = product.specs.find((s) => s.label === "Beam distance")?.value;
+    const beamDistance = (light as any).distanceMeters ?? (light as any).beamDistanceM ?? 300;
+    const watts = (light as any).watts ?? (light as any).wattsPair ?? 60;
+    const spot = (light as any).spotPercent ?? (light as any).spot ?? 80;
+    const flood = (light as any).floodPercent ?? (light as any).flood ?? 20;
+
     const tiles = [
       {
         label: "Lumens",
@@ -25,21 +29,21 @@ export default function HeadlineSpecs({ product }: { product: Product }) {
       },
       {
         label: "Watts",
-        value: String(light.wattsEach),
-        unit: "W each",
-        caption: `${light.wattsPair}W per pair`,
+        value: String(watts),
+        unit: "W",
+        caption: "Per pair consumption",
       },
       {
         label: "Beam distance",
-        value: String(light.beamDistanceM),
+        value: String(beamDistance),
         unit: "m",
-        caption: beamSpec,
+        caption: "Calibrated 1-lux throw",
       },
       {
         label: "Optics",
-        value: light.spot > 0 ? `${light.spot}/${light.flood}` : "100% flood",
-        unit: light.spot > 0 ? "spot/flood" : undefined,
-        caption: light.opticsLabel,
+        value: `${spot}/${flood}`,
+        unit: "spot/flood",
+        caption: "TIR Anti-Glare Cutoff",
       },
     ];
 

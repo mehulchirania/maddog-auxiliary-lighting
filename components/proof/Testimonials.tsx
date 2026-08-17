@@ -1,12 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { testimonials } from "@/lib/proof";
+import SpotlightCard from "@/components/animations/SpotlightCard";
 
 export default function Testimonials() {
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       {testimonials.map((t) => (
-        <figure
+        <SpotlightCard
           key={`${t.name}-${t.date}`}
+          spotlightColor="rgba(237, 29, 36, 0.08)"
           className="border hairline bg-ink-900/80 hover:bg-ink-850 hover:border-ink-500 flex flex-col rounded-xl p-6 sm:p-7 transition-all duration-200 shadow-sm hover:-translate-y-1"
         >
           <div className="flex items-center justify-between gap-4 mb-4">
@@ -44,7 +48,7 @@ export default function Testimonials() {
               {t.product} →
             </Link>
           </figcaption>
-        </figure>
+        </SpotlightCard>
       ))}
     </div>
   );

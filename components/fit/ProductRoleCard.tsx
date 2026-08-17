@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/products";
 import { formatPrice } from "@/lib/products";
+import SpotlightCard from "@/components/animations/SpotlightCard";
 
 type Role = "light" | "power" | "mount";
 
@@ -13,7 +16,10 @@ const roleLabel: Record<Role, string> = {
 
 export default function ProductRoleCard({ role, product }: { role: Role; product: Product }) {
   return (
-    <div className="hairline border bg-ink-900 flex flex-col overflow-hidden rounded-xl shadow-sm transition-all duration-200 hover:border-ink-500 hover:shadow-md">
+    <SpotlightCard
+      spotlightColor="rgba(237, 29, 36, 0.12)"
+      className="hairline border bg-ink-900 flex flex-col overflow-hidden rounded-xl shadow-sm transition-all duration-200 hover:border-ink-500 hover:shadow-md h-full"
+    >
       <div className="relative aspect-[4/3] bg-ink-950 p-6 flex items-center justify-center border-b hairline">
         <Image
           src={product.hero}
@@ -99,7 +105,7 @@ export default function ProductRoleCard({ role, product }: { role: Role; product
           </span>
         </div>
       </div>
-    </div>
+    </SpotlightCard>
   );
 }
 

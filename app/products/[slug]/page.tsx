@@ -16,27 +16,42 @@ import RatingBadge from "@/components/product/RatingBadge";
 import PurchasePanel from "@/components/product/PurchasePanel";
 import BrandPoster from "@/components/product/BrandPoster";
 
+import ClawProDeepDive from "@/components/product/ClawProDeepDive";
+
 export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata(
-  props: PageProps<"/products/[slug]">,
-): Promise<Metadata> {
-  const { slug } = await props.params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
   const product = getProduct(slug);
   if (!product) return {};
 
   return {
-    title: `${product.name} Auxiliary Light — Maddog`,
+    title: `${product.name} — Maddog`,
     description: product.tagline,
   };
 }
 
-export default async function ProductPage(props: PageProps<"/products/[slug]">) {
-  const { slug } = await props.params;
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   const product = getProduct(slug);
   if (!product) notFound();
+
+  const isClawProduct =
+    product.slug === "claw-pro" ||
+    product.slug === "claw-x" ||
+    product.slug === "claw" ||
+    product.slug === "claw-lite" ||
+    product.category === "mount";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -138,6 +153,11 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
         </Container>
       </div>
 
+      {/* Cockpit Mount Pro Engineering Section */}
+      {isClawProduct && (
+        <ClawProDeepDive />
+      )}
+
       {/* Full Spec Table */}
       <div className="bg-paper-1 border-t border-ink-900/10">
         <Container className="py-14 sm:py-20">
@@ -204,8 +224,8 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
           </Container>
           <Reveal className="mt-8 pb-14 sm:pb-20">
             <BeamDiagrams
-              photometrics={product.photometrics}
-              dimensions={product.dimensions}
+              photometrics={product.photometrics?.diagram}
+              dimensions={product.dimensions?.blueprint}
               name={product.name}
             />
           </Reveal>

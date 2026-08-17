@@ -4,6 +4,8 @@ import { useState } from "react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/cn";
+import SpotlightCard from "@/components/animations/SpotlightCard";
+import DecryptedText from "@/components/animations/DecryptedText";
 
 interface VerificationResult {
   valid: boolean;
@@ -43,6 +45,7 @@ export default function WarrantyPage() {
   const [serialInput, setSerialInput] = useState("");
   const [lookupResult, setLookupResult] = useState<VerificationResult | null>(null);
   const [searched, setSearched] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
 
   // Registration Form State
   const [regModel, setRegModel] = useState("Rage");
@@ -57,24 +60,30 @@ export default function WarrantyPage() {
     const clean = serialInput.trim().toUpperCase();
     if (!clean) return;
 
-    if (SAMPLE_SERIALS[clean]) {
-      setLookupResult(SAMPLE_SERIALS[clean]);
-    } else if (clean.startsWith("MD-") || clean.length >= 8) {
-      // Dynamic fallback for valid-looking serials
-      setLookupResult({
-        valid: true,
-        model: `Maddog Certified Product (${clean.split("-")[1] || "Aux Light"})`,
-        serialNumber: clean,
-        manufactureDate: "Verified Bangalore Production Batch",
-        warrantyPeriod: "18 Months from invoice date",
-        warrantyStatus: "Active",
-        qcCheck: "Passed Factory Diagnostic",
-        origin: "Maddog Industries — Bengaluru",
-      });
-    } else {
-      setLookupResult({ valid: false });
-    }
-    setSearched(true);
+    setIsScanning(true);
+    setSearched(false);
+
+    setTimeout(() => {
+      if (SAMPLE_SERIALS[clean]) {
+        setLookupResult(SAMPLE_SERIALS[clean]);
+      } else if (clean.startsWith("MD-") || clean.length >= 8) {
+        // Dynamic fallback for valid-looking serials
+        setLookupResult({
+          valid: true,
+          model: `Maddog Certified Product (${clean.split("-")[1] || "Aux Light"})`,
+          serialNumber: clean,
+          manufactureDate: "Verified Bangalore Production Batch",
+          warrantyPeriod: "18 Months from invoice date",
+          warrantyStatus: "Active",
+          qcCheck: "Passed Factory Diagnostic",
+          origin: "Maddog Industries — Bengaluru",
+        });
+      } else {
+        setLookupResult({ valid: false });
+      }
+      setIsScanning(false);
+      setSearched(true);
+    }, 600);
   };
 
   const handleRegister = (e: React.FormEvent) => {
@@ -148,14 +157,28 @@ export default function WarrantyPage() {
               </button>
             </div>
 
+            {/* Scanning Laser Animation */}
+            {isScanning && (
+              <div className="mt-6 p-6 rounded-xl bg-ink-950 border hairline-signal text-center relative overflow-hidden">
+                <div className="absolute inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-signal-500 to-transparent animate-pulse" />
+                <span className="text-xs font-mono text-signal-400">
+                  <DecryptedText text="SCANNING OPTICAL DATABASE..." speed={20} />
+                </span>
+                <p className="text-[11px] font-mono text-fog-500 mt-1">Cross-referencing Bangalore production telemetry...</p>
+              </div>
+            )}
+
             {/* Verification Output Box */}
-            {searched && (
+            {searched && !isScanning && (
               <div className="mt-6 pt-5 border-t hairline animate-in fade-in duration-200">
                 {lookupResult?.valid ? (
-                  <div className="p-4 rounded-xl bg-ink-950 border border-signal-500/40 space-y-2.5">
+                  <SpotlightCard
+                    spotlightColor="rgba(237, 29, 36, 0.15)"
+                    className="p-4 rounded-xl bg-ink-950 border border-signal-500/40 space-y-2.5"
+                  >
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-mono text-signal-400 font-semibold flex items-center gap-1.5">
-                        <span>●</span> AUTHENTIC FACTORY DISPATCH
+                        <span className="inline-block w-2 h-2 rounded-full bg-signal-500 animate-ping" /> AUTHENTIC FACTORY DISPATCH
                       </span>
                       <span className="text-[10px] font-mono px-2 py-0.5 bg-signal-600/20 text-signal-400 rounded">
                         {lookupResult.warrantyStatus}
@@ -163,13 +186,15 @@ export default function WarrantyPage() {
                     </div>
 
                     <div className="text-xs space-y-1 pt-1 font-mono">
-                      <p className="text-bone font-medium">{lookupResult.model}</p>
+                      <p className="text-bone font-medium">
+                        <DecryptedText text={lookupResult.model || ""} speed={20} />
+                      </p>
                       <p className="text-fog-400 text-[11px]">Serial: {lookupResult.serialNumber}</p>
                       <p className="text-fog-400 text-[11px]">Warranty: {lookupResult.warrantyPeriod}</p>
                       <p className="text-fog-400 text-[11px]">QC: {lookupResult.qcCheck}</p>
                       <p className="text-fog-500 text-[10px]">Facility: {lookupResult.origin}</p>
                     </div>
-                  </div>
+                  </SpotlightCard>
                 ) : (
                   <div className="p-4 rounded-xl bg-red-950/30 border border-red-800/40 text-red-300 text-xs">
                     <p className="font-semibold mb-1">Serial Number Unrecognized</p>

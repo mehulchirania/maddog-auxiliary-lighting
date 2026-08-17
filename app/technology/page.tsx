@@ -5,7 +5,8 @@ import Reveal from "@/components/ui/Reveal";
 import Cta from "@/components/ui/Cta";
 import TirDiagram from "@/components/tech/TirDiagram";
 import ColorTempScale from "@/components/tech/ColorTempScale";
-import RangeSpecTable from "@/components/tech/RangeSpecTable";
+import NichiaEmitterDeepDive from "@/components/tech/NichiaEmitterDeepDive";
+import EnvironmentalArmor from "@/components/tech/EnvironmentalArmor";
 import InstrumentStat from "@/components/tech/InstrumentStat";
 import PhotometricShowcase from "@/components/tech/PhotometricShowcase";
 import AntiGlare from "@/components/home/AntiGlare";
@@ -100,13 +101,8 @@ export default function TechnologyPage() {
             <InstrumentStat value="18" unit="mo" label="Replacement warranty" />
           </Reveal>
 
-          <Reveal delay={120} className="mt-10 grid gap-6 lg:grid-cols-2">
-            <div className="border hairline rounded-xl bg-ink-900/50 p-5">
-              <RangeSpecTable label="LED type" />
-            </div>
-            <div className="border hairline rounded-xl bg-ink-900/50 p-5">
-              <RangeSpecTable label="Life-span" />
-            </div>
+          <Reveal delay={120} className="mt-10">
+            <NichiaEmitterDeepDive />
           </Reveal>
         </Container>
       </div>
@@ -122,13 +118,8 @@ export default function TechnologyPage() {
             />
           </Reveal>
 
-          <Reveal delay={80} className="mt-10 grid gap-6 lg:grid-cols-2">
-            <div className="border hairline rounded-xl bg-ink-900/50 p-5">
-              <RangeSpecTable label="IP rating" />
-            </div>
-            <div className="border hairline rounded-xl bg-ink-900/50 p-5">
-              <RangeSpecTable label="Materials" />
-            </div>
+          <Reveal delay={80} className="mt-10">
+            <EnvironmentalArmor />
           </Reveal>
         </Container>
       </div>

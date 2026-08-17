@@ -10,16 +10,16 @@ const ECOSYSTEM_PILLARS = [
     href: "/lights/",
     tag: "01 / LIGHTING",
     label: "Auxiliary Lights Ladder",
-    blurb: "Six lights, one ladder. From 2,800 lm Scout to 11,600 lm Rage with 5000K anti-glare TIR optics.",
+    blurb: "Six lights, one ladder. From 3,000 lm Scout to 11,600 lm Rage with 5000K anti-glare TIR optics.",
     product: getProduct("rage"),
     stat: "11,600 lm Peak",
   },
   {
-    href: "/products/switch-pro/",
+    href: "/products/switch-pro-and-wire-harness-pro/",
     tag: "02 / CONTROL",
     label: "Power & Dimming Systems",
     blurb: "Switch Pro, Wire Harness Pro & Quad Dimmer. Solid-state relay protected, true plug & play.",
-    product: getProduct("switch-pro"),
+    product: getProduct("switch-pro-and-wire-harness-pro") || getProduct("dimmer"),
     stat: "Zero Wire Slicing",
   },
   {
@@ -27,7 +27,7 @@ const ECOSYSTEM_PILLARS = [
     tag: "03 / COCKPIT",
     label: "Claw Vibration Mounts",
     blurb: "Engineered with internal silicone harmonic dampers to shield smartphone OIS cameras from high-RPM vibration.",
-    product: getProduct("claw-x"),
+    product: getProduct("claw-x") || getProduct("claw-pro"),
     stat: "25W Qi + USB-C",
   },
   {
@@ -35,7 +35,7 @@ const ECOSYSTEM_PILLARS = [
     tag: "04 / OPTICS",
     label: "Amber & Fog Filters",
     blurb: "Optical-grade 3000K selective yellow polycarbonate covers for rain, dense fog, and monsoon storm penetration.",
-    product: getProduct("alpha"),
+    product: getProduct("rage-lycan-filters") || getProduct("alpha-auxiliary-light-filters"),
     stat: "3000K Selective",
   },
 ];

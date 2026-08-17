@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="beamGradient" cx="10%" cy="50%" r="90%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="15%" stop-color="#38bdf8" stop-opacity="0.7"/>
+      <stop offset="40%" stop-color="#0284c7" stop-opacity="0.4"/>
+      <stop offset="70%" stop-color="#0369a1" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#080c14" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="isoGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.75"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="400" fill="#06090e"/>
+  <rect width="800" height="400" fill="url(#isoGrid)"/>
+
+  <!-- Center Road Axis -->
+  <line x1="80" y1="200" x2="760" y2="200" stroke="#00f0ff" stroke-width="1" stroke-dasharray="8,4" stroke-opacity="0.6"/>
+
+  <!-- Distance Marks along X Axis -->
+  <g font-family="monospace" font-size="10" fill="#64748b" text-anchor="middle">
+    <line x1="200" y1="195" x2="200" y2="205" stroke="#64748b"/>
+    <text x="200" y="225">100m</text>
+
+    <line x1="340" y1="195" x2="340" y2="205" stroke="#64748b"/>
+    <text x="340" y="225">200m</text>
+
+    <line x1="480" y1="195" x2="480" y2="205" stroke="#64748b"/>
+    <text x="480" y="225">300m</text>
+
+    <line x1="620" y1="195" x2="620" y2="205" stroke="#64748b"/>
+    <text x="620" y="225">400m</text>
+
+    <line x1="740" y1="195" x2="740" y2="205" stroke="#64748b"/>
+    <text x="740" y="225">500m</text>
+  </g>
+
+  <!-- IsoLux Contour Ellipses -->
+  <!-- 0.25 Lux Contour (Peripheral Spill) -->
+  <path d="M 80 200 Q 300 40 700 160 Q 750 200 700 240 Q 300 360 80 200 Z" fill="url(#beamGradient)" stroke="#00f0ff" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="660" y="150" fill="#38bdf8" font-family="monospace" font-size="9">0.25 LUX</text>
+
+  <!-- 1.0 Lux Contour (Usable Field of View) -->
+  <path d="M 80 200 Q 280 80 580 170 Q 620 200 580 230 Q 280 320 80 200 Z" fill="#00f0ff" fill-opacity="0.08" stroke="#00f0ff" stroke-width="1.5" stroke-opacity="0.6"/>
+  <text x="540" y="160" fill="#00f0ff" font-family="monospace" font-size="9" font-weight="bold">1.0 LUX (380m)</text>
+
+  <!-- 3.0 Lux Contour (High-Intensity Driving Zone) -->
+  <path d="M 80 200 Q 250 120 420 180 Q 450 200 420 220 Q 250 280 80 200 Z" fill="#38bdf8" fill-opacity="0.15" stroke="#38bdf8" stroke-width="1.8"/>
+  <text x="380" y="170" fill="#7dd3fc" font-family="monospace" font-size="9">3.0 LUX</text>
+
+  <!-- 10.0 Lux Hotspot (Collimated Hotspot Center) -->
+  <ellipse cx="180" cy="200" rx="90" ry="25" fill="#ffffff" fill-opacity="0.25" stroke="#ffffff" stroke-width="2"/>
+  <text x="180" y="195" fill="#ffffff" font-family="monospace" font-size="9" text-anchor="middle" font-weight="bold">10+ LUX HOTSPOT</text>
+
+  <!-- Origin Auxiliary Pod Emitter Symbol -->
+  <g transform="translate(80, 200)">
+    <circle cx="0" cy="0" r="12" fill="#0f172a" stroke="#ff3b30" stroke-width="2"/>
+    <circle cx="0" cy="0" r="5" fill="#ff3b30"/>
+    <text x="-18" y="-18" fill="#ff3b30" font-family="monospace" font-size="10" font-weight="bold">MADDOG POD</text>
+  </g>
+
+  <!-- Chart Header -->
+  <g transform="translate(30, 35)">
+    <text x="0" y="0" fill="#00f0ff" font-family="monospace" font-size="12" font-weight="bold">ISOLUX PHOTOMETRIC THROW PROFILE</text>
+    <text x="0" y="16" fill="#94a3b8" font-family="monospace" font-size="10">80% SPOT / 20% FLOOD HYBRID COLLIMATION · 5000K DAYLIGHT</text>
+  </g>
+</svg>
