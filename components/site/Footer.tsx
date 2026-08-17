@@ -12,15 +12,16 @@ const columns = [
       { href: "/products/alpha/", label: "Alpha (9,600 lm)" },
       { href: "/products/delta/", label: "Delta (6,400 lm)" },
       { href: "/products/scout-x/", label: "Scout-X (4,800 lm)" },
-      { href: "/products/scout/", label: "Scout (3,000 lm)" },
+      { href: "/products/scout/", label: "Scout (2,800 lm)" },
     ],
   },
   {
     title: "Engineering",
     links: [
       { href: "/technology/", label: "TIR Optics & Anti-Glare" },
-      { href: "/technology/", label: "5000K Colour Temp" },
+      { href: "/technology/", label: "5000K Colour Science" },
       { href: "/technology/", label: "Nichia 50,000h Life" },
+      { href: "/install/", label: "Installation & Wiring Hub" },
       { href: "/fit/", label: "Bike Fitment Studio" },
       { href: "/proof/", label: "Independent Proof & Reviews" },
     ],
@@ -28,9 +29,11 @@ const columns = [
   {
     title: "Standards & Support",
     links: [
+      { href: "/warranty/", label: "18-Mo Warranty Registration" },
+      { href: "/warranty/", label: "Serial Authenticity Check" },
+      { href: "/dealers/", label: "Authorized Dealers Locator" },
+      { href: "/install/", label: "RTO Compliance & Leveling" },
       { href: "/technology/", label: "IP67 Weatherproofing" },
-      { href: "/fit/", label: "Wiring & Power Systems" },
-      { href: "/proof/", label: "18-Month Replacement Warranty" },
       { href: "/lights/", label: "Direct Pricing Policy" },
     ],
   },

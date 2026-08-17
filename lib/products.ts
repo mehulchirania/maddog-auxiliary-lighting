@@ -16,7 +16,7 @@
  */
 const CDN = "/media";
 
-export type Category = "aux-light" | "power" | "mount";
+export type Category = "aux-light" | "power" | "mount" | "filter" | "ev-edition";
 
 export interface SpecRow {
   label: string;
@@ -469,6 +469,158 @@ export const products: Product[] = [
       { label: "Anti-vibration damper", value: "Yes" },
     ],
   },
+  {
+    slug: "claw-pro",
+    name: "Claw Pro (Wireless Qi + Type C)",
+    code: "MCLPRO",
+    category: "mount",
+    price: 5499,
+    rating: 4.9,
+    reviewCount: 14,
+    tagline: "15W Qi Wireless + 25W USB-C Dual Fast Charging.",
+    description:
+      "The ultimate motorcycle phone cockpit mount. Features simultaneous 15W Qi inductive wireless charging and 25W Type-C Power Delivery with internal silicone harmonic vibration dampening to protect smartphone OIS optical image stabilization sensors.",
+    hero: `${CDN}/products/MCLX/medium/product_1752422899_4061837.webp`,
+    gallery: [`${CDN}/kit_images/MCLX/kit_image_1752422898_9895567.webp`],
+    kitContents: [
+      "Claw Pro Mount",
+      "Dual Wireless & USB-C module",
+      "Handlebar 22-32mm clamp",
+      "Silicone vibration isolator",
+      "Direct harness with waterproof fuse",
+    ],
+    specs: [
+      { label: "Wireless Output", value: "15W Qi Fast Charging" },
+      { label: "Wired Output", value: "25W USB-C PD 3.0" },
+      { label: "Camera Protection", value: "Tuned harmonic elastomer damper" },
+      { label: "Waterproofing", value: "IP-67 Submersion Sealed" },
+      { label: "Handlebar Fitment", value: "22mm, 25mm, 28mm, 32mm" },
+      { label: "Warranty", value: "18 Months Direct Replacement" },
+    ],
+  },
+  {
+    slug: "rage-lycan-filters",
+    name: "Rage / Lycan Amber Fog Filters",
+    code: "MDRL-F",
+    category: "filter",
+    price: 1699,
+    rating: 4.9,
+    reviewCount: 18,
+    tagline: "Snap-on 3000K selective amber tint for heavy fog & rain.",
+    description:
+      "Optically graded polycarbonate snap-on covers that convert the 5000K crisp white beam of Rage and Lycan into high-penetration 3000K selective yellow amber, eliminating glare bounce-back in dense mist, fog, and cloudburst rainfall.",
+    hero: `${CDN}/products/MDR/medium/product_1752410418_8281751.webp`,
+    gallery: [`${CDN}/products/MDR/original/product_1752410418_8808744.webp`],
+    kitContents: [
+      "Pair of precision snap-on Amber filters",
+      "Shockproof silicone retention rings",
+      "Microfiber carrying pouch",
+    ],
+    specs: [
+      { label: "Material", value: "High-impact optical grade polycarbonate" },
+      { label: "Spectrum Shift", value: "5000K → 3000K Selective Amber" },
+      { label: "Fitment", value: "Direct snap fit for Rage and Lycan 100mm housings" },
+      { label: "Weather Rating", value: "UV400 scratch-resistant hard-coat" },
+    ],
+  },
+  {
+    slug: "alpha-filters",
+    name: "Alpha Amber Fog Filters",
+    code: "MDA-F",
+    category: "filter",
+    price: 1499,
+    rating: 4.8,
+    reviewCount: 26,
+    tagline: "High-penetration rain & fog amber lenses for Alpha.",
+    description:
+      "Snap-on amber filter covers engineered specifically for the Maddog Alpha 9,600 lm light. Cuts through haze, mountain mist, and monsoon storms without removing the underlying TIR optics.",
+    hero: `${CDN}/products/MDA/medium/product_1752413036_4119529.webp`,
+    gallery: [`${CDN}/products/MDA/original/product_1752413036_1629982.webp`],
+    kitContents: ["Pair of Alpha Amber filter covers", "Protective pouch"],
+    specs: [
+      { label: "Compatibility", value: "Maddog Alpha Aux Lights" },
+      { label: "Material", value: "Polycarbonate UV hard-coated" },
+      { label: "Colour Shift", value: "3000K All-Weather Amber" },
+    ],
+  },
+  {
+    slug: "delta-filters",
+    name: "Delta Amber Fog Filters",
+    code: "MDD-F",
+    category: "filter",
+    price: 1499,
+    rating: 4.8,
+    reviewCount: 12,
+    tagline: "Selective yellow weather shields for Maddog Delta.",
+    description:
+      "Dedicated amber filter caps for Delta 6,400 lm pods. Instantly alters beam colour profile for maximum contrast on wet tarmac.",
+    hero: `${CDN}/products/MADDL/medium/product_1752410793_7612647.webp`,
+    gallery: [`${CDN}/products/MADDL/original/product_1752410793_2735299.webp`],
+    kitContents: ["Pair of Delta Amber filter covers", "Protective pouch"],
+    specs: [
+      { label: "Compatibility", value: "Maddog Delta Aux Lights" },
+      { label: "Material", value: "Polycarbonate UV hard-coated" },
+      { label: "Colour Shift", value: "3000K All-Weather Amber" },
+    ],
+  },
+  {
+    slug: "scout-filters",
+    name: "Scout / Scout-X Amber Filters",
+    code: "MDSC-F",
+    category: "filter",
+    price: 999,
+    rating: 4.7,
+    reviewCount: 31,
+    tagline: "Compact amber caps for Scout and Scout-X.",
+    description:
+      "Snap-on amber filter covers for the compact Scout and Scout-X pods. Ideal for low-mount fog and city commute visibility.",
+    hero: `${CDN}/products/SCX-1/medium/product_1752415144_4889185.webp`,
+    gallery: [`${CDN}/products/SCX-1/original/product_1752415144_7809344.webp`],
+    kitContents: ["Pair of Scout/Scout-X filter covers"],
+    specs: [
+      { label: "Compatibility", value: "Scout & Scout-X" },
+      { label: "Material", value: "Impact-resistant polycarbonate" },
+    ],
+  },
+  {
+    slug: "terra-vision-f77",
+    name: "Terra Vision — Ultraviolette F77 Edition",
+    code: "UV-F77",
+    category: "ev-edition",
+    price: 14999,
+    rating: 5.0,
+    reviewCount: 8,
+    tagline: "Co-engineered with Ultraviolette Automotive for electric hyper-mobility.",
+    description:
+      "Special edition high-efficiency auxiliary lighting system co-developed with Ultraviolette Automotive. Optimized for high-voltage DC-DC step-down converters with bespoke aerodynamic CNC brackets contoured for the F77 Mach 2 chassis.",
+    hero: `${CDN}/products/MDR/medium/product_1752410418_8281751.webp`,
+    gallery: [
+      `${CDN}/products/MDR/original/product_1752410418_8808744.webp`,
+      `${CDN}/products/MDR/original/product_1752410418_9244111.webp`,
+    ],
+    kitContents: [
+      "Pair of Terra Vision F77 pods (10,800 lm)",
+      "Bespoke F77 CNC chassis brackets",
+      "CAN-bus safe plug-and-play wiring harness",
+      "Handlebar cockpit switch",
+    ],
+    light: {
+      lumens: 10800,
+      wattsEach: 45,
+      wattsPair: 90,
+      beamDistanceM: 320,
+      spot: 80,
+      flood: 20,
+      opticsLabel: "EV Tuned Spot 80% · Flood 20%",
+    },
+    specs: [
+      { label: "EV Compatibility", value: "Ultraviolette F77 & F77 Mach 2" },
+      { label: "Input Voltage", value: "9V – 32V DC wide range" },
+      { label: "Thermal Management", value: "Aero-venturi cooling fins" },
+      { label: "IP Rating", value: "IP-67 Submersion Sealed" },
+      { label: "Warranty", value: "18 Months Factory Direct" },
+    ],
+  },
 ];
 
 /** Aux lights ordered by output — this is the spec ladder. */
@@ -482,6 +634,11 @@ export function getProduct(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
 }
 
+export function getProductsByCategory(cat: Category): Product[] {
+  return products.filter((p) => p.category === cat);
+}
+
 export function formatPrice(paise: number): string {
   return `₹${paise.toLocaleString("en-IN")}`;
 }
+

@@ -11,7 +11,9 @@ const links = [
   { href: "/lights/", label: "Lights & Range" },
   { href: "/technology/", label: "Technology" },
   { href: "/fit/", label: "Bike Finder" },
-  { href: "/proof/", label: "Proof & Reviews" },
+  { href: "/install/", label: "Installation" },
+  { href: "/warranty/", label: "Warranty" },
+  { href: "/proof/", label: "Proof" },
 ];
 
 export default function Nav() {

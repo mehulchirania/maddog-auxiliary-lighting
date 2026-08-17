@@ -28,6 +28,7 @@ export const brands = [
   "Royal Enfield",
   "KTM",
   "BMW",
+  "Ultraviolette",
   "Honda",
   "Yamaha",
   "Kawasaki",
@@ -41,6 +42,16 @@ export const brands = [
 ] as const;
 
 export const bikes: Bike[] = [
+  // Ultraviolette
+  {
+    id: "uv-f77-mach2",
+    brand: "Ultraviolette",
+    model: "F77 Mach 2",
+    kind: "street",
+    recommended: { light: "terra-vision-f77", power: "switch-pro", mount: "claw-pro" },
+    rationale:
+      "Bespoke aerodynamic chassis mount with wide-voltage DC converter. Co-engineered for electric hyper-mobility.",
+  },
   // Royal Enfield
   {
     id: "re-himalayan-450",
