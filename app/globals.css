@@ -1,26 +1,242 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Surfaces — near-black, warm-neutral rather than blue-black */
+  --color-ink-950: #08080a;
+  --color-ink-900: #0b0b0d;
+  --color-ink-850: #101013;
+  --color-ink-800: #141418;
+  --color-ink-700: #1a1a1f;
+  --color-ink-600: #232329;
+  --color-ink-500: #2e2e35;
+  --color-ink-400: #3a3a42;
+
+  /* Light panels. Product photography is all on pure white, so product
+     sections invert to a studio ground rather than fighting the images.
+     Use ink-* for text on these. */
+  --color-paper-0: #ffffff;
+  --color-paper-1: #f6f6f4;
+  --color-paper-2: #eceae5;
+  --color-paper-3: #dddbd4;
+
+  /* Text */
+  --color-bone: #f6f6f4;
+  --color-fog-200: #cfcfc9;
+  --color-fog-300: #b0b0a9;
+  --color-fog-400: #94948d;
+  --color-fog-500: #7d7d76;
+  --color-fog-600: #63635d;
+
+  /* Signal red — from the existing Maddog wordmark */
+  --color-signal-700: #a82a20;
+  --color-signal-600: #c93529;
+  --color-signal-500: #e8483c;
+  --color-signal-400: #f26355;
+
+  /* Beam — 5000K warm white, taken from the product's own colour temperature */
+  --color-beam-100: #fffaf0;
+  --color-beam-200: #fff3dc;
+  --color-beam-300: #ffe9c4;
+  --color-beam-400: #ffd89b;
+
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* ── Type scale ────────────────────────────────────────────────────────
+     Weight carries hierarchy — not just size. Archivo is a variable font
+     with a 100–900 range; we now use it. Weight 650 for display, 600 for
+     page titles, 550 for section heads and card titles, 500 for stats.
+     Body rises from 13px to 15px. Nothing between h2 and display.
+  ────────────────────────────────────────────────────────────────────── */
+
+  /* display — once per page, hero only */
+  --text-display: clamp(2.75rem, 5.5vw, 4.5rem);
+  --fw-display: 650;
+  --ls-display: -0.03em;
+
+  /* h1 — page titles */
+  --text-h1: clamp(2rem, 4vw, 3rem);
+  --fw-h1: 600;
+  --ls-h1: -0.02em;
+
+  /* h2 — section headings */
+  --text-h2: clamp(1.5rem, 2.6vw, 2.125rem);
+  --fw-h2: 550;
+  --ls-h2: -0.015em;
+
+  /* h3 — card titles */
+  --text-h3: 1.25rem;
+  --fw-h3: 550;
+  --ls-h3: -0.01em;
+
+  /* body-lg — ledes, lead paragraphs */
+  --text-body-lg: 1.0625rem;
+
+  /* body — default copy (was 13px; now 15px) */
+  --text-body: 0.9375rem;
+
+  /* caption — meta, captions, secondary info */
+  --text-caption: 0.8125rem;
+
+  /* micro — eyebrows, uppercase labels */
+  --text-micro: 0.6875rem;
+
+  /* stat — spec figures, mono, tabular */
+  --text-stat: clamp(2rem, 4vw, 3.25rem);
+  --fw-stat: 500;
+  --ls-stat: -0.02em;
+
+  /* ── Spacing rhythm ────────────────────────────────────────────────────
+     Three section rhythms only — not eight. Use these on every section.
+  ────────────────────────────────────────────────────────────────────── */
+  --section-sm: 3.5rem;   /* tight bands: finder strip, CTA row */
+  --section: 5.5rem;      /* default section padding */
+  --section-lg: 8rem;     /* hero-scale moments */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  /* The site is light-dominant. Dark is reserved for the two places where
+     darkness is the subject: the night-road beam comparison, and the technical
+     teardown renders, which are themselves white-on-black artwork. */
+  html {
+    background-color: var(--color-paper-1);
+    color: var(--color-ink-900);
+    -webkit-font-smoothing: antialiased;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    font-family: var(--font-display);
+    font-size: var(--text-body);
+    line-height: 1.65;
+  }
+
+  ::selection {
+    background: var(--color-signal-500);
+    color: var(--color-bone);
+  }
+
+  /* Spec figures must line up in columns wherever they appear. */
+  .tnum {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* The eyebrow label used above every section heading. Default is tuned for
+     dark panels (fog-500 on ink). Add `.eyebrow-ink` on a light panel — plain
+     `.eyebrow` is low-contrast on paper. */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-fog-500);
+  }
+
+  .eyebrow-ink {
+    font-family: var(--font-mono);
+    font-size: var(--text-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-500);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* For use on dark panels — a white-based hairline. */
+  .hairline {
+    border-color: color-mix(in srgb, var(--color-bone) 9%, transparent);
+  }
+
+  /* For use on light panels. `hairline` is invisible on paper. */
+  .hairline-ink {
+    border-color: color-mix(in srgb, var(--color-ink-900) 12%, transparent);
+  }
+
+  /* Progressive reveal on scroll.
+     Gated on `scripting: enabled` rather than a class added by an inline
+     script — a script mutating <html> before hydration causes a React
+     hydration mismatch. Where the media query is unsupported it simply never
+     matches, so content renders visible immediately. That is the safe
+     failure direction.
+
+     Motion system (§2.4):
+     - Nothing moves more than 8px (was 18px)
+     - Duration 400ms (was 700ms)
+     - Easing cubic-bezier(.16,1,.3,1) — snappy spring (was ease-out)
+     - Images: scale only, no translate (handled by .reveal-image)
+  */
+  @media (scripting: enabled) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(8px);
+      transition:
+        opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Image reveal — scale only, no translate */
+    .reveal-image {
+      opacity: 0;
+      transform: scale(1.03);
+      transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out;
+    }
+
+    .reveal-image.is-visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal-image {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Custom precision scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-600);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-500);
+  }
+
+  /* Interactive card hover */
+  .card-hover {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Technical CAD blueprint panel */
+  .panel-cad {
+    background-color: var(--color-ink-950);
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
 }
+
