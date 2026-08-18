@@ -1,3 +1,5 @@
+import SpotlightCard from "@/components/animations/SpotlightCard";
+
 export default function InstrumentStat({
   value,
   unit,
@@ -8,7 +10,10 @@ export default function InstrumentStat({
   label: string;
 }) {
   return (
-    <div className="border hairline bg-ink-850 rounded-lg px-6 py-8 text-center">
+    <SpotlightCard
+      spotlightColor="rgba(237, 29, 36, 0.14)"
+      className="border hairline bg-ink-850 rounded-lg px-6 py-8 text-center"
+    >
       <div
         className="tnum text-bone leading-none"
         style={{
@@ -33,6 +38,6 @@ export default function InstrumentStat({
       >
         {label}
       </p>
-    </div>
+    </SpotlightCard>
   );
 }

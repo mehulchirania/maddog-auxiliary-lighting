@@ -127,8 +127,8 @@ export default function SetupResult({
 
       {/* System Total & Add to Cart Panel */}
       <SpotlightCard
-        spotlightColor="rgba(237, 29, 36, 0.15)"
-        className="hairline border bg-ink-900 mt-8 flex flex-col gap-6 rounded-xl p-5 sm:p-7 sm:flex-row sm:items-center sm:justify-between shadow-md"
+        spotlightColor="rgba(245, 113, 28, 0.18)"
+        className="border-glow bg-ink-900 mt-8 flex flex-col gap-6 rounded-xl p-5 sm:p-7 sm:flex-row sm:items-center sm:justify-between shadow-md"
       >
         <div>
           <span className="eyebrow text-signal-500">Certified System Total</span>

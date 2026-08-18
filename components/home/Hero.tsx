@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Reveal from "@/components/ui/Reveal";
+import Cta from "@/components/ui/Cta";
 import BeamCompare from "./BeamCompare";
 import HeroBrandVisual from "./HeroBrandVisual";
-import ShinyText from "@/components/animations/ShinyText";
 import SpotlightCard from "@/components/animations/SpotlightCard";
 import CountUp from "@/components/animations/CountUp";
+import DarkVeil from "@/components/animations/DarkVeil";
+import SplitText from "@/components/animations/SplitText";
 
 export default function Hero() {
   return (
@@ -13,7 +15,8 @@ export default function Hero() {
       className="bg-ink-900 text-bone relative flex flex-col justify-center overflow-hidden pt-16 pb-16 sm:pt-20 sm:pb-20"
       style={{ paddingBottom: "var(--section)" }}
     >
-      <Container wide>
+      <DarkVeil className="pointer-events-none" />
+      <Container wide className="relative">
         {/* Above-fold Header */}
         <div className="max-w-4xl mb-8 sm:mb-10">
           <Reveal>
@@ -22,22 +25,29 @@ export default function Hero() {
               <span className="text-fog-500 font-mono text-xs">/</span>
               <span className="font-mono text-fog-400 text-xs uppercase tracking-wider">Auxiliary Lighting &amp; Cockpit Systems</span>
             </div>
-            <h1
+            <SplitText
+              text="You see it before you feel it."
               className="font-display leading-[1.02]"
               style={{
                 fontSize: "var(--text-display)",
                 fontWeight: "var(--fw-display)",
                 letterSpacing: "var(--ls-display)",
               }}
-            >
-              <ShinyText text="You see it before you feel it." speed={5} />
-            </h1>
+            />
             <p
               className="text-fog-300 mt-4 leading-relaxed max-w-3xl"
               style={{ fontSize: "var(--text-body-lg)" }}
             >
               First in India to fit calibrated 5000K anti-glare TIR optics as standard. Engineered so the beam projects on the road ahead with zero scatter into oncoming traffic.
             </p>
+            <div className="flex flex-wrap items-center gap-3 mt-6">
+              <Cta href="/lights/" variant="specular">
+                Explore Lights
+              </Cta>
+              <Cta href="/fit/" variant="outline" tone="dark">
+                Run Bike Finder
+              </Cta>
+            </div>
           </Reveal>
         </div>
 

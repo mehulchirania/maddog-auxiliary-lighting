@@ -2,6 +2,7 @@ import Hero from "@/components/home/Hero";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import TechnicalTeardown from "@/components/showcase/TechnicalTeardown";
 import OEMSpotlight from "@/components/home/OEMSpotlight";
+import RiderGallery from "@/components/home/RiderGallery";
 import BikeFinderSection from "@/components/home/BikeFinderSection";
 import NoDiscounts from "@/components/home/NoDiscounts";
 import AggregateStats from "@/components/proof/AggregateStats";
@@ -24,6 +25,9 @@ export default function Home() {
 
       {/* Band 4 — OEM Spotlight: Ultraviolette Automotive EV Partnership */}
       <OEMSpotlight />
+
+      {/* Band 4.5 — Rider field-conditions gallery */}
+      <RiderGallery />
 
       {/* Band 5 — Bike Finder & Motorcycle Chassis Matcher */}
       <BikeFinderSection />

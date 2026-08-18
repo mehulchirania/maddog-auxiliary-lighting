@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 
-type Variant = "solid" | "outline" | "quiet" | "secondary";
+type Variant = "solid" | "outline" | "quiet" | "secondary" | "specular";
 type Tone = "dark" | "light";
 
 export default function Cta({
@@ -20,6 +20,8 @@ export default function Cta({
   const styles: Record<Variant, string> = {
     solid:
       "bg-signal-600 text-bone hover:bg-signal-700 border-signal-600 hover:border-signal-700 shadow-sm",
+    specular:
+      "btn-specular bg-signal-600 text-bone hover:bg-signal-700 border-signal-600 hover:border-signal-700 shadow-sm",
     secondary:
       tone === "dark"
         ? "bg-ink-800 text-bone hover:bg-ink-700 border-ink-600 hover:border-ink-500"

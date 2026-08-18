@@ -32,7 +32,7 @@ export default function LadderRow({
         <div className="group grid gap-6 py-8 sm:py-10 sm:grid-cols-[200px_1fr] sm:gap-8 lg:grid-cols-[240px_1fr] lg:items-center lg:gap-10">
           <Link
             href={`/products/${product.slug}/`}
-            className="border-ink-900/10 bg-paper-0 relative aspect-square w-full shrink-0 overflow-hidden rounded-xl border shadow-sm transition-all duration-300 group-hover:border-signal-600/30 group-hover:shadow-md"
+            className="card-reflective border-ink-900/10 bg-paper-0 relative aspect-square w-full shrink-0 overflow-hidden rounded-xl border shadow-sm transition-all duration-300 group-hover:border-signal-600/30 group-hover:shadow-md"
           >
             <Image
               src={product.hero}

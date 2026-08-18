@@ -87,7 +87,7 @@ export default function CategoryGrid() {
                 <Link
                   key={cat.tag}
                   href={cat.href}
-                  className="group relative flex flex-col justify-between border hairline bg-ink-900/80 hover:bg-ink-900 rounded-2xl p-6 transition-all duration-300 hover:border-signal-500/50 hover:shadow-2xl hover:-translate-y-1"
+                  className="group relative flex flex-col justify-between border hairline bg-ink-900/80 hover:bg-ink-900 rounded-2xl p-6 transition-all duration-300 hover:border-signal-500/50 hover:glow-orange hover:-translate-y-1"
                 >
                   <div>
                     {/* Top Tag & Stat */}
