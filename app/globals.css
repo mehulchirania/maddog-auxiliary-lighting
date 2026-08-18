@@ -1,172 +1,158 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces — near-black, warm-neutral rather than blue-black */
-  --color-ink-950: #08080a;
-  --color-ink-900: #0b0b0d;
-  --color-ink-850: #101013;
-  --color-ink-800: #141418;
-  --color-ink-700: #1a1a1f;
-  --color-ink-600: #232329;
-  --color-ink-500: #2e2e35;
-  --color-ink-400: #3a3a42;
+  /* Surfaces — true neutral, no blue cast */
+  --color-night-950: #0a0a0b;   /* page ground */
+  --color-night-900: #101012;   /* elevated panel */
+  --color-night-800: #17171a;   /* card ground */
+  --color-night-700: #202024;   /* hover ground / strokes on glass */
+  --color-night-600: #2c2c31;
 
-  /* Light panels. Product photography is all on pure white, so product
-     sections invert to a studio ground rather than fighting the images.
-     Use ink-* for text on these. */
-  --color-paper-0: #ffffff;
-  --color-paper-1: #f6f6f4;
-  --color-paper-2: #eceae5;
-  --color-paper-3: #dddbd4;
+  /* Studio plate — ONLY as the background inside product-image frames */
+  --color-plate: #f4f4f2;
 
   /* Text */
-  --color-bone: #f6f6f4;
-  --color-fog-200: #cfcfc9;
-  --color-fog-300: #b0b0a9;
-  --color-fog-400: #94948d;
-  --color-fog-500: #7d7d76;
-  --color-fog-600: #63635d;
+  --color-white: #f7f7f5;
+  --color-grey-300: #b6b6b1;   /* secondary text on dark */
+  --color-grey-500: #82827c;   /* tertiary/meta text on dark */
 
-  /* Signal red — from the existing Maddog wordmark */
-  --color-signal-700: #a82a20;
-  --color-signal-600: #c93529;
-  --color-signal-500: #e8483c;
-  --color-signal-400: #f26355;
+  /* Beam — the 5000K product light. This is the PRIMARY accent. */
+  --color-beam: #ffedc9;
+  --color-beam-bright: #fff8e8;
 
-  /* Beam — 5000K warm white, taken from the product's own colour temperature */
-  --color-beam-100: #fffaf0;
-  --color-beam-200: #fff3dc;
-  --color-beam-300: #ffe9c4;
-  --color-beam-400: #ffd89b;
+  /* Signal red — wordmark red. Tiny doses only: logo, active states, price. */
+  --color-signal: #e8483c;
+
+  /* Glass recipe tokens (see .glass utility below) */
+  --glass-bg: rgba(23, 23, 26, 0.55);
+  --glass-stroke: rgba(247, 247, 245, 0.10);
+  --glass-highlight: rgba(247, 247, 245, 0.06);
 
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
-  /* ── Type scale ────────────────────────────────────────────────────────
-     Weight carries hierarchy — not just size. Archivo is a variable font
-     with a 100–900 range; we now use it. Weight 650 for display, 600 for
-     page titles, 550 for section heads and card titles, 500 for stats.
-     Body rises from 13px to 15px. Nothing between h2 and display.
-  ────────────────────────────────────────────────────────────────────── */
+  /* ── Type scale — fewer steps, bigger jumps ── */
+  --text-hero: clamp(3rem, 7vw, 6rem);        /* once per page */
+  --fw-hero: 560;
+  --ls-hero: -0.035em;
 
-  /* display — once per page, hero only */
-  --text-display: clamp(2.75rem, 5.5vw, 4.5rem);
-  --fw-display: 650;
-  --ls-display: -0.03em;
+  --text-statement: clamp(1.75rem, 3.4vw, 3rem); /* section statements */
+  --fw-statement: 520;
+  --ls-statement: -0.025em;
 
-  /* h1 — page titles */
-  --text-h1: clamp(2rem, 4vw, 3rem);
-  --fw-h1: 600;
-  --ls-h1: -0.02em;
+  --text-title: 1.1875rem;    /* card / product titles, fw 560 */
+  --text-body: 1rem;          /* line-height 1.7 */
+  --text-meta: 0.8125rem;     /* mono, data readouts only */
 
-  /* h2 — section headings */
-  --text-h2: clamp(1.5rem, 2.6vw, 2.125rem);
-  --fw-h2: 550;
-  --ls-h2: -0.015em;
+  /* ── Spacing — sections breathe ── */
+  --section: clamp(7rem, 14vh, 10rem);      /* default gap between acts */
+  --section-hero: 100svh;                    /* acts 1–2 are full viewport */
 
-  /* h3 — card titles */
-  --text-h3: 1.25rem;
-  --fw-h3: 550;
-  --ls-h3: -0.01em;
+  /* ── Radius — one soft radius everywhere ── */
+  --radius-card: 1.25rem;
+  --radius-pill: 9999px;
 
-  /* body-lg — ledes, lead paragraphs */
-  --text-body-lg: 1.0625rem;
-
-  /* body — default copy (was 13px; now 15px) */
-  --text-body: 0.9375rem;
-
-  /* caption — meta, captions, secondary info */
-  --text-caption: 0.8125rem;
-
-  /* micro — eyebrows, uppercase labels */
-  --text-micro: 0.6875rem;
-
-  /* stat — spec figures, mono, tabular */
-  --text-stat: clamp(2rem, 4vw, 3.25rem);
-  --fw-stat: 500;
-  --ls-stat: -0.02em;
-
-  /* ── Spacing rhythm ────────────────────────────────────────────────────
-     Three section rhythms only — not eight. Use these on every section.
-  ────────────────────────────────────────────────────────────────────── */
-  --section-sm: 3.5rem;   /* tight bands: finder strip, CTA row */
-  --section: 5.5rem;      /* default section padding */
-  --section-lg: 8rem;     /* hero-scale moments */
+  /* ── Motion ── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 200ms;
+  --dur-base: 500ms;
+  --dur-slow: 900ms;
 }
 
 @layer base {
-  /* The site is light-dominant. Dark is reserved for the two places where
-     darkness is the subject: the night-road beam comparison, and the technical
-     teardown renders, which are themselves white-on-black artwork. */
   html {
-    background-color: var(--color-paper-1);
-    color: var(--color-ink-900);
+    background-color: var(--color-night-950);
+    color: var(--color-white);
     -webkit-font-smoothing: antialiased;
   }
 
   body {
     font-family: var(--font-display);
     font-size: var(--text-body);
-    line-height: 1.65;
+    line-height: 1.7;
+    background-color: var(--color-night-950);
+    color: var(--color-white);
   }
 
   ::selection {
-    background: var(--color-signal-500);
-    color: var(--color-bone);
+    background: var(--color-signal);
+    color: var(--color-white);
   }
 
-  /* Spec figures must line up in columns wherever they appear. */
-  .tnum {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    font-feature-settings: "tnum";
-  }
-
-  /* The eyebrow label used above every section heading. Default is tuned for
-     dark panels (fog-500 on ink). Add `.eyebrow-ink` on a light panel — plain
-     `.eyebrow` is low-contrast on paper. */
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-fog-500);
-  }
-
-  .eyebrow-ink {
-    font-family: var(--font-mono);
-    font-size: var(--text-micro);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-ink-500);
+  :focus-visible {
+    outline: 2px solid var(--color-beam);
+    outline-offset: 3px;
   }
 }
 
 @layer utilities {
-  /* For use on dark panels — a white-based hairline. */
-  .hairline {
-    border-color: color-mix(in srgb, var(--color-bone) 9%, transparent);
+  /* The one glass recipe. Never hand-roll another. */
+  .glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid var(--glass-stroke);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+    border-radius: var(--radius-card);
   }
 
-  /* For use on light panels. `hairline` is invisible on paper. */
-  .hairline-ink {
-    border-color: color-mix(in srgb, var(--color-ink-900) 12%, transparent);
+  .glass-pill {
+    border-radius: var(--radius-pill);
   }
 
-  html {
-    scroll-behavior: smooth;
+  /* High-contrast glass for text chips sitting on photography.
+     .glass is for chrome on flat dark ground; this is for legibility over images. */
+  .glass-deep {
+    background: rgba(10, 10, 11, 0.78);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    backdrop-filter: blur(20px) saturate(1.2);
+    border: 1px solid rgba(247, 247, 245, 0.14);
+    border-radius: var(--radius-card);
+    color: var(--color-white);
   }
 
-  /* Progressive reveal on scroll.
-     Silky smooth fade & lift transitions with high-performance GPU compositing.
-  */
+  /* Seamless marquee loop — used by the product rail. Track renders two
+     duplicate sets of cards; looping by exactly -50% - half the gap keeps the
+     wrap invisible regardless of card count. */
+  @keyframes rail-loop {
+    to {
+      transform: translateX(calc(-50% - 0.75rem));
+    }
+  }
+  .rail-track {
+    animation: rail-loop 45s linear infinite;
+  }
+  .rail-mask:hover .rail-track,
+  .rail-mask:focus-within .rail-track {
+    animation-play-state: paused;
+  }
+  .rail-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rail-track {
+      animation: none;
+    }
+  }
+
+  /* Data readout text — the only permitted mono usage */
+  .readout {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    color: var(--color-grey-500);
+  }
+
+  /* Progressive reveal on scroll */
   @media (scripting: enabled) {
     .reveal {
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(24px);
       transition:
-        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity var(--dur-slow) var(--ease-out),
+        transform var(--dur-slow) var(--ease-out);
       will-change: opacity, transform;
     }
 
@@ -180,8 +166,8 @@
       opacity: 0;
       transform: scale(1.03);
       transition:
-        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity var(--dur-slow) var(--ease-out),
+        transform var(--dur-slow) var(--ease-out);
       will-change: opacity, transform;
     }
 
@@ -192,10 +178,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
     .reveal,
     .reveal-image {
       opacity: 1;
@@ -213,110 +195,10 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-ink-600);
+    background: var(--color-night-700);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-ink-500);
-  }
-
-  /* Interactive card hover */
-  .card-hover {
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .card-hover:hover {
-    transform: translateY(-2px);
-  }
-
-  /* Technical CAD blueprint panel */
-  .panel-cad {
-    background-color: var(--color-ink-950);
-    background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  /* Shimmer animation */
-  @keyframes shimmer {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-
-  .animate-shimmer {
-    animation: shimmer 4s linear infinite;
-  }
-
-  /* Laser scanner sweep */
-  @keyframes laser-sweep {
-    0% {
-      top: 0%;
-      opacity: 0.8;
-    }
-    50% {
-      top: 100%;
-      opacity: 1;
-    }
-    100% {
-      top: 0%;
-      opacity: 0.8;
-    }
-  }
-
-  .animate-laser {
-    animation: laser-sweep 2.5s ease-in-out infinite;
-  }
-
-  /* Animated border glow ring — used around the bike-finder recommendation */
-  .border-glow {
-    position: relative;
-    border: 1px solid color-mix(in srgb, var(--color-signal-500) 45%, transparent);
-    box-shadow: 0 0 24px color-mix(in srgb, var(--color-signal-500) 25%, transparent),
-                inset 0 0 24px color-mix(in srgb, var(--color-signal-500) 8%, transparent);
-  }
-
-  /* Specular sweep — a single light band that crosses a button on hover */
-  .btn-specular {
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-specular::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -60%;
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-    transform: skewX(-20deg);
-    transition: left 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .btn-specular:hover::after {
-    left: 130%;
-  }
-
-  /* Reflective sheen — used on light-panel product cards */
-  .card-reflective {
-    position: relative;
-    overflow: hidden;
-  }
-  .card-reflective::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.5) 48%, transparent 66%);
-    transform: translateX(-120%);
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-  }
-  .card-reflective:hover::before {
-    transform: translateX(120%);
+    background: var(--color-night-600);
   }
 }
-

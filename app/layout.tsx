@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
+import SmoothScroll from "@/components/site/SmoothScroll";
 import { CartProvider } from "@/lib/cart";
 import CartDrawer from "@/components/cart/CartDrawer";
 import DemoModal from "@/components/cart/DemoModal";
@@ -25,14 +26,14 @@ export const metadata: Metadata = {
     "Auxiliary motorcycle lighting designed, developed and manufactured in India. Nichia optics, IP67 sealed, 18-month replacement warranty, never discounted.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
       className={`${archivo.variable} ${jetbrains.variable} h-full antialiased`}
-      data-scroll-behavior="smooth"
     >
-      <body className="bg-paper-1 text-ink-900 min-h-full flex flex-col">
+      <body className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-full flex flex-col selection:bg-[var(--color-signal)] selection:text-white">
+        <SmoothScroll />
         <CartProvider>
           <Nav />
           <main className="flex-1">{children}</main>
@@ -44,4 +45,3 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     </html>
   );
 }
-

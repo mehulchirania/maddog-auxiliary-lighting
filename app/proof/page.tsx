@@ -1,104 +1,117 @@
 import type { Metadata } from "next";
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
-import Reveal from "@/components/ui/Reveal";
-import Cta from "@/components/ui/Cta";
-import AggregateStats from "@/components/proof/AggregateStats";
+import Image from "next/image";
+import { fieldMedia } from "@/lib/fieldMedia";
 import CreatorWall from "@/components/proof/CreatorWall";
 import Testimonials from "@/components/proof/Testimonials";
-import { aggregate } from "@/lib/proof";
+import Lightbox from "@/components/ui/Lightbox";
 
 export const metadata: Metadata = {
-  title: "Rider Proof & Reviews — Maddog Auxiliary Lighting",
+  title: "Proof & Reviews — Maddog Auxiliary Lighting",
   description:
-    "18 independent motovlogging channels reviewed Maddog's Alpha and Scout-X lights unprompted. Real customer testimonials and aggregate figures.",
+    "82+ verified reviews and 18 independent motovlogging teardowns across India with an 18-month replacement warranty.",
 };
 
 export default function ProofPage() {
   return (
-    <div className="bg-ink-950 text-bone">
-      {/* Header */}
-      <Container style={{ paddingTop: "var(--section-lg)", paddingBottom: "var(--section)" }}>
-        <p className="eyebrow text-signal-500 mb-4">Independent Track Record</p>
-        <h1
-          className="font-display max-w-3xl leading-[1.02]"
-          style={{
-            fontSize: "var(--text-display)",
-            fontWeight: "var(--fw-display)",
-            letterSpacing: "var(--ls-display)",
-          }}
-        >
-          An independent review record, not a staged highlight reel.
-        </h1>
-        <p
-          className="text-fog-300 mt-6 max-w-2xl leading-relaxed"
-          style={{ fontSize: "var(--text-body-lg)" }}
-        >
-          {aggregate.creatorCount} motovlogging channels published extensive real-world reviews of Maddog auxiliary lights, and riders have logged {aggregate.totalReviews} verified reviews. Transparent track records across thousands of night miles.
-        </p>
-      </Container>
+    <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen">
+      {/* 40svh Dark Hero with Real Mounted-Rage Photo */}
+      <section className="relative h-[40svh] min-h-[300px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/media/products/MDR/original/product_1752410420_2104310.webp"
+            alt="Maddog Rage mounted field test"
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night-950)] via-[var(--color-night-950)]/70 to-transparent" />
+        </div>
 
-      {/* Aggregate Stats */}
-      <Container style={{ paddingBottom: "var(--section)" }}>
-        <Reveal>
-          <div className="border hairline rounded-xl overflow-hidden shadow-sm">
-            <AggregateStats />
-          </div>
-        </Reveal>
-      </Container>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full">
+          <h1
+            className="font-[520] text-[var(--color-white)] tracking-tight"
+            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+          >
+            Independent proof.
+          </h1>
+          <p
+            className="mt-3 text-[var(--color-grey-300)] max-w-2xl leading-relaxed"
+            style={{ fontSize: "var(--text-body)" }}
+          >
+            82+ verified reviews and 18 independent teardowns on YouTube — every product under an 18-month replacement warranty.
+          </p>
+        </div>
+      </section>
+
+      {/* Field Conditions: Real Measurement & Mounting Photography Grid */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-24">
+        <div className="mb-8">
+          <span className="readout text-xs text-[var(--color-beam)]">Field Documentation</span>
+          <h2
+            className="font-[520] text-[var(--color-white)] tracking-tight mt-1"
+            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+          >
+            Field conditions &amp; measured throw.
+          </h2>
+          <p className="text-[var(--color-grey-300)] text-sm max-w-xl mt-2">
+            Unfiltered night road beam measurements and real motorcycle mounting setups. Click any frame to inspect full resolution.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {fieldMedia.map((item) => (
+            <div key={item.src} className="flex flex-col gap-3">
+              <Lightbox src={item.src} alt={item.caption}>
+                <div className="relative aspect-[16/11] w-full rounded-[var(--radius-card)] overflow-hidden bg-[var(--color-night-900)] border border-[var(--glass-stroke)] shadow-xl">
+                  <Image
+                    src={item.src}
+                    alt={item.caption}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Lightbox>
+              <div className="flex items-baseline justify-between gap-2 px-1">
+                <p className="text-sm font-medium text-white">
+                  {item.caption}
+                </p>
+                <span className="readout text-xs uppercase shrink-0">
+                  {item.sku}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Creator Wall */}
-      <div className="bg-ink-900/40 border-y hairline">
-        <Container style={{ paddingTop: "var(--section)", paddingBottom: "var(--section)" }}>
-          <Reveal>
-            <SectionHeading
-              eyebrow="Creator reviews"
-              title="Eighteen Independent Motovloggers"
-              lede="Unsponsored real-world reviews spanning thousands of highway, off-road, and night touring kilometres."
-            />
-          </Reveal>
+      <section className="py-24 sm:py-32 bg-[var(--color-night-900)] border-y border-[var(--glass-stroke)]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12">
+          <h2
+            className="font-[520] text-[var(--color-white)] tracking-tight mb-4"
+            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+          >
+            Eighteen independent motovloggers.
+          </h2>
+          <p className="text-[var(--color-grey-300)] max-w-xl mb-12" style={{ fontSize: "var(--text-body)" }}>
+            Real-world road testing across thousands of touring kilometres throughout India.
+          </p>
+          <CreatorWall />
+        </div>
+      </section>
 
-          <Reveal delay={100} className="mt-10 sm:mt-12">
-            <CreatorWall />
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* Customer Testimonials */}
-      <Container style={{ paddingTop: "var(--section)", paddingBottom: "var(--section)" }}>
-        <Reveal>
-          <SectionHeading
-            eyebrow="Customer reviews"
-            title="From Verified Maddog Riders"
-            lede="Unfiltered telemetry and real feedback directly from the motorcycle community."
-          />
-        </Reveal>
-
-        <Reveal delay={100} className="mt-10 sm:mt-12">
-          <Testimonials />
-        </Reveal>
-      </Container>
-
-      {/* Bottom CTA */}
-      <div className="border-t hairline bg-ink-950">
-        <Container style={{ paddingTop: "var(--section)", paddingBottom: "var(--section-lg)" }}>
-          <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h3 className="font-display text-bone font-medium" style={{ fontSize: "var(--text-h2)" }}>
-                Read the engineering behind what these riders are reviewing.
-              </h3>
-              <p className="text-fog-400 mt-2" style={{ fontSize: "var(--text-body)" }}>
-                Explore the TIR optics, Nichia emitters, and IP-67 waterproofing.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <Cta href="/technology/">See the technology</Cta>
-              <Cta href="/lights/" variant="outline">Explore the Range</Cta>
-            </div>
-          </div>
-        </Container>
-      </div>
-    </div>
+      {/* Testimonials */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-24 sm:py-32">
+        <h2
+          className="font-[520] text-[var(--color-white)] tracking-tight mb-12"
+          style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+        >
+          Verified rider feedback.
+        </h2>
+        <Testimonials />
+      </section>
+    </article>
   );
 }
-

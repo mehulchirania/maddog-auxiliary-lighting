@@ -2,166 +2,163 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "motion/react";
 import { useCart } from "@/lib/cart";
-import { cn } from "@/lib/cn";
 
-const links = [
-  { href: "/lights/", label: "Lights & Range" },
+const NAV_LINKS = [
+  { href: "/lights/", label: "Range" },
   { href: "/technology/", label: "Technology" },
-  { href: "/fit/", label: "Bike Finder" },
-  { href: "/install/", label: "Installation" },
-  { href: "/warranty/", label: "Warranty" },
-  { href: "/proof/", label: "Proof" },
+  { href: "/fit/", label: "Fitment" },
+  { href: "/proof/", label: "Reviews" },
 ];
 
 export default function Nav() {
-  const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { setIsCartOpen, cartCount } = useCart();
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > 120 && latest > previous) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
-    <header className="bg-paper-0/90 border-ink-900/10 sticky top-0 z-50 border-b backdrop-blur-md transition-colors duration-200">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-4 px-4 sm:px-8">
-        <div className="flex items-center gap-6 lg:gap-12">
-          <Link href="/" className="shrink-0 group" aria-label="Maddog home">
+    <>
+      <motion.header
+        className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+        animate={{ y: hidden ? -80 : 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <div className="glass glass-pill h-14 px-3 flex items-center justify-between gap-4 sm:gap-6 pointer-events-auto shadow-2xl">
+          {/* Logo */}
+          <Link href="/" className="flex items-center pl-2 pr-1" aria-label="Maddog Home">
             <Image
-              src="/media/brand/maddog-logo.png"
+              src="/media/brand/maddog-logo-white.png"
               alt="Maddog"
               width={2547}
               height={501}
               priority
-              className="h-6 w-auto sm:h-7 transition-opacity group-hover:opacity-85"
+              className="h-[22px] w-auto object-contain"
             />
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Main Navigation">
-            {links.map((l) => {
-              const isActive = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex items-center gap-6" aria-label="Main Navigation">
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href || (link.href !== "/" && pathname?.startsWith(link.href));
               return (
                 <Link
-                  key={l.href}
-                  href={l.href}
-                  className={cn(
-                    "relative px-3.5 py-1.5 rounded-md font-medium tracking-wide transition-all duration-200",
-                    isActive
-                      ? "text-ink-950 font-semibold bg-paper-2/70"
-                      : "text-ink-600 hover:text-ink-950 hover:bg-paper-1",
-                  )}
-                  style={{ fontSize: "var(--text-caption)" }}
+                  key={link.href}
+                  href={link.href}
+                  className={`relative py-1 text-[0.9375rem] transition-colors duration-[var(--dur-fast)] ${
+                    isActive ? "text-[var(--color-white)] font-medium" : "text-[var(--color-grey-300)] hover:text-[var(--color-white)]"
+                  }`}
                 >
-                  {l.label}
+                  {link.label}
                   {isActive && (
-                    <span className="bg-signal-600 absolute bottom-0 left-3.5 right-3.5 h-[2px] rounded-full" />
+                    <motion.span
+                      layoutId="activeNavDot"
+                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-[3px] h-[3px] rounded-full bg-[var(--color-beam)]"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
                   )}
                 </Link>
               );
             })}
           </nav>
-        </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Cart Trigger Button */}
-          <button
-            type="button"
-            onClick={() => setIsCartOpen(true)}
-            aria-label={`Shopping cart with ${cartCount} items`}
-            className="relative inline-flex items-center justify-center p-2 sm:px-3 sm:py-2 rounded-md text-ink-700 hover:text-ink-950 hover:bg-paper-1 border border-ink-900/10 transition-colors"
-          >
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            <span className="hidden sm:inline-block ml-1.5 text-xs font-medium font-mono uppercase">
-              Cart
-            </span>
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4.5 min-w-[1.125rem] items-center justify-center rounded-full bg-signal-600 px-1 font-mono tnum text-[10px] font-bold text-bone shadow-sm">
-                {cartCount}
-              </span>
-            )}
-          </button>
+          {/* Divider */}
+          <div className="hidden md:block w-[1px] h-5 bg-[var(--glass-stroke)]" />
 
-          {/* Desktop Configure Fitment CTA */}
-          <Link
-            href="/fit/"
-            className="hidden sm:inline-flex items-center gap-2 rounded-md bg-ink-900 hover:bg-ink-800 text-bone px-3.5 py-2 text-[12px] font-medium tracking-wide transition-colors shadow-sm"
-          >
-            <span>Bike Finder</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </Link>
-
-          {/* Mobile Drawer Hamburger Button */}
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-label="Toggle menu"
-            className="text-ink-600 hover:text-ink-900 p-2 rounded-md hover:bg-paper-2 md:hidden transition-colors border border-ink-900/10"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {open ? (
-                <path d="M18 6 6 18M6 6l12 12" />
-              ) : (
-                <path d="M3 7h18M3 12h18M3 17h18" />
+          {/* Actions: Cart & Mobile Toggle */}
+          <div className="flex items-center gap-1 sm:gap-2 pr-1">
+            {/* Cart Icon Button */}
+            <button
+              type="button"
+              onClick={() => setIsCartOpen(true)}
+              aria-label={`Shopping cart with ${cartCount} items`}
+              className="relative p-2 text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors cursor-pointer rounded-full"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-signal)] px-1 font-mono text-[10px] font-bold text-white">
+                  {cartCount}
+                </span>
               )}
-            </svg>
-          </button>
-        </div>
-      </div>
+            </button>
 
-      {/* Mobile Drawer */}
-      {open && (
-        <div className="bg-paper-0 border-ink-900/10 border-t md:hidden shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col px-4 py-3 gap-1">
-            {links.map((l) => {
-              const isActive = pathname === l.href || (l.href !== "/" && pathname?.startsWith(l.href));
-              return (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    "flex items-center justify-between rounded-lg px-3.5 py-2.5 font-medium transition-colors",
-                    isActive
-                      ? "text-signal-600 bg-paper-2 font-semibold"
-                      : "text-ink-700 hover:text-ink-950 hover:bg-paper-1",
-                  )}
-                  style={{ fontSize: "var(--text-body)" }}
-                >
-                  <span>{l.label}</span>
-                  {isActive && <span className="h-1.5 w-1.5 rounded-full bg-signal-600" />}
-                </Link>
-              );
-            })}
-            <div className="pt-2 mt-2 border-t border-ink-900/10 flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false);
-                  setIsCartOpen(true);
-                }}
-                className="flex items-center justify-center gap-2 rounded-lg border border-ink-900/15 bg-paper-1 text-ink-900 py-2.5 text-sm font-medium"
-              >
-                <span>View Cart ({cartCount} items)</span>
-              </button>
-              <Link
-                href="/fit/"
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-lg bg-signal-600 hover:bg-signal-700 text-bone py-2.5 text-sm font-medium transition-colors"
-              >
-                Launch Bike Finder
-              </Link>
-            </div>
-          </nav>
+            {/* Mobile Hamburger Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label="Toggle navigation menu"
+              className="md:hidden p-2 text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors cursor-pointer"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {mobileMenuOpen ? (
+                  <path d="M18 6 6 18M6 6l12 12" />
+                ) : (
+                  <path d="M4 8h16M4 16h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
-      )}
-    </header>
+      </motion.header>
+
+      {/* Mobile Full-Screen Glass Sheet */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-[#0a0a0b]/92 backdrop-blur-2xl flex flex-col justify-center px-8 md:hidden"
+          >
+            <nav className="flex flex-col gap-6" aria-label="Mobile Navigation">
+              {NAV_LINKS.map((link, i) => {
+                const isActive = pathname === link.href || (link.href !== "/" && pathname?.startsWith(link.href));
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.06, duration: 0.3 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`text-[clamp(1.75rem,5vw,2.5rem)] font-[520] tracking-tight block ${
+                        isActive ? "text-[var(--color-white)]" : "text-[var(--color-grey-500)] hover:text-[var(--color-white)]"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
-
-

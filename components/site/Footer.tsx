@@ -1,98 +1,93 @@
 import Link from "next/link";
 import Image from "next/image";
-import Container from "@/components/ui/Container";
 
-const columns = [
-  {
-    title: "Lights & Optics",
-    links: [
-      { href: "/lights/", label: "The Range Ladder" },
-      { href: "/products/rage/", label: "Rage (11,600 lm)" },
-      { href: "/products/lycan/", label: "Lycan (Dual-Mode)" },
-      { href: "/products/alpha/", label: "Alpha (9,600 lm)" },
-      { href: "/products/delta/", label: "Delta (6,400 lm)" },
-      { href: "/products/scout-x/", label: "Scout-X (4,800 lm)" },
-      { href: "/products/scout/", label: "Scout (2,800 lm)" },
-    ],
-  },
-  {
-    title: "Engineering",
-    links: [
-      { href: "/technology/", label: "TIR Optics & Anti-Glare" },
-      { href: "/technology/", label: "5000K Colour Science" },
-      { href: "/technology/", label: "Nichia 50,000h Life" },
-      { href: "/install/", label: "Installation & Wiring Hub" },
-      { href: "/fit/", label: "Bike Fitment Studio" },
-      { href: "/proof/", label: "Independent Proof & Reviews" },
-    ],
-  },
-  {
-    title: "Standards & Support",
-    links: [
-      { href: "/warranty/", label: "18-Mo Warranty Registration" },
-      { href: "/warranty/", label: "Serial Authenticity Check" },
-      { href: "/dealers/", label: "Authorized Dealers Locator" },
-      { href: "/install/", label: "RTO Compliance & Leveling" },
-      { href: "/technology/", label: "IP67 Weatherproofing" },
-      { href: "/lights/", label: "Direct Pricing Policy" },
-    ],
-  },
+const FOOTER_LINKS = [
+  { href: "/lights/", label: "Range" },
+  { href: "/technology/", label: "Technology" },
+  { href: "/fit/", label: "Fitment" },
+  { href: "/proof/", label: "Reviews" },
+  { href: "/warranty/", label: "Warranty" },
+  { href: "/install/", label: "Installation" },
+  { href: "/dealers/", label: "Dealers" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-paper-2 border-ink-900/10 mt-16 sm:mt-24 border-t">
-      <Container className="py-14 sm:py-16">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+    <footer className="bg-[var(--color-night-950)] border-t border-[var(--glass-stroke)] mt-auto">
+      <div className="mx-auto max-w-7xl px-6 sm:px-8 py-16 sm:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
+          {/* Col 1: Wordmark + location line */}
           <div>
-            <Image
-              src="/media/brand/maddog-logo.png"
-              alt="Maddog"
-              width={2547}
-              height={501}
-              className="h-6 w-auto"
-            />
-            <p className="text-ink-700 mt-4 max-w-xs leading-relaxed" style={{ fontSize: "var(--text-body)" }}>
-              Auxiliary motorcycle lighting designed, developed and manufactured in India.
-              Engineered to be seen with, not seen through.
+            <Link href="/" className="inline-block" aria-label="Maddog Home">
+              <Image
+                src="/media/brand/maddog-logo-white.png"
+                alt="Maddog"
+                width={2547}
+                height={501}
+                className="h-6 w-auto"
+              />
+            </Link>
+            <p className="mt-4 text-[var(--color-grey-300)] text-sm leading-relaxed max-w-xs">
+              Auxiliary lighting. Made in Bengaluru.
             </p>
-            <div className="text-ink-600 mt-6 leading-relaxed" style={{ fontSize: "var(--text-caption)" }}>
-              <p className="font-medium text-ink-900">Maddog Industries</p>
-              <p>Peenya 2nd Phase, Bangalore 560058</p>
-              <p className="mt-1 text-signal-700 font-medium">Karnataka, India</p>
-            </div>
           </div>
 
-          {columns.map((col) => (
-            <div key={col.title}>
-              <h3 className="eyebrow-ink mb-4">{col.title}</h3>
-              <ul className="space-y-2.5">
-                {col.links.map((l, i) => (
-                  <li key={`${l.href}-${l.label}-${i}`}>
-                    <Link
-                      href={l.href}
-                      className="text-ink-600 hover:text-ink-950 transition-colors"
-                      style={{ fontSize: "var(--text-caption)" }}
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* Col 2: Links */}
+          <div>
+            <ul className="grid grid-cols-2 gap-y-3 gap-x-6">
+              {FOOTER_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors duration-[var(--dur-fast)]"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3: Contact & Socials */}
+          <div className="text-sm text-[var(--color-grey-300)] space-y-2">
+            <p className="text-[var(--color-white)] font-medium">Maddog Industries</p>
+            <p>Peenya 2nd Phase, Bangalore 560058</p>
+            <p className="pt-2">
+              <a
+                href="mailto:support@maddog.co.in"
+                className="hover:text-[var(--color-white)] transition-colors"
+              >
+                support@maddog.co.in
+              </a>
+            </p>
+            <div className="flex items-center gap-4 pt-2">
+              <a
+                href="https://www.instagram.com/maddoglights/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://www.youtube.com/@maddoglights"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+              >
+                YouTube
+              </a>
             </div>
-          ))}
+          </div>
         </div>
 
-        <div className="border-ink-900/10 mt-12 flex flex-col gap-4 border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-ink-500" style={{ fontSize: "var(--text-micro)" }}>
-            © {new Date().getFullYear()} Maddog Industries. All rights reserved.
-          </p>
-          <p className="text-ink-600 tnum tracking-wide" style={{ fontSize: "var(--text-micro)" }}>
-            18-month replacement warranty · 5000K TIR Optics · Never discounted
+        {/* Bottom Line */}
+        <div className="mt-16 pt-8 border-t border-[var(--glass-stroke)] flex items-center justify-between">
+          <p className="readout">
+            © 2026 Maddog Industries · Bengaluru, India
           </p>
         </div>
-      </Container>
+      </div>
     </footer>
   );
 }
-

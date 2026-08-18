@@ -1,65 +1,34 @@
 import Hero from "@/components/home/Hero";
-import CategoryGrid from "@/components/home/CategoryGrid";
-import TechnicalTeardown from "@/components/showcase/TechnicalTeardown";
-import OEMSpotlight from "@/components/home/OEMSpotlight";
-import RiderGallery from "@/components/home/RiderGallery";
-import BikeFinderSection from "@/components/home/BikeFinderSection";
-import NoDiscounts from "@/components/home/NoDiscounts";
-import AggregateStats from "@/components/proof/AggregateStats";
-import Container from "@/components/ui/Container";
-import Reveal from "@/components/ui/Reveal";
-import SectionHeading from "@/components/ui/SectionHeading";
-import Cta from "@/components/ui/Cta";
+import BeamCompare from "@/components/home/BeamCompare";
+import MeasuredProof from "@/components/home/MeasuredProof";
+import ProductRail from "@/components/home/ProductRail";
+import ProofBand from "@/components/home/ProofBand";
+import FounderNote from "@/components/home/FounderNote";
+import FitCta from "@/components/home/FitCta";
 
 export default function Home() {
   return (
     <>
-      {/* Band 1 — Hero with signature Bento Grid & Interactive Beam Simulator */}
+      {/* ACT 1 — The Master Switch */}
       <Hero />
 
-      {/* Band 2 — 4-Pillar Instrument Ecosystem */}
-      <CategoryGrid />
+      {/* ACT 2 — See the difference */}
+      <BeamCompare />
 
-      {/* Band 3 — Technical Teardown & CAD Exploded Assembly */}
-      <TechnicalTeardown />
+      {/* ACT 2.5 — Measured, not marketed (restored MVP: drag slider + anti-glare diagram) */}
+      <MeasuredProof />
 
-      {/* Band 4 — OEM Spotlight: Ultraviolette Automotive EV Partnership */}
-      <OEMSpotlight />
+      {/* ACT 3 — The range */}
+      <ProductRail />
 
-      {/* Band 4.5 — Rider field-conditions gallery */}
-      <RiderGallery />
+      {/* ACT 4 — Proof, quietly */}
+      <ProofBand />
 
-      {/* Band 5 — Bike Finder & Motorcycle Chassis Matcher */}
-      <BikeFinderSection />
+      {/* ACT 5 — Why Maddog (founder note) */}
+      <FounderNote />
 
-      {/* Band 6 — Proof & Rider Records */}
-      <div className="bg-ink-950 text-bone border-t hairline">
-        <Container style={{ paddingTop: "var(--section)", paddingBottom: "var(--section-sm)" }}>
-          <Reveal>
-            <SectionHeading
-              eyebrow="Independent proof"
-              title="Eighteen channels took these apart before you did."
-              lede="Maddog has been reviewed on its own merits by independent motovloggers across India, and carries an 18-month replacement warranty on every product."
-            />
-          </Reveal>
-
-          <Reveal className="mt-12">
-            <AggregateStats />
-          </Reveal>
-
-          <Reveal className="mt-8 flex flex-wrap items-center gap-4">
-            <Cta href="/proof/" variant="secondary">
-              Read 82+ Verified Reviews
-            </Cta>
-            <Cta href="/warranty/" variant="outline">
-              Check 18-Mo Warranty
-            </Cta>
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* Band 7 — Pricing Manifesto */}
-      <NoDiscounts />
+      {/* ACT 6 — Find your fit + pricing line */}
+      <FitCta />
     </>
   );
 }

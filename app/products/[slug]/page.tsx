@@ -1,22 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
-import Reveal from "@/components/ui/Reveal";
 import { products, getProduct } from "@/lib/products";
-import { productPosters } from "@/lib/media";
-import Gallery from "@/components/product/Gallery";
-import HeadlineSpecs from "@/components/product/HeadlineSpecs";
-import LadderPosition from "@/components/product/LadderPosition";
+import { fieldMediaForSlug } from "@/lib/fieldMedia";
+import ProductBuySection from "@/components/product/ProductBuySection";
 import SpecTable from "@/components/product/SpecTable";
-import KitContents from "@/components/product/KitContents";
-import BeamDiagrams from "@/components/product/BeamDiagrams";
-import RatingBadge from "@/components/product/RatingBadge";
-import PurchasePanel from "@/components/product/PurchasePanel";
-import BrandPoster from "@/components/product/BrandPoster";
-
-import ClawProDeepDive from "@/components/product/ClawProDeepDive";
+import Lightbox from "@/components/ui/Lightbox";
 
 export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -33,7 +23,7 @@ export async function generateMetadata({
 
   return {
     title: `${product.name} — Maddog`,
-    description: product.tagline,
+    description: product.tagline || product.description,
   };
 }
 
@@ -46,12 +36,7 @@ export default async function ProductPage({
   const product = getProduct(slug);
   if (!product) notFound();
 
-  const isClawProduct =
-    product.slug === "claw-pro" ||
-    product.slug === "claw-x" ||
-    product.slug === "claw" ||
-    product.slug === "claw-lite" ||
-    product.category === "mount";
+  const realMedia = fieldMediaForSlug(product.slug);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -78,172 +63,167 @@ export default async function ProductPage({
   };
 
   return (
-    <>
+    <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen">
       {/* eslint-disable-next-line react/no-danger */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
 
-      {/* Product Title Header */}
-      <div className="bg-paper-1 border-b border-ink-900/10">
-        <Container className="pt-10 pb-8 sm:pt-14 sm:pb-10">
-          <Reveal>
-            <div className="flex items-center gap-2 mb-3 font-mono text-[12px] uppercase text-ink-500">
-              <Link
-                href={product.category === "aux-light" ? "/lights/" : "/"}
-                className="hover:text-ink-950 transition-colors"
-              >
-                {product.category === "aux-light" ? "Auxiliary Range" : "Home"}
-              </Link>
-              <span>/</span>
-              <span className="text-signal-600 font-semibold">{product.name}</span>
-            </div>
-            <div className="flex flex-wrap items-baseline justify-between gap-4">
-              <h1
-                className="font-display text-ink-950 leading-[1.04]"
-                style={{
-                  fontSize: "var(--text-display)",
-                  fontWeight: "var(--fw-display)",
-                  letterSpacing: "var(--ls-display)",
-                }}
-              >
-                {product.name}
-              </h1>
-              <span className="text-ink-500 font-mono text-[13px] uppercase tracking-wider bg-paper-2 px-3 py-1 rounded border border-ink-900/10">
-                SKU: {product.code}
-              </span>
-            </div>
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* Gallery Showcase */}
-      <div className="bg-paper-0">
-        <Container wide className="py-10 sm:py-14">
-          <Reveal>
-            <Gallery images={product.gallery} alt={product.name} />
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* Headline Telemetry Specs */}
-      <div className="bg-paper-1 border-y border-ink-900/10">
-        <Container className="py-10 sm:py-14">
-          <Reveal>
-            <HeadlineSpecs product={product} />
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* Product Description & Ladder Position */}
-      <div className="bg-paper-0">
-        <Container className="py-12 sm:py-16">
-          <Reveal className="max-w-3xl">
-            <p className="text-ink-700 leading-relaxed" style={{ fontSize: "var(--text-body-lg)" }}>
-              {product.description}
-            </p>
-          </Reveal>
-
-          {product.light && (
-            <Reveal className="mt-12 sm:mt-16">
-              <LadderPosition product={product} />
-            </Reveal>
-          )}
-        </Container>
-      </div>
-
-      {/* Cockpit Mount Pro Engineering Section */}
-      {isClawProduct && (
-        <ClawProDeepDive />
-      )}
-
-      {/* Full Spec Table */}
-      <div className="bg-paper-1 border-t border-ink-900/10">
-        <Container className="py-14 sm:py-20">
-          <Reveal>
-            <SectionHeading
-              eyebrow="Full specification"
-              title="Every number, as measured."
-              lede="Instrument telemetry and physical tolerances for this model."
-              tone="light"
-            />
-            <div className="mt-8">
-              <SpecTable specs={product.specs} />
-            </div>
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* In the Box */}
-      <div className="bg-paper-0 border-t border-ink-900/10">
-        <Container className="py-14 sm:py-20">
-          <Reveal>
-            <SectionHeading
-              eyebrow="In the box"
-              title="What ships with your order."
-              lede="Every component included in the retail package."
-              tone="light"
-            />
-            <div className="mt-8">
-              <KitContents items={product.kitContents} />
-            </div>
-          </Reveal>
-        </Container>
-      </div>
-
-      {/* Studio Poster if available */}
-      {product.slug === "alpha" && (
-        <BrandPoster
-          poster={productPosters[0]}
-          eyebrow="From the studio"
-          heading="The flagship rider benchmark."
-          copy="Alpha is the most rider-proven light in the range. Fitted with precision TIR optics and the signature red wolf mark cast into the aerospace-grade housing."
-        />
-      )}
-      {product.slug === "claw-x" && (
-        <BrandPoster
-          poster={productPosters[1]}
-          eyebrow="From the studio"
-          heading="Every part, machined for vibration dampening."
-          copy="Maddog's studio blueprint for the Claw mount platform — the handlebar clamp, ball joint, cradle and 25W charger, exploded."
-        />
-      )}
-
-      {/* CAD Blueprints */}
-      {(product.photometrics || product.dimensions) && (
-        <div className="bg-ink-950 text-bone border-t hairline">
-          <Container className="pt-14 sm:pt-20">
-            <Reveal>
-              <SectionHeading
-                eyebrow="Under the hood"
-                title="Construction and CAD Dimensions"
-                lede="Exploded sub-assemblies and dimensional blueprints — pure engineering transparency."
-              />
-            </Reveal>
-          </Container>
-          <Reveal className="mt-8 pb-14 sm:pb-20">
-            <BeamDiagrams
-              photometrics={product.photometrics?.diagram}
-              dimensions={product.dimensions?.blueprint}
-              name={product.name}
-            />
-          </Reveal>
+      {/* 1. Breadcrumb */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 pt-8 sm:pt-12">
+        <div className="flex items-center gap-2 text-xs text-[var(--color-grey-500)] font-mono">
+          <Link href="/lights/" className="hover:text-white transition-colors">
+            Range
+          </Link>
+          <span>/</span>
+          <span className="text-white">{product.name}</span>
         </div>
-      )}
-
-      {/* Purchase Panel */}
-      <div className="bg-paper-1 border-t border-ink-900/10">
-        <Container className="py-14 pb-20 sm:py-18">
-          <Reveal>
-            <RatingBadge rating={product.rating} reviewCount={product.reviewCount} />
-            <div className="mt-8">
-              <PurchasePanel product={product} />
-            </div>
-          </Reveal>
-        </Container>
       </div>
-    </>
+
+      {/* 2. Main Buy Section (Studio Plate + Sticky Buy Column) */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-10 sm:py-16">
+        <ProductBuySection product={product} />
+      </section>
+
+      {/* 3. Combined Performance & Specifications Section */}
+      <section className="py-20 sm:py-28 border-t border-[var(--glass-stroke)] bg-[var(--color-night-900)]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-start">
+            {/* Left Column: Sticky Performance Headline + Full SpecTable */}
+            <div className="lg:sticky lg:top-28 self-start flex flex-col gap-6">
+              <div>
+                <h2
+                  className="font-[520] text-[var(--color-white)] tracking-tight"
+                  style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+                >
+                  Performance.
+                </h2>
+                <p className="mt-3 text-[var(--color-grey-300)] text-base leading-relaxed max-w-lg">
+                  {product.tagline || product.description}
+                </p>
+              </div>
+
+              <div className="pt-4">
+                <SpecTable specs={product.specs} />
+              </div>
+            </div>
+
+            {/* Right Column: Real Field Photography or Feature Icon Card */}
+            <div className="flex flex-col gap-6">
+              {realMedia.length > 0 ? (
+                realMedia.map((media) => (
+                  <div key={media.src} className="flex flex-col gap-2">
+                    <Lightbox src={media.src} alt={media.caption}>
+                      <div className="relative aspect-[16/10] w-full rounded-[var(--radius-card)] overflow-hidden bg-[var(--color-night-950)] border border-[var(--glass-stroke)] shadow-lg">
+                        <Image
+                          src={media.src}
+                          alt={media.caption}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    </Lightbox>
+                    <p className="readout text-xs text-[var(--color-grey-500)] px-1">
+                      {media.caption}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <Lightbox
+                  src="/media/product_features/product_feature_1768301041_7696008.webp"
+                  alt={`${product.name} optical feature`}
+                >
+                  <div className="relative aspect-[16/10] w-full rounded-[var(--radius-card)] overflow-hidden bg-[var(--color-night-800)] border border-[var(--glass-stroke)] p-10 flex items-center justify-center">
+                    <Image
+                      src="/media/product_features/product_feature_1768301041_7696008.webp"
+                      alt="Optical feature graphic"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-contain p-8"
+                    />
+                  </div>
+                </Lightbox>
+              )}
+
+              {/* Feature Icon Glyphs Row */}
+              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[var(--glass-stroke)]">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/media/product_features/product_feature_1758899367_4126444.webp"
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="shrink-0"
+                  />
+                  <div>
+                    <span className="text-xs font-medium text-white block">5000K CCT</span>
+                    <span className="readout text-[11px]">TIR Optics</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/media/product_features/product_feature_1761106540_3650052.webp"
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="shrink-0"
+                  />
+                  <div>
+                    <span className="text-xs font-medium text-white block">IP-67 Seal</span>
+                    <span className="readout text-[11px]">Submersion</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/media/product_features/product_feature_1768301008_6534632.webp"
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="shrink-0"
+                  />
+                  <div>
+                    <span className="text-xs font-medium text-white block">6063-T6</span>
+                    <span className="readout text-[11px]">CNC Billet</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Dimensions & CAD Blueprint Section */}
+      {product.dimensions?.blueprint && (
+        <section className="py-20 sm:py-28 border-t border-[var(--glass-stroke)]">
+          <div className="max-w-4xl mx-auto px-6 sm:px-12">
+            <h2
+              className="font-[520] text-[var(--color-white)] tracking-tight mb-3"
+              style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+            >
+              Dimensions &amp; fitment geometry.
+            </h2>
+            <p className="text-[var(--color-grey-300)] mb-10 text-sm max-w-lg">
+              CNC machined aerospace aluminum housing blueprints. Click to enlarge.
+            </p>
+
+            <Lightbox src={product.dimensions.blueprint} alt={`${product.name} dimensional blueprint`}>
+              <div className="relative aspect-[16/9] w-full rounded-[var(--radius-card)] overflow-hidden bg-[var(--color-plate)] p-8 border border-white/10 shadow-lg flex items-center justify-center">
+                <Image
+                  src={product.dimensions.blueprint}
+                  alt={`${product.name} dimensional blueprint`}
+                  fill
+                  sizes="100vw"
+                  className="object-contain p-6"
+                />
+              </div>
+            </Lightbox>
+          </div>
+        </section>
+      )}
+    </article>
   );
 }
-

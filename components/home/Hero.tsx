@@ -1,153 +1,250 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import Container from "@/components/ui/Container";
-import Reveal from "@/components/ui/Reveal";
-import Cta from "@/components/ui/Cta";
-import BeamCompare from "./BeamCompare";
-import HeroBrandVisual from "./HeroBrandVisual";
-import SpotlightCard from "@/components/animations/SpotlightCard";
-import CountUp from "@/components/animations/CountUp";
-import DarkVeil from "@/components/animations/DarkVeil";
-import SplitText from "@/components/animations/SplitText";
+import { motion, useReducedMotion, AnimatePresence } from "motion/react";
 
 export default function Hero() {
+  const prefersReducedMotion = useReducedMotion();
+  const [isLit, setIsLit] = useState(false);
+  const [stage, setStage] = useState<"unlit" | "turning-on" | "lit">("unlit");
+
+  const turnOn = useCallback(() => {
+    if (stage !== "unlit") return;
+    setStage("turning-on");
+    setIsLit(true);
+
+    // Sequence stages
+    setTimeout(() => {
+      setStage("lit");
+    }, 1200);
+  }, [stage]);
+
+  // Reduced motion: start directly in lit state
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setIsLit(true);
+      setStage("lit");
+    }
+  }, [prefersReducedMotion]);
+
+  // Auto-play on 80px scroll if not already lit
+  useEffect(() => {
+    if (isLit) return;
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        turnOn();
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isLit, turnOn]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      turnOn();
+    }
+  };
+
   return (
-    <section
-      className="bg-ink-900 text-bone relative flex flex-col justify-center overflow-hidden pt-16 pb-16 sm:pt-20 sm:pb-20"
-      style={{ paddingBottom: "var(--section)" }}
-    >
-      <DarkVeil className="pointer-events-none" />
-      <Container wide className="relative">
-        {/* Above-fold Header */}
-        <div className="max-w-4xl mb-8 sm:mb-10">
-          <Reveal>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="eyebrow text-signal-500">Maddog Industries — Bengaluru</span>
-              <span className="text-fog-500 font-mono text-xs">/</span>
-              <span className="font-mono text-fog-400 text-xs uppercase tracking-wider">Auxiliary Lighting &amp; Cockpit Systems</span>
-            </div>
-            <SplitText
-              text="You see it before you feel it."
-              className="font-display leading-[1.02]"
-              style={{
-                fontSize: "var(--text-display)",
-                fontWeight: "var(--fw-display)",
-                letterSpacing: "var(--ls-display)",
+    <section className="relative w-full h-[100svh] min-h-[600px] overflow-hidden bg-[var(--color-night-950)] select-none">
+      {/* Background — Cinematic dark mountain lineup of Maddog auxiliary lights */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/media/derived/hero-lineup-wide.webp"
+          alt="Maddog Auxiliary Lighting Lineup"
+          fill
+          priority
+          sizes="100vw"
+          quality={92}
+          className="hidden sm:block object-cover object-right sm:object-center"
+          style={{
+            filter: prefersReducedMotion
+              ? "brightness(1)"
+              : `brightness(${isLit ? 1 : 0.28})`,
+            transition: prefersReducedMotion
+              ? undefined
+              : "filter 1.1s cubic-bezier(0.22,1,0.36,1)",
+          }}
+        />
+        <Image
+          src="/media/derived/hero-lineup-square.webp"
+          alt="Maddog Auxiliary Lighting"
+          fill
+          priority
+          sizes="100vw"
+          quality={92}
+          className="sm:hidden object-cover object-center"
+          style={{
+            filter: prefersReducedMotion
+              ? "brightness(1)"
+              : `brightness(${isLit ? 1 : 0.28})`,
+            transition: prefersReducedMotion
+              ? undefined
+              : "filter 1.1s cubic-bezier(0.22,1,0.36,1)",
+          }}
+        />
+      </div>
+
+      {/* Dark Overlay that lifts when lights turn on */}
+      <motion.div
+        className="absolute inset-0 z-10 pointer-events-none bg-[#0a0a0b]"
+        initial={false}
+        animate={{ opacity: isLit ? 0.35 : 0.88 }}
+        transition={{
+          duration: prefersReducedMotion ? 0 : 1.1,
+          ease: [0.22, 1, 0.36, 1],
+          delay: isLit && !prefersReducedMotion ? 0.15 : 0,
+        }}
+      />
+
+      {/* Beam Light Cone Gradient anchored bottom-left */}
+      <motion.div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 70% at 15% 85%, rgba(255, 237, 201, 0.24) 0%, rgba(255, 237, 201, 0.08) 45%, transparent 70%)",
+        }}
+        initial={false}
+        animate={{
+          opacity: isLit ? 1 : 0,
+          scale: isLit ? 1 : 0.6,
+        }}
+        transition={{
+          duration: prefersReducedMotion ? 0 : 0.9,
+          ease: [0.22, 1, 0.36, 1],
+          delay: isLit && !prefersReducedMotion ? 0.08 : 0,
+        }}
+      />
+
+      {/* Left-anchored scrim so headline/body text stay legible over the background */}
+      <div
+        className="absolute inset-y-0 left-0 z-20 w-full sm:w-[65%] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.5) 60%, transparent 100%)",
+        }}
+      />
+
+      {/* Content Container */}
+      <div className="relative z-30 h-full max-w-7xl mx-auto px-6 sm:px-12 flex flex-col justify-center">
+        <div className="max-w-2xl">
+          {/* Headline: "You see it / before you feel it." */}
+          <h1 className="font-[560] leading-[1.08] tracking-[-0.035em] text-[clamp(2.4rem,11vw,3.2rem)] sm:text-[length:var(--text-hero)]">
+            {isLit ? (
+              <motion.span
+                initial={prefersReducedMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: prefersReducedMotion ? 0 : 0.4 }}
+                className="block text-[var(--color-white)]"
+              >
+                <span className="block">You see it</span>
+                <span className="block">before you feel it.</span>
+              </motion.span>
+            ) : (
+              <span className="block text-white/15 transition-opacity duration-300">
+                <span className="block">You see it</span>
+                <span className="block">before you feel it.</span>
+              </span>
+            )}
+          </h1>
+
+          {/* Body line: "5000K TIR optics. Full beam ahead, zero glare oncoming." */}
+          {isLit && (
+            <motion.p
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                delay: prefersReducedMotion ? 0 : 0.9,
+                ease: [0.22, 1, 0.36, 1],
               }}
-            />
-            <p
-              className="text-fog-300 mt-4 leading-relaxed max-w-3xl"
-              style={{ fontSize: "var(--text-body-lg)" }}
+              className="mt-6 text-[var(--color-grey-300)] max-w-lg text-lg sm:text-xl font-normal leading-relaxed"
             >
-              First in India to fit calibrated 5000K anti-glare TIR optics as standard. Engineered so the beam projects on the road ahead with zero scatter into oncoming traffic.
-            </p>
-            <div className="flex flex-wrap items-center gap-3 mt-6">
-              <Cta href="/lights/" variant="specular">
-                Explore Lights
-              </Cta>
-              <Cta href="/fit/" variant="outline" tone="dark">
-                Run Bike Finder
-              </Cta>
-            </div>
-          </Reveal>
+              5000K TIR optics. Full beam ahead, zero glare oncoming.
+            </motion.p>
+          )}
+
+          {/* Link: "See the difference →" to #compare */}
+          {isLit && (
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: prefersReducedMotion ? 0 : 1.2,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="mt-8"
+            >
+              <Link
+                href="#compare"
+                className="inline-flex items-center gap-2 text-[var(--color-white)] underline underline-offset-4 decoration-white/40 hover:decoration-[var(--color-beam)] hover:text-[var(--color-beam)] text-base transition-colors"
+              >
+                <span>See the difference</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            </motion.div>
+          )}
         </div>
+      </div>
 
-        {/* Interactive Brand Showcase Visual */}
-        <Reveal className="mb-10 sm:mb-14">
-          <HeroBrandVisual />
-        </Reveal>
-
-        {/* Hero Bento Grid */}
-        <div className="grid gap-5 lg:grid-cols-12 items-stretch">
-          {/* Main Bento Card: Interactive Beam Telemetry Simulator */}
-          <div className="lg:col-span-8 border hairline bg-ink-950/80 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
-            <BeamCompare />
-          </div>
-
-          {/* Right Bento Column: 3 Structured Engineering & Assurance Cards */}
-          <div className="lg:col-span-4 grid sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-5">
-            {/* Card 1: 5000K Anti-Glare TIR Optics */}
-            <SpotlightCard
-              spotlightColor="rgba(255, 255, 255, 0.08)"
-              className="border hairline bg-ink-950/60 hover:bg-ink-950/90 rounded-2xl p-5 flex flex-col justify-between shadow-sm"
+      {/* The Master Switch (Bottom-Center) */}
+      <AnimatePresence>
+        {!isLit && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5 }}
+            className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3"
+          >
+            <button
+              type="button"
+              role="switch"
+              aria-checked={isLit}
+              aria-label="Turn the lights on"
+              onClick={turnOn}
+              onKeyDown={handleKeyDown}
+              className="glass relative w-[72px] h-[128px] p-2 flex flex-col justify-end cursor-pointer active:scale-95 transition-transform duration-100"
             >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="eyebrow text-signal-500">Optical Standard</span>
-                  <span className="font-mono text-fog-400 text-[11px] px-2 py-0.5 rounded bg-ink-900 border hairline">5000K</span>
-                </div>
-                <h3 className="font-display text-bone font-medium" style={{ fontSize: "var(--text-h3)" }}>
-                  Anti-Glare TIR Optics
-                </h3>
-                <p className="text-fog-400 mt-2 leading-relaxed" style={{ fontSize: "var(--text-caption)" }}>
-                  Total internal reflection creates a hard horizontal cutoff: full output on the tarmac, zero blinding scatter into oncoming riders.
-                </p>
+              {/* Switch Track Indicator */}
+              <div className="absolute inset-x-0 top-3 flex justify-center">
+                <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
               </div>
-              <div className="mt-4 pt-3 border-t hairline flex items-center justify-between font-mono text-[11px] text-fog-500">
-                <span>Rain &amp; Mist Penetration</span>
-                <span className="text-signal-400 font-medium">Zero Scatter</span>
-              </div>
-            </SpotlightCard>
 
-            {/* Card 2: 50,000h Nichia + IP67 Submersion */}
-            <SpotlightCard
-              spotlightColor="rgba(237, 29, 36, 0.12)"
-              className="border hairline bg-ink-950/60 hover:bg-ink-950/90 rounded-2xl p-5 flex flex-col justify-between shadow-sm"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="eyebrow text-signal-500">Durability Telemetry</span>
-                  <span className="font-mono text-fog-400 text-[11px] px-2 py-0.5 rounded bg-ink-900 border hairline">IP-67</span>
-                </div>
-                <div className="grid grid-cols-2 gap-3 my-2">
-                  <div>
-                    <p className="tnum text-bone font-semibold font-mono" style={{ fontSize: "var(--text-h2)" }}>
-                      <CountUp to={50000} duration={2.5} suffix="h" />
-                    </p>
-                    <p className="text-fog-500 font-mono text-[10px] uppercase">Nichia LED Life</p>
-                  </div>
-                  <div>
-                    <p className="tnum text-bone font-semibold font-mono" style={{ fontSize: "var(--text-h2)" }}>1m / 30m</p>
-                    <p className="text-fog-500 font-mono text-[10px] uppercase">Water Immersion</p>
-                  </div>
-                </div>
-                <p className="text-fog-400 leading-relaxed" style={{ fontSize: "var(--text-caption)" }}>
-                  Japanese Nichia diodes housed in CNC-machined die-cast aluminium with silicone O-ring gaskets.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t hairline flex items-center justify-between font-mono text-[11px] text-fog-500">
-                <span>Bangalore Factory</span>
-                <span className="text-bone font-medium">18mo Warranty</span>
-              </div>
-            </SpotlightCard>
+              {/* Thumb */}
+              <motion.div
+                className="w-14 h-14 rounded-full bg-[var(--color-white)] shadow-lg flex items-center justify-center text-[var(--color-night-950)]"
+                animate={
+                  isLit
+                    ? { y: -56 }
+                    : {
+                        opacity: [0.7, 1, 0.7],
+                      }
+                }
+                transition={
+                  isLit
+                    ? { type: "spring", stiffness: 400, damping: 28 }
+                    : {
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }
+                }
+              >
+                {/* Lightbulb / Power icon */}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+              </motion.div>
+            </button>
 
-            {/* Card 3: Direct Transparent Pricing */}
-            <SpotlightCard
-              spotlightColor="rgba(255, 255, 255, 0.08)"
-              className="border hairline bg-ink-950/60 hover:bg-ink-950/90 rounded-2xl p-5 flex flex-col justify-between shadow-sm sm:col-span-2 lg:col-span-1"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="eyebrow text-signal-500">Integrity Policy</span>
-                  <span className="font-mono text-signal-400 text-[11px] px-2 py-0.5 rounded bg-signal-600/10 border border-signal-600/30">Never Discounted</span>
-                </div>
-                <h3 className="font-display text-bone font-medium" style={{ fontSize: "var(--text-h3)" }}>
-                  Transparent Direct Value
-                </h3>
-                <p className="text-fog-400 mt-2 leading-relaxed" style={{ fontSize: "var(--text-caption)" }}>
-                  No inflated MSRPs or fake countdown timers. One honest factory price, backed by full replacement warranty.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t hairline flex items-center justify-between font-mono text-[11px] text-fog-500">
-                <Link href="/technology/" className="text-fog-300 hover:text-bone underline underline-offset-2 transition-colors">
-                  Explore Technology →
-                </Link>
-                <span className="text-fog-400">Fixed Fair Pricing</span>
-              </div>
-            </SpotlightCard>
-          </div>
-        </div>
-      </Container>
+            <span className="readout text-xs text-white/70">tap to switch on</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
-

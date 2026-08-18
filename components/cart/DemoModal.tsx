@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { useCart } from "@/lib/cart";
-import { logo } from "@/lib/media";
+import { formatPrice } from "@/lib/products";
 
 export default function DemoModal() {
-  const { isDemoModalOpen, setIsDemoModalOpen } = useCart();
+  const { isDemoModalOpen, setIsDemoModalOpen, cartTotal, cartCount, clearCart } = useCart();
+  const modalRef = useRef<HTMLDivElement>(null);
 
+  // Close on Escape
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isDemoModalOpen) {
@@ -20,68 +21,80 @@ export default function DemoModal() {
 
   if (!isDemoModalOpen) return null;
 
+  const handleSimulateSuccess = () => {
+    clearCart();
+    setIsDemoModalOpen(false);
+  };
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="demo-modal-title"
-    >
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-label="Demo Order Checkout">
+      {/* Dimmed backdrop */}
       <div
-        className="fixed inset-0 bg-ink-950/85 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-[#0a0a0b]/85 backdrop-blur-md transition-opacity duration-300"
         onClick={() => setIsDemoModalOpen(false)}
         aria-hidden="true"
       />
 
-      {/* Modal Dialog */}
-      <div className="relative border hairline bg-ink-900 text-bone max-w-lg w-full rounded-2xl p-6 sm:p-8 shadow-2xl z-10 text-center animate-in fade-in zoom-in-95 duration-200">
-        <div className="mx-auto w-12 h-12 rounded-full bg-signal-600/15 border border-signal-500/30 flex items-center justify-center mb-5 text-signal-500">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-        </div>
-
-        <span className="eyebrow text-signal-500 mb-2 block">Demo Prototype Notice</span>
-        <h2 id="demo-modal-title" className="font-display text-xl sm:text-2xl text-bone font-medium">
-          Interactive Design Demonstration
-        </h2>
-
-        <p className="text-fog-300 text-sm mt-3 leading-relaxed">
-          This web application is an interactive concept redesign for <strong className="text-bone">Maddog Auxiliary Lighting</strong>. E-commerce transaction checkout is intentionally disabled in this demonstration build.
-        </p>
-
-        <div className="my-5 p-4 rounded-xl bg-ink-950/80 border hairline text-left space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-fog-400">
-            <span className="text-signal-400">✓</span>
-            <span>Real 5000K photometric telemetry</span>
+      <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+        <div
+          ref={modalRef}
+          className="relative transform overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-night-900)] border border-[var(--glass-stroke)] p-6 sm:p-8 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+        >
+          {/* Header */}
+          <div className="flex items-start justify-between border-b border-[var(--glass-stroke)] pb-4 mb-6">
+            <div>
+              <span className="readout text-xs text-[var(--color-beam)]">Direct Factory Order</span>
+              <h3 className="text-xl font-semibold text-white mt-1">
+                Demo Checkout Simulator
+              </h3>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsDemoModalOpen(false)}
+              className="text-[var(--color-grey-500)] hover:text-white p-1 rounded-md transition-colors cursor-pointer"
+              aria-label="Close modal"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-fog-400">
-            <span className="text-signal-400">✓</span>
-            <span>Accurate model pricing &amp; 18-mo warranty specs</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-fog-400">
-            <span className="text-signal-400">✓</span>
-            <span>Motorcycle manufacturer chassis compatibility engine</span>
-          </div>
-        </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => setIsDemoModalOpen(false)}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md bg-signal-600 hover:bg-signal-700 text-bone px-6 py-2.5 text-sm font-medium transition-colors shadow-sm"
-          >
-            <span>Continue Exploring</span>
-          </button>
-          <a
-            href="https://maddog.co.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md border hairline bg-ink-800 hover:bg-ink-700 text-fog-200 hover:text-bone px-5 py-2.5 text-sm font-medium transition-colors"
-          >
-            <span>Visit Live Maddog Store ↗</span>
-          </a>
+          {/* Body */}
+          <div className="space-y-4 text-sm text-[var(--color-grey-300)]">
+            <p className="leading-relaxed">
+              This Next.js showcase web application demonstrates Maddog&apos;s digital catalog. Orders simulate direct dispatch from our Bengaluru manufacturing facility.
+            </p>
+
+            <div className="rounded-xl bg-black/40 border border-[var(--glass-stroke)] p-4 space-y-2">
+              <div className="flex justify-between text-xs">
+                <span>Items in Order:</span>
+                <span className="readout text-white">{cartCount} items</span>
+              </div>
+              <div className="flex justify-between text-sm font-semibold text-white pt-1 border-t border-white/5">
+                <span>Total Amount:</span>
+                <span>{formatPrice(cartTotal)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={handleSimulateSuccess}
+              className="w-full py-3 px-6 rounded-full bg-[var(--color-white)] text-[var(--color-night-950)] font-medium text-sm hover:scale-[1.02] active:scale-[0.98] transition-transform cursor-pointer shadow-md"
+            >
+              Complete Simulation &amp; Reset
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsDemoModalOpen(false)}
+              className="w-full sm:w-auto py-3 px-6 rounded-full glass text-white text-sm hover:bg-white/10 transition-colors cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
