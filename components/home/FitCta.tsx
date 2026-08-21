@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { brands } from "@/lib/fitment";
 import SpecularButton from "@/components/ui/SpecularButton";
@@ -49,7 +48,7 @@ function FitForm() {
         intensity={1.2}
         className="w-full sm:w-auto shrink-0"
       >
-        <span>Find your fit</span>
+        <span>Show my fits</span>
         <span aria-hidden="true">→</span>
       </SpecularButton>
     </form>
@@ -58,42 +57,22 @@ function FitForm() {
 
 export default function FitCta() {
   return (
-    <section id="fit" className="relative py-28 sm:py-36 bg-[var(--color-night-950)] overflow-hidden">
-      {/* Full-Bleed Background Photo — Clean lineup backdrop */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/media/derived/hero-lineup-wide.webp"
-          alt="Maddog precision engineered lighting"
-          fill
-          sizes="100vw"
-          className="object-cover object-center opacity-30"
-        />
-        {/* Scrim */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(rgba(10, 10, 11, 0.75), rgba(10, 10, 11, 0.92))",
-          }}
-        />
-      </div>
+    <section id="fit" className="py-24 sm:py-32 border-t border-[var(--glass-stroke)] text-center">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12">
+        <h2
+          className="text-[var(--color-white)] font-[560] tracking-tight"
+          style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+        >
+          Built for what you ride.
+        </h2>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 flex flex-col items-center">
-        {/* Centered Glass Card */}
-        <div className="glass max-w-[560px] w-full p-8 sm:p-12 text-center shadow-2xl">
-          <h2
-            className="text-[var(--color-white)] font-[520] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-          >
-            Built for what you ride.
-          </h2>
-
+        <div className="flex justify-center">
           <Suspense fallback={<div className="h-12 mt-8 flex items-center justify-center text-sm text-[var(--color-grey-500)]">Loading finder...</div>}>
             <FitForm />
           </Suspense>
         </div>
 
-        {/* Pricing line below the card */}
-        <p className="readout mt-8 text-center text-sm text-[var(--color-grey-500)]">
+        <p className="readout mt-7 text-center">
           One price, all year. Never discounted, never inflated.
         </p>
       </div>

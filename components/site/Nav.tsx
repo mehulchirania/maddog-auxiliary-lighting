@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "motion/react";
 import { useCart } from "@/lib/cart";
@@ -14,12 +14,16 @@ const NAV_LINKS = [
   { href: "/proof/", label: "Reviews" },
 ];
 
+const MOBILE_SHEET_ID = "mobile-nav-sheet";
+
 export default function Nav() {
   const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { setIsCartOpen, cartCount } = useCart();
   const { scrollY } = useScroll();
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -34,6 +38,46 @@ export default function Nav() {
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
+
+  // While the sheet is open: lock body scroll, close on Escape, and keep Tab
+  // inside the sheet. Matches what CartDrawer and Lightbox already do.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const focusables = sheetRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusables?.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = overflow;
+      // Hand focus back to the button that opened the sheet.
+      toggleRef.current?.focus();
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <>

@@ -13,8 +13,8 @@ export default function InstallPage() {
       <section className="relative h-[40svh] min-h-[300px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/media/banners/background_1777815489_6903210.webp"
-            alt="Installation Guide"
+            src="/media/derived/hero-hardware-wide.webp"
+            alt="Maddog Rage — CNC clamp, bolt and cable connector detail"
             fill
             sizes="100vw"
             priority
