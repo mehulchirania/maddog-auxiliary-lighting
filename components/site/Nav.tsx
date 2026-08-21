@@ -12,6 +12,14 @@ const NAV_LINKS = [
   { href: "/technology/", label: "Technology" },
   { href: "/fit/", label: "Fitment" },
   { href: "/proof/", label: "Reviews" },
+  { href: "/register-product/", label: "Register" },
+];
+
+const SOCIAL_LINKS = [
+  { href: "https://www.instagram.com/maddoglights/", label: "Instagram" },
+  { href: "https://www.facebook.com/maddoglights/", label: "Facebook" },
+  { href: "https://www.youtube.com/@maddoglights", label: "YouTube" },
+  { href: "https://in.pinterest.com/maddoglights/", label: "Pinterest" },
 ];
 
 const MOBILE_SHEET_ID = "mobile-nav-sheet";
@@ -200,6 +208,36 @@ export default function Nav() {
                 );
               })}
             </nav>
+
+            <div className="mt-10 flex flex-col gap-4">
+              <a
+                href="tel:+917019130080"
+                className="readout text-[var(--color-grey-300)] hover:text-white transition-colors"
+              >
+                +91 70191 30080
+              </a>
+              <a
+                href="https://wa.me/917019130080"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="readout text-[var(--color-grey-300)] hover:text-white transition-colors"
+              >
+                WhatsApp
+              </a>
+              <div className="flex items-center gap-5">
+                {SOCIAL_LINKS.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="readout text-[var(--color-grey-500)] hover:text-white transition-colors"
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

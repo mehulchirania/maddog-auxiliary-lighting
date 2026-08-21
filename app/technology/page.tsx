@@ -29,24 +29,19 @@ const PHOTOMETRIC_DIAGRAMS = [
 export default function TechnologyPage() {
   return (
     <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen">
-      {/* 40svh Dark Hero */}
-      <section className="relative h-[40svh] min-h-[320px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/media/derived/hero-hardware-wide.webp"
-            alt="Engineering background"
-            fill
-            sizes="100vw"
-            priority
-            className="object-cover opacity-25"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night-950)] via-[var(--color-night-950)]/70 to-transparent" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full">
+      {/* Typographic hero — the 8K exploded render gets its due prominence in the
+          Centerpiece section below at full scale; reusing it here as a small
+          object-contain crop only made its content unreadable, so this band
+          stays type-only, matching the /fit/ page's hero pattern. */}
+      <section className="border-b border-[var(--glass-stroke)] bg-[var(--color-night-950)] py-14 sm:py-20">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 w-full">
           <h1
-            className="font-[520] text-[var(--color-white)] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+            className="text-[var(--color-white)] tracking-tight"
+            style={{
+              fontSize: "var(--text-page-title)",
+              fontWeight: "var(--fw-page-title)",
+              letterSpacing: "var(--ls-page-title)",
+            }}
           >
             Under the housing.
           </h1>
@@ -59,7 +54,7 @@ export default function TechnologyPage() {
         </div>
       </section>
 
-      {/* CAD Exploded Assembly Sticky Scene */}
+      {/* CAD Exploded Assembly — static annotated diagram + callout cards */}
       <section className="border-b border-[var(--glass-stroke)]">
         <div className="max-w-7xl mx-auto px-6 sm:px-12 pt-16 pb-6">
           <h2

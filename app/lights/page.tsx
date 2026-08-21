@@ -12,24 +12,34 @@ export const metadata: Metadata = {
 export default function LightsPage() {
   return (
     <>
-      {/* 40svh Dark Hero */}
-      <section className="relative h-[40svh] min-h-[300px] w-full flex items-center bg-[var(--color-night-950)] overflow-hidden border-b border-[var(--glass-stroke)]">
+      {/* 30-32svh Dark Hero — annotated night-road beam photo, full opacity, localized left scrim */}
+      <section className="relative h-[30svh] sm:h-[32svh] min-h-[280px] w-full flex items-center bg-[var(--color-night-950)] overflow-hidden border-b border-[var(--glass-stroke)]">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/media/derived/hero-hardware-wide.webp"
-            alt="Maddog TIR optic assembly"
+            src="/media/products/MDL/original/product_1752410035_6210319.webp"
+            alt="Lycan 250-metre measured spot beam on a night road, distance-board annotation overlay"
             fill
             sizes="100vw"
             priority
-            className="object-cover opacity-30"
+            className="object-cover object-[center_76%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night-950)] via-[var(--color-night-950)]/70 to-transparent" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(10,10,11,0.90) 0%, rgba(10,10,11,0.55) 42%, transparent 72%)",
+            }}
+          />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full">
           <h1
-            className="font-[520] text-[var(--color-white)] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+            className="text-[var(--color-white)] tracking-tight"
+            style={{
+              fontSize: "var(--text-page-title)",
+              fontWeight: "var(--fw-page-title)",
+              letterSpacing: "var(--ls-page-title)",
+            }}
           >
             The range.
           </h1>

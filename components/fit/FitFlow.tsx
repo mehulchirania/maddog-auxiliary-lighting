@@ -7,23 +7,7 @@ import { brands, bikesForBrand, type Bike } from "@/lib/fitment";
 import { getProduct, products, type Product } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import SpecularButton from "@/components/ui/SpecularButton";
-
-const BRAND_INITIALS: Record<string, string> = {
-  "Royal Enfield": "RE",
-  KTM: "KTM",
-  BMW: "BMW",
-  Ultraviolette: "UV",
-  Honda: "HON",
-  Yamaha: "YAM",
-  Kawasaki: "KAW",
-  Triumph: "TRI",
-  Bajaj: "BAJ",
-  Suzuki: "SUZ",
-  Hero: "HERO",
-  JAWA: "JAWA",
-  "Harley Davidson": "HD",
-  Benelli: "BEN",
-};
+import BrandMark from "@/components/ui/BrandMark";
 
 // Available alternate lights
 const AVAILABLE_LIGHT_SLUGS = ["scout", "scout-x", "delta", "alpha", "lycan", "rage"];
@@ -32,11 +16,90 @@ const AVAILABLE_POWER_SLUGS = ["switch-pro", "dimmer", "switch-easy"];
 // Available alternate mounts
 const AVAILABLE_MOUNT_SLUGS = ["claw-x", "claw-pro", "clamp-22-25", "clamp-50-52"];
 
-function BrandBadge({ name }: { name: string }) {
-  const initials = BRAND_INITIALS[name] || name.slice(0, 2).toUpperCase();
+interface PillOption {
+  slug: string;
+  name: string;
+  meta: string;
+}
+
+/**
+ * Segmented pill radio-group — replaces native <select>s for the kit
+ * customizer (3–6 options each). Roving-tabindex + arrow-key navigation,
+ * matching native <input type="radio"> group behavior: an arrow key both
+ * moves focus and changes the selection.
+ */
+function KitPillGroup({
+  labelledBy,
+  options,
+  value,
+  onChange,
+}: {
+  labelledBy: string;
+  options: PillOption[];
+  value: string;
+  onChange: (slug: string) => void;
+}) {
+  const groupRef = useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, idx: number) => {
+    const move = (nextIdx: number) => {
+      e.preventDefault();
+      const clamped = (nextIdx + options.length) % options.length;
+      const nextSlug = options[clamped].slug;
+      onChange(nextSlug);
+      const buttons = groupRef.current?.querySelectorAll<HTMLButtonElement>('[role="radio"]');
+      buttons?.[clamped]?.focus();
+    };
+    switch (e.key) {
+      case "ArrowDown":
+      case "ArrowRight":
+        move(idx + 1);
+        break;
+      case "ArrowUp":
+      case "ArrowLeft":
+        move(idx - 1);
+        break;
+      case "Home":
+        move(0);
+        break;
+      case "End":
+        move(options.length - 1);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className="w-12 h-12 rounded-full bg-white/8 border border-[var(--glass-stroke)] flex items-center justify-center text-xs font-[560] text-white tracking-wider">
-      {initials}
+    <div ref={groupRef} role="radiogroup" aria-labelledby={labelledBy} className="flex flex-col gap-2">
+      {options.map((opt, idx) => {
+        const isSelected = opt.slug === value;
+        return (
+          <button
+            key={opt.slug}
+            type="button"
+            role="radio"
+            aria-checked={isSelected}
+            tabIndex={isSelected ? 0 : -1}
+            onClick={() => onChange(opt.slug)}
+            onKeyDown={(e) => handleKeyDown(e, idx)}
+            className={`w-full h-11 px-4 flex items-center justify-between gap-3 rounded-[var(--radius-pill)] text-left text-sm transition-[background-color,color,border-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] cursor-pointer border motion-safe:active:scale-[0.96] ${
+              isSelected
+                ? "bg-[var(--color-white)] text-[var(--color-night-950)] border-[var(--color-white)] font-[560]"
+                : "bg-transparent text-[var(--color-grey-300)] border-[var(--glass-stroke)] hover:border-white/20 hover:text-white"
+            }`}
+          >
+            <span className="truncate">{opt.name}</span>
+            <span
+              className={`readout text-xs shrink-0 ${
+                isSelected ? "text-[var(--color-night-950)]" : "text-[var(--color-grey-500)]"
+              }`}
+            >
+              {opt.meta}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -45,6 +108,7 @@ export default function FitFlow() {
   const searchParams = useSearchParams();
   const { addBundle } = useCart();
   const modelSectionRef = useRef<HTMLDivElement>(null);
+  const recommendedRef = useRef<HTMLDivElement>(null);
 
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [selectedBike, setSelectedBike] = useState<Bike | null>(null);
@@ -98,6 +162,52 @@ export default function FitFlow() {
     return configuredKitItems.reduce((sum, item) => sum + item.price, 0);
   }, [configuredKitItems]);
 
+  const lightOptions: PillOption[] = useMemo(
+    () =>
+      AVAILABLE_LIGHT_SLUGS.map((slug) => getProduct(slug))
+        .filter((p): p is Product => Boolean(p))
+        .map((p) => ({
+          slug: p.slug,
+          name: p.name,
+          meta: `₹${p.price.toLocaleString("en-IN")}${p.light?.lumens ? ` · ${p.light.lumens.toLocaleString()} lm` : ""}`,
+        })),
+    [],
+  );
+
+  const powerOptions: PillOption[] = useMemo(
+    () =>
+      AVAILABLE_POWER_SLUGS.map((slug) => getProduct(slug))
+        .filter((p): p is Product => Boolean(p))
+        .map((p) => ({
+          slug: p.slug,
+          name: p.name,
+          meta: `₹${p.price.toLocaleString("en-IN")}`,
+        })),
+    [],
+  );
+
+  const mountOptions: PillOption[] = useMemo(
+    () =>
+      AVAILABLE_MOUNT_SLUGS.map((slug) => getProduct(slug))
+        .filter((p): p is Product => Boolean(p))
+        .map((p) => ({
+          slug: p.slug,
+          name: p.name,
+          meta: `₹${p.price.toLocaleString("en-IN")}`,
+        })),
+    [],
+  );
+
+  // Picking a bike swaps the whole flow to the recommended-setup view. Without
+  // this, the browser keeps whatever scroll position it had over the (now
+  // replaced) brand/model grid, which usually lands mid- or below-fold on the
+  // new content instead of at its top.
+  useEffect(() => {
+    if (selectedBike) {
+      recommendedRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [selectedBike]);
+
   const handleBrandSelect = (b: string) => {
     setSelectedBrand(b);
     setSelectedBike(null);
@@ -123,12 +233,17 @@ export default function FitFlow() {
     <div className="w-full max-w-5xl mx-auto flex flex-col items-center gap-12">
       {/* Recommended & Customizable Setup View */}
       {selectedBike ? (
-        <div className="w-full flex flex-col gap-10 animate-in fade-in duration-300">
+        <div
+          ref={recommendedRef}
+          role="region"
+          aria-label={`Your ${selectedBike.brand} ${selectedBike.model} setup`}
+          className="w-full flex flex-col gap-10 animate-in fade-in duration-300 scroll-mt-24"
+        >
           {/* Status Header */}
           <div className="glass p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
             <div>
               <span className="readout text-xs text-[var(--color-beam)]">
-                Configured Certified Setup
+                Recommended setup
               </span>
               <h2 className="text-2xl sm:text-3xl font-semibold text-white mt-1">
                 {selectedBike.brand} {selectedBike.model}
@@ -143,7 +258,7 @@ export default function FitFlow() {
               onClick={resetFlow}
               className="text-xs text-[var(--color-grey-300)] hover:text-white underline shrink-0 self-start sm:self-center cursor-pointer"
             >
-              Change Motorcycle
+              Change bike
             </button>
           </div>
 
@@ -179,25 +294,15 @@ export default function FitFlow() {
                   </div>
                 )}
 
-                <label htmlFor="light-select" className="text-xs text-[var(--color-grey-500)] block mb-2 font-medium">
-                  Switch Light Model:
-                </label>
-                <select
-                  id="light-select"
+                <div id="light-group-label" className="text-xs text-[var(--color-grey-500)] mb-2 font-medium">
+                  Switch light model
+                </div>
+                <KitPillGroup
+                  labelledBy="light-group-label"
+                  options={lightOptions}
                   value={selectedLightSlug}
-                  onChange={(e) => setSelectedLightSlug(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl bg-[var(--color-night-800)] text-white border border-[var(--glass-stroke)] text-sm focus:outline-none focus:border-[var(--color-beam)] cursor-pointer"
-                >
-                  {AVAILABLE_LIGHT_SLUGS.map((slug) => {
-                    const p = getProduct(slug);
-                    if (!p) return null;
-                    return (
-                      <option key={slug} value={slug} className="bg-[var(--color-night-900)] text-white">
-                        {p.name} — ₹{p.price.toLocaleString("en-IN")} ({p.light?.lumens || ""} lm)
-                      </option>
-                    );
-                  })}
-                </select>
+                  onChange={setSelectedLightSlug}
+                />
               </div>
 
               <p className="readout text-[11px] text-[var(--color-grey-500)]">
@@ -247,25 +352,15 @@ export default function FitFlow() {
 
                 {includePower && (
                   <>
-                    <label htmlFor="power-select" className="text-xs text-[var(--color-grey-500)] block mb-2 font-medium">
-                      Select Harness Model:
-                    </label>
-                    <select
-                      id="power-select"
+                    <div id="power-group-label" className="text-xs text-[var(--color-grey-500)] mb-2 font-medium">
+                      Select harness model
+                    </div>
+                    <KitPillGroup
+                      labelledBy="power-group-label"
+                      options={powerOptions}
                       value={selectedPowerSlug}
-                      onChange={(e) => setSelectedPowerSlug(e.target.value)}
-                      className="w-full h-11 px-3.5 rounded-xl bg-[var(--color-night-800)] text-white border border-[var(--glass-stroke)] text-sm focus:outline-none focus:border-[var(--color-beam)] cursor-pointer"
-                    >
-                      {AVAILABLE_POWER_SLUGS.map((slug) => {
-                        const p = getProduct(slug);
-                        if (!p) return null;
-                        return (
-                          <option key={slug} value={slug} className="bg-[var(--color-night-900)] text-white">
-                            {p.name} — ₹{p.price.toLocaleString("en-IN")}
-                          </option>
-                        );
-                      })}
-                    </select>
+                      onChange={setSelectedPowerSlug}
+                    />
                   </>
                 )}
               </div>
@@ -317,25 +412,15 @@ export default function FitFlow() {
 
                 {includeMount && (
                   <>
-                    <label htmlFor="mount-select" className="text-xs text-[var(--color-grey-500)] block mb-2 font-medium">
-                      Select Mount Type:
-                    </label>
-                    <select
-                      id="mount-select"
+                    <div id="mount-group-label" className="text-xs text-[var(--color-grey-500)] mb-2 font-medium">
+                      Select mount type
+                    </div>
+                    <KitPillGroup
+                      labelledBy="mount-group-label"
+                      options={mountOptions}
                       value={selectedMountSlug}
-                      onChange={(e) => setSelectedMountSlug(e.target.value)}
-                      className="w-full h-11 px-3.5 rounded-xl bg-[var(--color-night-800)] text-white border border-[var(--glass-stroke)] text-sm focus:outline-none focus:border-[var(--color-beam)] cursor-pointer"
-                    >
-                      {AVAILABLE_MOUNT_SLUGS.map((slug) => {
-                        const p = getProduct(slug);
-                        if (!p) return null;
-                        return (
-                          <option key={slug} value={slug} className="bg-[var(--color-night-900)] text-white">
-                            {p.name} — ₹{p.price.toLocaleString("en-IN")}
-                          </option>
-                        );
-                      })}
-                    </select>
+                      onChange={setSelectedMountSlug}
+                    />
                   </>
                 )}
               </div>
@@ -389,8 +474,11 @@ export default function FitFlow() {
             </p>
           </div>
 
-          {/* Brand Grid (Solid Cards) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5">
+          {/* Brand Grid (Solid Cards) — flex-wrap + justify-center instead of a
+              fixed-column grid, so an incomplete trailing row (14 brands
+              doesn't divide evenly into 3 or 4 columns) centers itself
+              instead of a "12 then 2 stuck on the left" dangling row. */}
+          <div className="flex flex-wrap justify-center gap-3.5">
             {brands.map((b) => {
               const isSelected = selectedBrand === b;
               return (
@@ -399,17 +487,21 @@ export default function FitFlow() {
                   type="button"
                   aria-pressed={isSelected}
                   onClick={() => handleBrandSelect(b)}
-                  className={`group flex flex-col items-center gap-3 p-5 rounded-xl transition-all duration-[var(--dur-fast)] cursor-pointer text-center ${
+                  className={`group flex flex-col items-center gap-3 p-5 rounded-xl transition-[background-color,border-color,box-shadow,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] cursor-pointer text-center basis-[calc(50%-0.4375rem)] sm:basis-[calc(33.333%-0.584rem)] lg:basis-[calc(25%-0.657rem)] ${
                     isSelected
                       ? "bg-[var(--color-night-700)] border-2 border-[var(--color-beam)] shadow-lg scale-[1.02]"
                       : "bg-[var(--color-night-800)] border border-[var(--glass-stroke)] hover:border-white/20 hover:-translate-y-0.5"
                   }`}
                 >
-                  <div className="h-12 flex items-center justify-center">
-                    <BrandBadge name={b} />
+                  <div
+                    className={`h-12 flex items-center justify-center transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
+                      isSelected ? "text-[var(--color-beam)]" : "text-[var(--color-grey-300)] group-hover:text-white"
+                    }`}
+                  >
+                    <BrandMark brand={b} size={48} />
                   </div>
                   <span
-                    className={`text-sm font-medium transition-colors ${
+                    className={`text-sm font-medium transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
                       isSelected ? "text-white font-semibold" : "text-[var(--color-grey-300)] group-hover:text-white"
                     }`}
                   >
@@ -434,7 +526,7 @@ export default function FitFlow() {
                   </h3>
                 </div>
                 <span className="readout text-xs text-[var(--color-grey-500)]">
-                  {availableBikes.length} {availableBikes.length === 1 ? "profile" : "profiles"} found
+                  {availableBikes.length} {availableBikes.length === 1 ? "model" : "models"}
                 </span>
               </div>
 
@@ -463,7 +555,7 @@ export default function FitFlow() {
                 </div>
               ) : (
                 <div className="text-center py-8 text-sm text-[var(--color-grey-500)]">
-                  <p>No model profiles mapped for this brand yet.</p>
+                  <p>No models listed for this brand yet.</p>
                 </div>
               )}
             </div>

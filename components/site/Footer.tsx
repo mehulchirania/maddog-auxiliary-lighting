@@ -9,6 +9,7 @@ const FOOTER_LINKS = [
   { href: "/warranty/", label: "Warranty" },
   { href: "/install/", label: "Installation" },
   { href: "/dealers/", label: "Dealers" },
+  { href: "/register-product/", label: "Register product" },
 ];
 
 export default function Footer() {
@@ -60,7 +61,25 @@ export default function Footer() {
                 support@maddog.co.in
               </a>
             </p>
-            <div className="flex items-center gap-4 pt-2">
+            <p>
+              <a
+                href="tel:+917019130080"
+                className="hover:text-[var(--color-white)] transition-colors"
+              >
+                +91 70191 30080
+              </a>
+            </p>
+            <p>
+              <a
+                href="https://wa.me/917019130080"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[var(--color-white)] transition-colors"
+              >
+                Chat on WhatsApp
+              </a>
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
               <a
                 href="https://www.instagram.com/maddoglights/"
                 target="_blank"
@@ -70,12 +89,28 @@ export default function Footer() {
                 Instagram
               </a>
               <a
+                href="https://www.facebook.com/maddoglights/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+              >
+                Facebook
+              </a>
+              <a
                 href="https://www.youtube.com/@maddoglights"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
               >
                 YouTube
+              </a>
+              <a
+                href="https://in.pinterest.com/maddoglights/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+              >
+                Pinterest
               </a>
             </div>
           </div>

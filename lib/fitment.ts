@@ -25,20 +25,20 @@ export interface Bike {
 }
 
 export const brands = [
-  "Royal Enfield",
-  "KTM",
-  "BMW",
-  "Ultraviolette",
-  "Honda",
-  "Yamaha",
-  "Kawasaki",
-  "Triumph",
   "Bajaj",
-  "Suzuki",
-  "Hero",
-  "JAWA",
-  "Harley Davidson",
   "Benelli",
+  "BMW",
+  "Harley Davidson",
+  "Hero",
+  "Honda",
+  "JAWA",
+  "Kawasaki",
+  "KTM",
+  "Royal Enfield",
+  "Suzuki",
+  "Triumph",
+  "Ultraviolette",
+  "Yamaha",
 ] as const;
 
 export const bikes: Bike[] = [

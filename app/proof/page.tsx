@@ -14,33 +14,45 @@ export const metadata: Metadata = {
 export default function ProofPage() {
   return (
     <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen">
-      {/* 40svh Dark Hero with Real Mounted-Rage Photo */}
-      <section className="relative h-[40svh] min-h-[300px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
+      {/* 30-32svh Dark Hero — UV partnership photography, full opacity, localized right scrim */}
+      <section className="relative h-[30svh] sm:h-[32svh] min-h-[280px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/media/products/MDR/original/product_1752410420_2104310.webp"
-            alt="Maddog Rage mounted field test"
+            src="/media/images/maddog-uv-accessories-banner-02.webp"
+            alt="Maddog auxiliary lights fitted to Ultraviolette F77 Mach 2 and X47 electric motorcycles on a hill road"
             fill
             sizes="100vw"
             priority
-            className="object-cover opacity-25"
+            className="object-cover object-[18%_55%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night-950)] via-[var(--color-night-950)]/70 to-transparent" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(270deg, rgba(10,10,11,0.97) 0%, rgba(10,10,11,0.9) 38%, rgba(10,10,11,0.4) 65%, transparent 85%)",
+            }}
+          />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full">
-          <h1
-            className="font-[520] text-[var(--color-white)] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-          >
-            Independent proof.
-          </h1>
-          <p
-            className="mt-3 text-[var(--color-grey-300)] max-w-2xl leading-relaxed"
-            style={{ fontSize: "var(--text-body)" }}
-          >
-            82+ verified reviews and 18 independent teardowns on YouTube — every product under an 18-month replacement warranty.
-          </p>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full flex justify-end">
+          <div className="text-right max-w-2xl">
+            <h1
+              className="text-[var(--color-white)] tracking-tight"
+              style={{
+                fontSize: "var(--text-page-title)",
+                fontWeight: "var(--fw-page-title)",
+                letterSpacing: "var(--ls-page-title)",
+              }}
+            >
+              Independent proof.
+            </h1>
+            <p
+              className="mt-3 text-[var(--color-grey-300)] ml-auto leading-relaxed"
+              style={{ fontSize: "var(--text-body)" }}
+            >
+              82+ verified reviews and 18 independent teardowns on YouTube — every product under an 18-month replacement warranty.
+            </p>
+          </div>
         </div>
       </section>
 

@@ -9,24 +9,34 @@ export const metadata: Metadata = {
 export default function InstallPage() {
   return (
     <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen">
-      {/* 40svh Dark Hero */}
-      <section className="relative h-[40svh] min-h-[300px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
+      {/* 30-32svh Dark Hero — real mounted-light photo, full opacity, localized left scrim */}
+      <section className="relative h-[30svh] sm:h-[32svh] min-h-[280px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/media/derived/hero-hardware-wide.webp"
-            alt="Maddog Rage — CNC clamp, bolt and cable connector detail"
+            src="/media/products/MDR/original/product_1752410420_2104310.webp"
+            alt="Maddog Rage light clamp-mounted to a motorcycle fork tube, cable routed down the yoke"
             fill
             sizes="100vw"
             priority
-            className="object-cover opacity-25"
+            className="object-cover object-[62%_42%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-night-950)] via-[var(--color-night-950)]/70 to-transparent" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(10,10,11,0.92) 0%, rgba(10,10,11,0.55) 40%, transparent 70%)",
+            }}
+          />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full">
           <h1
-            className="font-[520] text-[var(--color-white)] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+            className="text-[var(--color-white)] tracking-tight"
+            style={{
+              fontSize: "var(--text-page-title)",
+              fontWeight: "var(--fw-page-title)",
+              letterSpacing: "var(--ls-page-title)",
+            }}
           >
             Installation &amp; aiming protocol.
           </h1>

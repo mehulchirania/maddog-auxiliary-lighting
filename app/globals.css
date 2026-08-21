@@ -60,7 +60,7 @@
   --radius-pill: 9999px;
 
   /* ── Motion ── */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --dur-fast: 200ms;
   --dur-base: 500ms;
   --dur-slow: 900ms;
@@ -90,6 +90,20 @@
     outline: 2px solid var(--color-beam);
     outline-offset: 3px;
   }
+
+  /* Sitewide film grain — CSS only, no asset file. Fixed element only (never
+     on scrolling containers — repaint cost). Uniform noise at this opacity
+     doesn't touch legibility anywhere on the page. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 80; /* above content, pointer-transparent; only modals/toasts should ever exceed this */
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27200%27%20height%3D%27200%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27%2F%3E%3C%2Fsvg%3E");
+  }
 }
 
 @layer utilities {
@@ -118,6 +132,84 @@
     color: var(--color-white);
   }
 
+  /* Machined enclosure — nested bezel for product frames; concentric radii,
+     never rounded-everything. */
+  .machined {
+    background: rgba(247, 247, 245, 0.04);
+    border: 1px solid rgba(247, 247, 245, 0.08);
+    border-radius: var(--radius-card);
+    padding: 6px;
+  }
+  .machined > .machined-core {
+    border-radius: calc(var(--radius-card) - 6px);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.10);
+    overflow: hidden;
+  }
+
+  /* Beam-lit type — a warm beam band sweeps across headline type once, the
+     moment the headline enters the viewport (SmoothScroll.tsx's
+     IntersectionObserver adds .is-lit and unobserves). Caps at 2–3
+     headlines sitewide; never leave text stuck dim, so the no-JS /
+     reduced-motion state is the finished sweep (fully lit). Default state
+     (background-position: 0% 0, i.e. lit) is gated the same way .reveal
+     gates its hidden state — only inside `scripting: enabled` — so a no-JS
+     visitor always renders the lit end state instead of a dim one that
+     nothing will ever animate. */
+  .beam-lit {
+    background: linear-gradient(
+      100deg,
+      var(--color-night-600) 0%,
+      var(--color-night-600) 32%,
+      var(--color-beam-bright) 46%,
+      var(--color-beam) 54%,
+      var(--color-white) 68%,
+      var(--color-white) 100%
+    );
+    background-size: 300% 100%;
+    background-position: 0% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  @keyframes beam-sweep {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0% 0;
+    }
+  }
+  @media (scripting: enabled) {
+    .beam-lit {
+      background-position: 100% 0;
+    }
+    .beam-lit.is-lit {
+      animation: beam-sweep 1.2s var(--ease-out) forwards;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .beam-lit,
+    .beam-lit.is-lit {
+      animation: none;
+      background-position: 0% 0;
+    }
+  }
+
+  /* Proof-band bleed — lets the large Ultraviolette photo in ProofBand.tsx
+     run to the browser's right edge at lg+ instead of stopping at the
+     max-w-7xl container. Margin is computed from the viewport directly
+     (independent of the grid's percentage-based containing block), so it
+     tracks the container's own edge at every width: below the 80rem cap the
+     container is 100vw wide and the margin collapses to just the container's
+     right padding (3rem); above the cap it also covers the (100vw - 80rem)/2
+     gutter outside the centered container. Scoped to lg+ (64rem) because
+     that's the only range where this image is reordered to sit rightmost. */
+  @media (min-width: 64rem) {
+    .proof-bleed {
+      margin-right: calc((min(100vw, 80rem) - 100vw) / 2 - 3rem);
+    }
+  }
+
   /* Seamless marquee loop — used by the product rail. Track renders two
      duplicate sets of cards; looping by exactly -50% - half the gap keeps the
      wrap invisible regardless of card count. */
@@ -140,6 +232,36 @@
   @media (prefers-reduced-motion: reduce) {
     .rail-track {
       animation: none;
+    }
+  }
+
+  /* Lightbox modal panel entrance — scale + fade so opening the dialog is an
+     unmistakable state change, not a silent overlay. Reduced motion drops
+     the scale and fades only. */
+  @keyframes lightbox-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes lightbox-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .lightbox-panel {
+    animation: lightbox-in var(--dur-fast) var(--ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox-panel {
+      animation: lightbox-fade var(--dur-fast) linear;
     }
   }
 
@@ -222,15 +344,18 @@
     .reveal {
       opacity: 0;
       transform: translateY(24px);
+      filter: blur(6px);
       transition:
         opacity var(--dur-slow) var(--ease-out),
-        transform var(--dur-slow) var(--ease-out);
-      will-change: opacity, transform;
+        transform var(--dur-slow) var(--ease-out),
+        filter var(--dur-slow) var(--ease-out);
+      will-change: opacity, transform, filter;
     }
 
     .reveal.is-visible {
       opacity: 1;
       transform: none;
+      filter: blur(0);
     }
 
     /* Image reveal — scale and subtle lift */
@@ -254,6 +379,7 @@
     .reveal-image {
       opacity: 1;
       transform: none;
+      filter: none;
       transition: none;
     }
   }
