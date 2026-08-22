@@ -36,7 +36,7 @@ export default function Testimonials() {
               </span>
               <Link
                 href={`/products/${t.productSlug}/`}
-                className="readout shrink-0 tracking-[0.08em] text-[0.6875rem] text-[var(--color-grey-500)] transition-colors duration-[var(--dur-fast)] hover:text-[var(--color-white)]"
+                className="readout inline-flex min-h-11 items-center shrink-0 tracking-[0.08em] text-[0.6875rem] text-[var(--color-grey-500)] transition-colors duration-[var(--dur-fast)] hover:text-[var(--color-white)]"
               >
                 {t.product} · {t.date}
               </Link>

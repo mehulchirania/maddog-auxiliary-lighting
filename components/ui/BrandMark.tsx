@@ -94,7 +94,7 @@ export default function BrandMark({ brand, size = 30 }: BrandMarkProps) {
     <span
       aria-hidden="true"
       style={{ width: size, height: size }}
-      className="inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--color-night-700)] font-mono text-[0.625rem] tracking-tight"
+      className="inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--color-night-700)] font-mono text-[0.6875rem] sm:text-[0.625rem] tracking-tight"
     >
       {initials}
     </span>

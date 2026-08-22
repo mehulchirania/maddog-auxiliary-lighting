@@ -79,7 +79,7 @@ export default function ProofBand() {
                       className="block tabular-nums text-[1.75rem] text-[var(--color-beam)]"
                     />
                   </div>
-                  <div className="readout mt-1 uppercase tracking-[0.2em] text-[0.625rem] text-[var(--color-grey-300)]">
+                  <div className="readout mt-1 uppercase tracking-[0.2em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-grey-300)]">
                     {stat.label}
                   </div>
                 </div>

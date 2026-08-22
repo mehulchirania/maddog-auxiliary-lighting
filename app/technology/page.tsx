@@ -237,7 +237,7 @@ export default function TechnologyPage() {
                   />
                 </Tilt>
                 <div className="mt-3.5">
-                  <span className="readout text-[0.625rem] uppercase tracking-[0.22em] text-[var(--color-beam)]">
+                  <span className="readout text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.22em] text-[var(--color-beam)]">
                     {item.eyebrow}
                   </span>
                   <h3

@@ -6,7 +6,7 @@ import SpecularButton from "@/components/ui/SpecularButton";
 
 const REGISTERABLE = products.filter((p) => p.category === "aux-light" || p.category === "ev-edition");
 
-const LABEL = "readout block uppercase tracking-[0.2em] text-[0.625rem]";
+const LABEL = "readout block uppercase tracking-[0.2em] text-[0.6875rem] sm:text-[0.625rem]";
 const FIELD =
   "mt-2 h-12 w-full rounded-xl border border-[var(--glass-stroke)] bg-[var(--color-night-800)] px-4 text-[var(--color-white)] text-[1rem] outline-none transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] focus:border-[var(--color-beam)]";
 
@@ -114,7 +114,7 @@ export default function RegisterForm() {
             style={{ fontFamily: "var(--font-mono)" }}
           />
         </label>
-        <p className="readout mt-2 tracking-[0.06em] text-[0.625rem]">
+        <p className="readout mt-2 tracking-[0.06em] text-[0.6875rem] sm:text-[0.625rem]">
           Etched on the chassis, next to the warranty card QR.
         </p>
       </div>
@@ -133,7 +133,7 @@ export default function RegisterForm() {
         <span>Activate warranty</span>
       </SpecularButton>
 
-      <p className="readout text-center uppercase tracking-[0.14em] text-[0.625rem]">
+      <p className="readout text-center uppercase tracking-[0.14em] text-[0.6875rem] sm:text-[0.625rem]">
         18 months · direct replacement · no questions stalled
       </p>
     </form>

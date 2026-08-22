@@ -19,12 +19,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16">
           {/* Col 1: Wordmark + location line */}
           <div>
-            <Link href="/" className="inline-block" aria-label="Maddog Home">
+            <Link href="/" className="inline-flex min-h-11 items-center" aria-label="Maddog Home">
               <Image
-                src="/media/brand/maddog-logo-white.png"
+                src="/media/derived/maddog-logo-white-360.webp"
                 alt="Maddog"
-                width={2547}
-                height={501}
+                width={360}
+                height={71}
                 className="h-6 w-auto"
               />
             </Link>
@@ -35,12 +35,12 @@ export default function Footer() {
 
           {/* Col 2: Links */}
           <div>
-            <ul className="grid grid-cols-2 gap-y-3 gap-x-6">
+            <ul className="grid grid-cols-2 gap-y-0 gap-x-6">
               {FOOTER_LINKS.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors duration-[var(--dur-fast)]"
+                    className="inline-flex min-h-11 items-center text-sm text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors duration-[var(--dur-fast)]"
                   >
                     {item.label}
                   </Link>
@@ -56,7 +56,7 @@ export default function Footer() {
             <p className="pt-2">
               <a
                 href="mailto:support@maddog.co.in"
-                className="hover:text-[var(--color-white)] transition-colors"
+                className="inline-flex min-h-11 items-center hover:text-[var(--color-white)] transition-colors"
               >
                 support@maddog.co.in
               </a>
@@ -64,7 +64,7 @@ export default function Footer() {
             <p>
               <a
                 href="tel:+917019130080"
-                className="hover:text-[var(--color-white)] transition-colors"
+                className="inline-flex min-h-11 items-center hover:text-[var(--color-white)] transition-colors"
               >
                 +91 70191 30080
               </a>
@@ -74,7 +74,7 @@ export default function Footer() {
                 href="https://wa.me/917019130080"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[var(--color-white)] transition-colors"
+                className="inline-flex min-h-11 items-center hover:text-[var(--color-white)] transition-colors"
               >
                 Chat on WhatsApp
               </a>
@@ -84,7 +84,7 @@ export default function Footer() {
                 href="https://www.instagram.com/maddoglights/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+                className="inline-flex min-h-11 items-center text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
               >
                 Instagram
               </a>
@@ -92,7 +92,7 @@ export default function Footer() {
                 href="https://www.facebook.com/maddoglights/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+                className="inline-flex min-h-11 items-center text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
               >
                 Facebook
               </a>
@@ -100,7 +100,7 @@ export default function Footer() {
                 href="https://www.youtube.com/@maddoglights"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+                className="inline-flex min-h-11 items-center text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
               >
                 YouTube
               </a>
@@ -108,7 +108,7 @@ export default function Footer() {
                 href="https://in.pinterest.com/maddoglights/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
+                className="inline-flex min-h-11 items-center text-[var(--color-grey-500)] hover:text-[var(--color-white)] transition-colors"
               >
                 Pinterest
               </a>

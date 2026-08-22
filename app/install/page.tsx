@@ -82,7 +82,7 @@ export default function InstallPage() {
       {/* Narrow single-column protocol stack */}
       <section className="max-w-[36rem] mx-auto px-6 py-16 sm:py-24 flex flex-col gap-14">
         <Reveal>
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Protocol 01
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">
@@ -97,7 +97,7 @@ export default function InstallPage() {
         </Reveal>
 
         <Reveal>
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Protocol 02
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">
@@ -112,7 +112,7 @@ export default function InstallPage() {
         </Reveal>
 
         <Reveal>
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Protocol 03
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">
@@ -139,7 +139,7 @@ export default function InstallPage() {
         </Reveal>
 
         <Reveal>
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Torque specification
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">

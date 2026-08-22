@@ -59,7 +59,7 @@ export default function HeroOpening() {
       />
 
       <div className="relative flex w-full flex-col items-center">
-        <span className="readout inline-flex max-w-full items-center justify-center gap-3 uppercase text-[0.625rem] tracking-[0.22em] text-[var(--color-grey-300)] sm:tracking-[0.28em]">
+        <span className="readout inline-flex max-w-full items-center justify-center gap-3 uppercase text-[0.6875rem] sm:text-[0.625rem] tracking-[0.22em] text-[var(--color-grey-300)] sm:tracking-[0.28em]">
           <span aria-hidden="true" className="hidden h-px w-7 shrink-0 bg-[var(--glass-stroke)] sm:block" />
           <span className="min-w-0">Maddog Industries · Bengaluru · Auxiliary lighting</span>
           <span aria-hidden="true" className="hidden h-px w-7 shrink-0 bg-[var(--glass-stroke)] sm:block" />
@@ -137,7 +137,7 @@ export default function HeroOpening() {
                   className="block tabular-nums text-[1.375rem] text-[var(--color-white)] sm:text-[1.5rem]"
                 />
               </div>
-              <div className="readout mt-1 uppercase text-[0.625rem] tracking-[0.22em]">
+              <div className="readout mt-1 uppercase text-[0.6875rem] sm:text-[0.625rem] tracking-[0.22em]">
                 {stat.label}
               </div>
             </div>

@@ -167,7 +167,7 @@ export default function RangeGrid() {
               and warrantied the same way.
             </p>
           </div>
-          <Link href="/lights/" className="cta-link-quiet shrink-0">
+          <Link href="/lights/" className="cta-link-quiet inline-flex min-h-11 items-center shrink-0">
             <span>Compare the full range</span>
             <span aria-hidden="true">→</span>
           </Link>

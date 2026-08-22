@@ -100,7 +100,7 @@ export default async function ProductPage({
           >
             <Link
               href="/lights/"
-              className="text-[var(--color-grey-500)] no-underline transition-colors duration-[var(--dur-fast)] hover:text-[var(--color-beam)]"
+              className="inline-flex min-h-11 items-center text-[var(--color-grey-500)] no-underline transition-colors duration-[var(--dur-fast)] hover:text-[var(--color-beam)]"
             >
               Range
             </Link>

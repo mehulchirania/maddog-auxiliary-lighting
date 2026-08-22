@@ -66,7 +66,7 @@ export default function ProductBuySection({ product }: { product: Product }) {
         </div>
 
         {thumbs.length > 1 && (
-          <div className="mt-3 grid grid-cols-6 gap-2.5">
+          <div className="mt-3 grid grid-cols-4 gap-2.5 sm:grid-cols-6">
             {thumbs.map((img, idx) => (
               <button
                 key={img}
@@ -154,7 +154,7 @@ export default function ProductBuySection({ product }: { product: Product }) {
 
         {product.kitContents.length > 0 && (
           <div className="mt-7 border-t border-[var(--glass-stroke)] pt-6">
-            <div className="readout uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-grey-500)]">
+            <div className="readout uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-grey-500)]">
               In the box
             </div>
             <ul className="mt-3 flex list-none flex-col gap-2 p-0">
@@ -474,7 +474,7 @@ export function ProductTabs({
           <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             {beamProfile && (
               <div className="rounded-[var(--radius-card)] border border-[var(--glass-stroke)] bg-[var(--color-night-900)] p-7">
-                <div className="readout uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-grey-500)]">
+                <div className="readout uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-grey-500)]">
                   Beam profile
                 </div>
                 <p className="mt-3 text-[var(--color-grey-300)]">
@@ -483,7 +483,7 @@ export function ProductTabs({
               </div>
             )}
             <div className="rounded-[var(--radius-card)] border border-[var(--glass-stroke)] bg-[var(--color-night-900)] p-7">
-              <div className="readout uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-grey-500)]">
+              <div className="readout uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-grey-500)]">
                 Built for
               </div>
               <p className="mt-3 text-[var(--color-grey-300)]">{product.description}</p>

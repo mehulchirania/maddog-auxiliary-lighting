@@ -81,7 +81,7 @@ export default function ProofPage() {
                   <dd className="readout text-[1.75rem] leading-none text-[var(--color-beam)]">
                     <CountUp to={s.to} suffix={s.suffix} />
                   </dd>
-                  <dt className="readout mt-2 text-[0.625rem] uppercase tracking-[0.22em]">
+                  <dt className="readout mt-2 text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.22em]">
                     {s.label}
                   </dt>
                 </div>

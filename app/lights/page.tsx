@@ -84,7 +84,7 @@ export default function LightsPage() {
           </p>
           <Link
             href="/fit/"
-            className="inline-flex items-center gap-1.5 text-[var(--color-white)] underline underline-offset-4 decoration-white/40 hover:decoration-[var(--color-beam)] hover:text-[var(--color-beam)] transition-colors font-medium text-sm sm:text-base"
+            className="inline-flex min-h-11 items-center gap-1.5 text-[var(--color-white)] underline underline-offset-4 decoration-white/40 hover:decoration-[var(--color-beam)] hover:text-[var(--color-beam)] transition-colors font-medium text-sm sm:text-base"
           >
             <span>Launch Bike Finder</span>
             <span aria-hidden="true">→</span>

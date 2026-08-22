@@ -81,7 +81,7 @@ export default function WarrantyPage() {
       {/* Narrow single-column policy stack */}
       <section className="max-w-[36rem] mx-auto px-6 py-16 sm:py-24 flex flex-col gap-14">
         <Reveal>
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Coverage terms
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">
@@ -96,7 +96,7 @@ export default function WarrantyPage() {
         </Reveal>
 
         <Reveal>
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Covered conditions
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">
@@ -115,7 +115,7 @@ export default function WarrantyPage() {
         </Reveal>
 
         <Reveal>
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Claims process
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">

@@ -81,7 +81,7 @@ export default function DealersPage() {
 
       <section className="max-w-[60rem] mx-auto px-6 py-16 sm:py-24">
         <Reveal className="max-w-[36rem]">
-          <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+          <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
             Network presence
           </span>
           <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">
@@ -104,7 +104,7 @@ export default function DealersPage() {
               <div className="text-[1.125rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">
                 {hub.city}
               </div>
-              <div className="readout mt-0.5 uppercase tracking-[0.14em] text-[0.625rem]">
+              <div className="readout mt-0.5 uppercase tracking-[0.14em] text-[0.6875rem] sm:text-[0.625rem]">
                 {hub.state}
               </div>
               <div className="readout mt-4 text-[1.375rem] leading-none text-[var(--color-beam)]">
@@ -128,7 +128,7 @@ export default function DealersPage() {
                 "linear-gradient(120deg, color-mix(in srgb, var(--color-beam) 5%, transparent) 0%, transparent 60%)",
             }}
           >
-            <span className="readout block uppercase tracking-[0.22em] text-[0.625rem] text-[var(--color-beam)]">
+            <span className="readout block uppercase tracking-[0.22em] text-[0.6875rem] sm:text-[0.625rem] text-[var(--color-beam)]">
               Factory service
             </span>
             <h2 className="mt-2.5 text-[1.375rem] font-semibold tracking-[-0.01em] text-[var(--color-white)]">

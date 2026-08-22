@@ -96,12 +96,12 @@ export default function Nav() {
       >
         <div className="glass glass-pill h-14 px-3 flex items-center justify-between gap-4 sm:gap-6 pointer-events-auto shadow-2xl">
           {/* Logo */}
-          <Link href="/" className="flex items-center pl-2 pr-1" aria-label="Maddog Home">
+          <Link href="/" className="flex min-h-11 items-center pl-2 pr-1" aria-label="Maddog Home">
             <Image
-              src="/media/brand/maddog-logo-white.png"
+              src="/media/derived/maddog-logo-white-360.webp"
               alt="Maddog"
-              width={2547}
-              height={501}
+              width={360}
+              height={71}
               priority
               className="h-[22px] w-auto object-contain"
             />
@@ -142,7 +142,7 @@ export default function Nav() {
               type="button"
               onClick={() => setIsCartOpen(true)}
               aria-label={`Shopping cart with ${cartCount} items`}
-              className="relative p-2 text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors cursor-pointer rounded-full"
+              className="relative flex min-h-11 min-w-11 items-center justify-center text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors cursor-pointer rounded-full"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="9" cy="21" r="1" />
@@ -161,7 +161,7 @@ export default function Nav() {
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation menu"
-              className="md:hidden p-2 text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors cursor-pointer"
+              className="md:hidden flex min-h-11 min-w-11 items-center justify-center text-[var(--color-grey-300)] hover:text-[var(--color-white)] transition-colors cursor-pointer"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 {mobileMenuOpen ? (

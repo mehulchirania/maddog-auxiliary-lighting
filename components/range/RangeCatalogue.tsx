@@ -63,7 +63,7 @@ export default function RangeCatalogue() {
                 type="button"
                 onClick={() => setActiveTab(tab.category)}
                 aria-pressed={isActive}
-                className={`cursor-pointer rounded-[var(--radius-pill)] border px-[18px] py-2 font-mono text-xs uppercase tracking-[0.06em] transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
+                className={`inline-flex min-h-11 cursor-pointer items-center rounded-[var(--radius-pill)] border px-[18px] font-mono text-xs uppercase tracking-[0.06em] transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
                   isActive
                     ? "border-[var(--color-white)] bg-[var(--color-white)] text-[var(--color-night-950)]"
                     : "border-[var(--glass-stroke)] bg-[var(--color-night-800)]/60 text-[var(--color-grey-300)] hover:border-[var(--color-beam)]/50"

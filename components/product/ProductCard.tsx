@@ -146,7 +146,7 @@ export default function ProductCard({
       type="button"
       tabIndex={tabIndex}
       onClick={handleAddToCart}
-      className="mt-3 h-10 rounded-full text-sm font-medium border transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] cursor-pointer bg-transparent text-[var(--color-white)] border-white/16 hover:border-white/32 hover:bg-white/5 active:scale-[0.97]"
+      className="mt-3 h-11 rounded-full text-sm font-medium border transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] cursor-pointer bg-transparent text-[var(--color-white)] border-white/16 hover:border-white/32 hover:bg-white/5 active:scale-[0.97]"
     >
       Add to cart
     </button>
@@ -169,11 +169,11 @@ export default function ProductCard({
         >
           {/* Header row — category left, catalogue index right */}
           <div className="flex items-center justify-between gap-3 px-4 py-3">
-            <span className="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)] truncate">
+            <span className="font-mono text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)] truncate">
               {categoryLabel}
             </span>
             {typeof index === "number" && (
-              <span className="font-mono text-[0.625rem] tabular-nums text-[var(--color-grey-500)]">
+              <span className="font-mono text-[0.6875rem] sm:text-[0.625rem] tabular-nums text-[var(--color-grey-500)]">
                 {String(index).padStart(2, "0")}
               </span>
             )}
@@ -219,7 +219,7 @@ export default function ProductCard({
             >
               {rows.map((row) => (
                 <div key={row.label} className="flex items-baseline justify-between gap-3.5">
-                  <span className="shrink-0 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-[var(--color-grey-500)]">
+                  <span className="shrink-0 font-mono text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.14em] text-[var(--color-grey-500)]">
                     {row.label}
                   </span>
                   <span className="min-w-0 break-words text-right font-mono text-xs leading-[1.4] tabular-nums text-[var(--color-beam)]">

@@ -552,7 +552,7 @@ export default function FitFlow() {
                           >
                             {bike.model}
                           </h3>
-                          <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)] border border-[var(--glass-stroke)] rounded-[var(--radius-pill)] px-3 py-1 shrink-0 capitalize">
+                          <span className="readout text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)] border border-[var(--glass-stroke)] rounded-[var(--radius-pill)] px-3 py-1 shrink-0 capitalize">
                             {bike.kind}
                           </span>
                         </div>
@@ -563,7 +563,7 @@ export default function FitFlow() {
 
                         <div className="border-t border-[var(--glass-stroke)] pt-4 flex flex-col gap-2.5">
                           <div className="flex justify-between gap-3 items-baseline">
-                            <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                            <span className="readout text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
                               Light
                             </span>
                             <span className="text-[0.9375rem] text-[var(--color-white)] text-right">
@@ -577,7 +577,7 @@ export default function FitFlow() {
                           </div>
                           {beamMeta && (
                             <div className="flex justify-between gap-3 items-baseline">
-                              <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                              <span className="readout text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
                                 Beam
                               </span>
                               <span className="readout text-xs text-[var(--color-grey-300)] text-right">
@@ -586,7 +586,7 @@ export default function FitFlow() {
                             </div>
                           )}
                           <div className="flex justify-between gap-3 items-baseline">
-                            <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                            <span className="readout text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
                               Power
                             </span>
                             <span className="text-[0.9375rem] text-[var(--color-grey-300)] text-right">
@@ -595,7 +595,7 @@ export default function FitFlow() {
                           </div>
                           {mount && (
                             <div className="flex justify-between gap-3 items-baseline">
-                              <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                              <span className="readout text-[0.6875rem] sm:text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
                                 Mount
                               </span>
                               <span className="text-[0.9375rem] text-[var(--color-grey-300)] text-right">

@@ -1,4 +1,6 @@
 .specular-button {
+  /* Touch-target floor — the md size otherwise lands at 43px. */
+  min-height: 44px;
   --sb-radius: 9999px;
   --sb-tint: #ffffff;
   --sb-tint-opacity: 0;
