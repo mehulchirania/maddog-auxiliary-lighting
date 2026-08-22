@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { products, type Category } from "@/lib/products";
 import ProductCard from "@/components/product/ProductCard";
 
@@ -9,110 +9,101 @@ interface FilterTab {
   category: Category | "all";
 }
 
+/** Order and short labels follow the catalogue mockup's taxonomy. */
 const FILTER_TABS: FilterTab[] = [
   { label: "All", category: "all" },
-  { label: "Aux Lights", category: "aux-light" },
-  { label: "Car Fog Lamps", category: "car-fog-lamp" },
-  { label: "Phone Mounts", category: "mount" },
-  { label: "Power & Switches", category: "power" },
-  { label: "Filters & Clamps", category: "filter" },
+  { label: "Aux lights", category: "aux-light" },
+  { label: "Car fog lamps", category: "car-fog-lamp" },
+  { label: "Phone holders", category: "mount" },
+  { label: "Switches & power", category: "power" },
+  { label: "Filters", category: "filter" },
+  { label: "Mounts & clamps", category: "clamp" },
+  { label: "EV edition", category: "ev-edition" },
 ];
+
+const CATEGORY_LABEL: Record<Category, string> = {
+  "aux-light": "Aux lights",
+  "car-fog-lamp": "Car fog lamps",
+  mount: "Phone holders",
+  power: "Switches & power",
+  filter: "Filters",
+  clamp: "Mounts & clamps",
+  "ev-edition": "EV edition",
+};
 
 export default function RangeCatalogue() {
   const [activeTab, setActiveTab] = useState<Category | "all">("all");
-  const [isStuck, setIsStuck] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
 
-  // IntersectionObserver to detect when the filter bar becomes sticky
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsStuck(!entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, []);
-
-  // Compute item counts per tab
   const counts = useMemo(() => {
-    return {
-      all: products.length,
-      "aux-light": products.filter((p) => p.category === "aux-light").length,
-      "car-fog-lamp": products.filter((p) => p.category === "car-fog-lamp").length,
-      mount: products.filter((p) => p.category === "mount").length,
-      power: products.filter((p) => p.category === "power").length,
-      filter: products.filter((p) => p.category === "filter" || p.category === "clamp").length,
-    };
+    const map = new Map<Category | "all", number>([["all", products.length]]);
+    for (const tab of FILTER_TABS) {
+      if (tab.category === "all") continue;
+      map.set(tab.category, products.filter((p) => p.category === tab.category).length);
+    }
+    return map;
   }, []);
 
-  const filteredProducts = useMemo(() => {
-    if (activeTab === "all") return products;
-    if (activeTab === "filter") {
-      return products.filter((p) => p.category === "filter" || p.category === "clamp");
-    }
-    return products.filter((p) => p.category === activeTab);
-  }, [activeTab]);
+  const filteredProducts = useMemo(
+    () => (activeTab === "all" ? products : products.filter((p) => p.category === activeTab)),
+    [activeTab]
+  );
 
   return (
-    <div className="max-w-7xl mx-auto px-6 sm:px-12 py-8 sm:py-12">
-      {/* 1px Sentinel to track sticky state */}
-      <div ref={sentinelRef} className="h-px -mt-px" />
+    <div className="max-w-7xl mx-auto px-6 sm:px-12 pt-14 pb-[var(--section)]">
+      {/* Filter chips + result counter */}
+      <div className="flex flex-wrap items-center justify-between gap-6">
+        <div className="flex flex-wrap gap-2">
+          {FILTER_TABS.map((tab) => {
+            const isActive = activeTab === tab.category;
+            const count = counts.get(tab.category) ?? 0;
 
-      {/* Sticky Filter Bar */}
-      <div className="sticky top-20 z-30 pb-6 mb-8 pointer-events-none">
-        <div className="overflow-x-auto scrollbar-none py-1 pointer-events-auto [mask-image:linear-gradient(90deg,transparent,black_4%,black_96%,transparent)] sm:[mask-image:none]">
-          <div
-            className={`inline-flex items-center gap-1.5 p-1.5 rounded-full border transition-all duration-200 ${
-              isStuck
-                ? "glass-deep shadow-2xl"
-                : "bg-[#17171a] border-[var(--glass-stroke)]"
-            }`}
-          >
-            {FILTER_TABS.map((tab) => {
-              const isActive = activeTab === tab.category;
-              const count = counts[tab.category as keyof typeof counts] || 0;
-
-              return (
-                <button
-                  key={tab.label}
-                  type="button"
-                  onClick={() => setActiveTab(tab.category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-[var(--dur-fast)] shrink-0 cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
-                    isActive
-                      ? "bg-white text-[#0a0a0b] font-semibold shadow-md"
-                      : "text-[#b6b6b1] hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  <span className={isActive ? "text-[#0a0a0b]" : ""}>{tab.label}</span>
-                  <span
-                    className={`text-xs font-mono ${
-                      isActive ? "text-[#0a0a0b]/70" : "text-[#82827c]"
-                    }`}
-                  >
-                    · {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+            return (
+              <button
+                key={tab.label}
+                type="button"
+                onClick={() => setActiveTab(tab.category)}
+                aria-pressed={isActive}
+                className={`cursor-pointer rounded-[var(--radius-pill)] border px-[18px] py-2 font-mono text-xs uppercase tracking-[0.06em] transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
+                  isActive
+                    ? "border-[var(--color-white)] bg-[var(--color-white)] text-[var(--color-night-950)]"
+                    : "border-[var(--glass-stroke)] bg-[var(--color-night-800)]/60 text-[var(--color-grey-300)] hover:border-[var(--color-beam)]/50"
+                }`}
+              >
+                {tab.label}
+                <span className="ml-2 tabular-nums opacity-55">
+                  {String(count).padStart(2, "0")}
+                </span>
+              </button>
+            );
+          })}
         </div>
+
+        <span className="font-mono text-xs tabular-nums tracking-[0.08em] text-[var(--color-grey-500)]">
+          {filteredProducts.length} of {products.length} shown
+        </span>
       </div>
 
-      {/* 2-col (desktop 3-col) Grid with fade transition */}
+      {/* Catalogue grid */}
       <div
         key={activeTab}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 animate-in fade-in duration-200"
+        className="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[18px] animate-in fade-in duration-200"
       >
-        {filteredProducts.map((prod) => (
-          <ProductCard key={prod.slug} product={prod} />
+        {filteredProducts.map((prod, i) => (
+          <ProductCard
+            key={prod.slug}
+            product={prod}
+            variant="catalogue"
+            index={i + 1}
+            categoryLabel={CATEGORY_LABEL[prod.category]}
+            showQuickSpecs
+          />
         ))}
       </div>
+
+      {/* Closing pricing note */}
+      <p className="mt-10 text-center font-mono text-xs tracking-[0.08em] text-[var(--color-grey-500)]">
+        Every price shown is the price, all year — never discounted, never inflated.
+      </p>
     </div>
   );
 }

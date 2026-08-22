@@ -12,6 +12,10 @@ const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
+  // Archivo is variable on both weight and width. The width axis has to be
+  // requested explicitly or `font-stretch` silently does nothing — the landing
+  // display type depends on it (see --wdth-display).
+  axes: ["wdth"],
 });
 
 const jetbrains = JetBrains_Mono({
@@ -21,7 +25,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Maddog — Engineered to be seen with",
+  title: "Maddog — Light the road, not the rider",
   description:
     "Auxiliary motorcycle lighting designed, developed and manufactured in India. Nichia optics, IP67 sealed, 18-month replacement warranty, never discounted.",
 };

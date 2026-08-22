@@ -4,7 +4,7 @@ import { collectErrors, expectNoHorizontalOverflow } from "./helpers";
 test.describe("fit page — brand marks and kit flow", () => {
   test("typographic hero with the new headline, no hero image", async ({ page }) => {
     await page.goto("/fit/");
-    await expect(page.getByRole("heading", { level: 1, name: "Find your fit." })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Built for what you ride." })).toBeVisible();
     // First section (hero) must contain no <img>.
     expect(await page.locator("article > section").first().locator("img").count()).toBe(0);
   });
@@ -41,7 +41,7 @@ test.describe("fit page — brand marks and kit flow", () => {
   }) => {
     await page.goto("/fit/");
     await page.getByRole("button", { name: /Royal Enfield/ }).click();
-    const modelButton = page.locator("button", { hasText: /chassis/i }).first();
+    const modelButton = page.locator("button", { hasText: /Configure this kit/i }).first();
     await modelButton.scrollIntoViewIfNeeded();
     await modelButton.click();
 
@@ -62,11 +62,11 @@ test.describe("fit page — brand marks and kit flow", () => {
   test("full kit flow: brand → model → radiogroup pills → add to cart", async ({ page }) => {
     await page.goto("/fit/");
     await page.getByRole("button", { name: /Royal Enfield/ }).click();
-    await expect(page.getByText(/\d+ models?$/).first()).toBeVisible();
+    await expect(page.getByText(/\d+ models? mapped$/).first()).toBeVisible();
 
     // Pick the first model.
     await page
-      .locator("button", { hasText: /chassis/i })
+      .locator("button", { hasText: /Configure this kit/i })
       .first()
       .click();
     await expect(page.getByText("Recommended setup")).toBeVisible();

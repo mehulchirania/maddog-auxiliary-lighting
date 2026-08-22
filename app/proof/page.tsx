@@ -1,128 +1,187 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { fieldMedia } from "@/lib/fieldMedia";
+import CountUp from "@/components/animations/CountUp";
+import Parallax from "@/components/animations/Parallax";
 import CreatorWall from "@/components/proof/CreatorWall";
 import Testimonials from "@/components/proof/Testimonials";
-import Lightbox from "@/components/ui/Lightbox";
+import Reveal from "@/components/ui/Reveal";
+import { aggregate, creators } from "@/lib/proof";
 
 export const metadata: Metadata = {
   title: "Proof & Reviews — Maddog Auxiliary Lighting",
   description:
-    "82+ verified reviews and 18 independent motovlogging teardowns across India with an 18-month replacement warranty.",
+    "82 verified reviews and 18 independent creator teardowns across India, with an 18-month replacement warranty on every product.",
 };
+
+/* Beam-gradient headline line, matching /warranty/. Deliberately not
+   `.beam-lit` — that sweep is capped at 2–3 headlines sitewide and is
+   already spent on the home page. */
+const beamLine: React.CSSProperties = {
+  background:
+    "linear-gradient(180deg, var(--color-beam-bright) 0%, var(--color-beam) 45%, color-mix(in srgb, var(--color-beam) 30%, transparent) 100%)",
+  WebkitBackgroundClip: "text",
+  backgroundClip: "text",
+  color: "transparent",
+};
+
+const STATS = [
+  { to: aggregate.totalReviews, suffix: "", label: "verified reviews" },
+  { to: aggregate.creatorCount, suffix: "", label: "independent creators" },
+  { to: aggregate.warrantyMonths, suffix: " mo", label: "replacement warranty" },
+  { to: aggregate.lifespanHours, suffix: "+ h", label: "emitter lifespan" },
+];
 
 export default function ProofPage() {
   return (
-    <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen">
-      {/* 30-32svh Dark Hero — UV partnership photography, full opacity, localized right scrim */}
-      <section className="relative h-[30svh] sm:h-[32svh] min-h-[280px] w-full flex items-center overflow-hidden border-b border-[var(--glass-stroke)]">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/media/images/maddog-uv-accessories-banner-02.webp"
-            alt="Maddog auxiliary lights fitted to Ultraviolette F77 Mach 2 and X47 electric motorcycles on a hill road"
-            fill
-            sizes="100vw"
-            priority
-            className="object-cover object-[18%_55%]"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(270deg, rgba(10,10,11,0.97) 0%, rgba(10,10,11,0.9) 38%, rgba(10,10,11,0.4) 65%, transparent 85%)",
-            }}
-          />
-        </div>
+    <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen overflow-x-clip">
+      {/* ── Typographic hero + stat readout strip ──
+          No hero photograph here on purpose: the Ultraviolette band directly
+          below is the page's single strongest image and reusing it (or a
+          cropped duplicate) at the top would spend it twice. */}
+      <section className="relative overflow-hidden pt-32 pb-0 sm:pt-44">
+        <div
+          className="pointer-events-none absolute -left-[10%] -right-[10%] -top-[45%] h-[80%]"
+          style={{
+            background:
+              "radial-gradient(50% 60% at 50% 0%, color-mix(in srgb, var(--color-beam) 13%, transparent) 0%, transparent 65%)",
+          }}
+          aria-hidden
+        />
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-12">
+          <Reveal className="flex items-center gap-4">
+            <span className="h-px w-7 bg-[var(--glass-stroke)]" aria-hidden />
+            <span className="readout text-[0.6875rem] uppercase tracking-[0.28em]">
+              Proof · pulled from the live site, unedited
+            </span>
+          </Reveal>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full flex justify-end">
-          <div className="text-right max-w-2xl">
-            <h1
-              className="text-[var(--color-white)] tracking-tight"
+          <h1
+            className="mt-6 text-[var(--color-white)] uppercase"
+            style={{
+              fontSize: "var(--text-page-title)",
+              fontWeight: "var(--fw-page-title)",
+              letterSpacing: "var(--ls-page-title)",
+              lineHeight: 0.92,
+            }}
+          >
+            Take their
+            <br />
+            <span style={beamLine}>word for it.</span>
+          </h1>
+
+          <Reveal className="mt-10 w-full max-w-[1100px] border-t border-[var(--glass-stroke)]">
+            <dl className="grid grid-cols-2 sm:grid-cols-4">
+              {STATS.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={`px-2 pt-5 ${
+                    i < STATS.length - 1 ? "sm:border-r sm:border-[var(--glass-stroke)]" : ""
+                  }`}
+                >
+                  <dd className="readout text-[1.75rem] leading-none text-[var(--color-beam)]">
+                    <CountUp to={s.to} suffix={s.suffix} />
+                  </dd>
+                  <dt className="readout mt-2 text-[0.625rem] uppercase tracking-[0.22em]">
+                    {s.label}
+                  </dt>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── Ultraviolette OEM-proof band ── */}
+      <section className="pt-[var(--section)]">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12">
+          <div className="relative flex min-h-[440px] items-end overflow-hidden rounded-[var(--radius-card)] border border-[var(--glass-stroke)]">
+            <Parallax speed={0.12} className="absolute inset-x-0 -inset-y-[8%]">
+              <div className="relative h-full w-full">
+                <Image
+                  src="/media/images/maddog-uv-accessories-banner-02.webp"
+                  alt="Maddog auxiliary lights fitted to an Ultraviolette F77 Mach 2 electric motorcycle"
+                  fill
+                  sizes="100vw"
+                  priority
+                  className="object-cover object-[30%_55%]"
+                />
+              </div>
+            </Parallax>
+            <div
+              className="absolute inset-0"
               style={{
-                fontSize: "var(--text-page-title)",
-                fontWeight: "var(--fw-page-title)",
-                letterSpacing: "var(--ls-page-title)",
+                background:
+                  "linear-gradient(100deg, color-mix(in srgb, var(--color-night-950) 90%, transparent) 0%, color-mix(in srgb, var(--color-night-950) 40%, transparent) 55%, transparent 100%)",
               }}
-            >
-              Independent proof.
-            </h1>
-            <p
-              className="mt-3 text-[var(--color-grey-300)] ml-auto leading-relaxed"
-              style={{ fontSize: "var(--text-body)" }}
-            >
-              82+ verified reviews and 18 independent teardowns on YouTube — every product under an 18-month replacement warranty.
-            </p>
+              aria-hidden
+            />
+            <Reveal className="relative max-w-2xl p-8 sm:p-12">
+              <span className="readout text-[0.6875rem] uppercase tracking-[0.28em] text-[var(--color-grey-300)]">
+                OEM proof
+              </span>
+              <h2
+                className="mt-3.5 uppercase text-[var(--color-white)]"
+                style={{
+                  fontSize: "var(--text-statement)",
+                  fontWeight: "var(--fw-statement)",
+                  letterSpacing: "var(--ls-statement)",
+                  lineHeight: 1.02,
+                }}
+              >
+                Chosen by Ultraviolette for the F77 Mach 2
+              </h2>
+              <p
+                className="mt-4 text-[var(--color-grey-300)] leading-relaxed"
+                style={{ fontSize: "var(--text-body)" }}
+              >
+                Factory-fit optics on India&rsquo;s fastest electric motorcycle — the strongest
+                review a lighting company can get.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Field Conditions: Real Measurement & Mounting Photography Grid */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-24">
-        <div className="mb-8">
-          <span className="readout text-xs text-[var(--color-beam)]">Field Documentation</span>
-          <h2
-            className="font-[520] text-[var(--color-white)] tracking-tight mt-1"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-          >
-            Field conditions &amp; measured throw.
-          </h2>
-          <p className="text-[var(--color-grey-300)] text-sm max-w-xl mt-2">
-            Unfiltered night road beam measurements and real motorcycle mounting setups. Click any frame to inspect full resolution.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {fieldMedia.map((item) => (
-            <div key={item.src} className="flex flex-col gap-3">
-              <Lightbox src={item.src} alt={item.caption}>
-                <div className="relative aspect-[16/11] w-full rounded-[var(--radius-card)] overflow-hidden bg-[var(--color-night-900)] border border-[var(--glass-stroke)] shadow-xl">
-                  <Image
-                    src={item.src}
-                    alt={item.caption}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-              </Lightbox>
-              <div className="flex items-baseline justify-between gap-2 px-1">
-                <p className="text-sm font-medium text-white">
-                  {item.caption}
-                </p>
-                <span className="readout text-xs uppercase shrink-0">
-                  {item.sku}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Creator Wall */}
-      <section className="py-24 sm:py-32 bg-[var(--color-night-900)] border-y border-[var(--glass-stroke)]">
+      {/* ── Testimonials ── */}
+      <section className="pt-[var(--section)]">
         <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <h2
-            className="font-[520] text-[var(--color-white)] tracking-tight mb-4"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-          >
-            Eighteen independent motovloggers.
-          </h2>
-          <p className="text-[var(--color-grey-300)] max-w-xl mb-12" style={{ fontSize: "var(--text-body)" }}>
-            Real-world road testing across thousands of touring kilometres throughout India.
-          </p>
-          <CreatorWall />
+          <Reveal className="mb-8">
+            <span className="readout text-[0.6875rem] uppercase tracking-[0.28em]">
+              From the product pages
+            </span>
+            <h2
+              className="mt-4 uppercase text-[var(--color-white)]"
+              style={{
+                fontSize: "var(--text-statement)",
+                fontWeight: "var(--fw-statement)",
+                letterSpacing: "var(--ls-statement)",
+                lineHeight: 1,
+              }}
+            >
+              Real riders, real reviews
+            </h2>
+          </Reveal>
+          <Testimonials />
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-12 py-24 sm:py-32">
-        <h2
-          className="font-[520] text-[var(--color-white)] tracking-tight mb-12"
-          style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-        >
-          Verified rider feedback.
-        </h2>
-        <Testimonials />
+      {/* ── Creator wall marquee ── */}
+      <section className="pt-[var(--section)] pb-[var(--section)]">
+        <Reveal className="max-w-7xl mx-auto mb-8 px-6 sm:px-12">
+          <span className="readout text-[0.6875rem] uppercase tracking-[0.28em]">On YouTube</span>
+          <h2
+            className="mt-4 uppercase text-[var(--color-white)]"
+            style={{
+              fontSize: "var(--text-statement)",
+              fontWeight: "var(--fw-statement)",
+              letterSpacing: "var(--ls-statement)",
+              lineHeight: 1,
+            }}
+          >
+            {creators.length} independent teardowns
+          </h2>
+        </Reveal>
+        <CreatorWall />
       </section>
     </article>
   );

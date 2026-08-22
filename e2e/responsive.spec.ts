@@ -9,7 +9,7 @@ test.describe("responsive + reduced motion", () => {
     await page.waitForTimeout(1500);
     await expectNoHorizontalOverflow(page);
     // Key sections all present.
-    for (const text of ["The range", "Best sellers", "Ultraviolette", "Built for what you ride."]) {
+    for (const text of ["The range", "Best sellers", "Ultraviolette", "Built for what you ride"]) {
       await expect(page.getByText(text, { exact: false }).first()).toBeVisible();
     }
     expect(errors).toEqual([]);
@@ -18,7 +18,7 @@ test.describe("responsive + reduced motion", () => {
   test("fit page holds together at viewport width", async ({ page }) => {
     await page.goto("/fit/");
     await expectNoHorizontalOverflow(page);
-    await expect(page.getByRole("heading", { name: "Find your fit." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Built for what you ride." })).toBeVisible();
   });
 
   test("reduced motion: no sweep, static lit headlines", async ({ page }) => {

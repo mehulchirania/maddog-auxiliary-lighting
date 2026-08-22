@@ -32,20 +32,38 @@
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
   /* ── Type scale — fewer steps, bigger jumps ── */
-  --text-hero: clamp(3rem, 7vw, 6rem);        /* once per page */
+
+  /* The landing hero, and nothing else on the site. This is the one piece of
+     type that is allowed to be cinematic: it runs to 9rem and rides Archivo's
+     width axis out to 120% so it reads wide and industrial rather than merely
+     large. Everything below it is instrument type. */
+  --text-display: clamp(2.75rem, 9.5vw, 9rem);
+  --fw-display: 750;
+  --ls-display: -0.02em;
+  --wdth-display: 120;
+
+  --text-hero: clamp(3rem, 7vw, 6rem);        /* legacy step — prefer the four below */
   --fw-hero: 560;
   --ls-hero: -0.035em;
 
-  /* Inner-page h1. Sits between hero and statement so a subpage title always
-     outranks the section h2s beneath it — they previously shared --text-statement
-     and read as the same level. */
-  --text-page-title: clamp(2.25rem, 4.6vw, 3.75rem);
-  --fw-page-title: 540;
-  --ls-page-title: -0.03em;
+  /* Pillar-page h1 — Range, Technology, Fitment, Reviews. These carry the
+     same weight as the landing statement, one step down in size. */
+  --text-page-title: clamp(2rem, 7.5vw, 7rem);
+  --fw-page-title: 750;
+  --ls-page-title: -0.02em;
+  --wdth-page-title: 120;
 
-  --text-statement: clamp(1.75rem, 3.4vw, 3rem); /* section statements */
-  --fw-statement: 520;
-  --ls-statement: -0.025em;
+  /* Content-page h1 — Warranty, Install, Dealers, Register — and the closing
+     statement on the landing page. Quieter than a pillar page: these are read,
+     not scanned. */
+  --text-subpage-title: clamp(2rem, 5.5vw, 5rem);
+  --fw-subpage-title: 750;
+  --ls-subpage-title: -0.02em;
+
+  --text-statement: clamp(1.75rem, 4vw, 3.5rem); /* section h2s */
+  --fw-statement: 700;
+  --ls-statement: -0.015em;
+  --wdth-statement: 116;
 
   --text-title: 1.1875rem;    /* card / product titles, fw 560 */
   --text-body: 1rem;          /* line-height 1.7 */
@@ -79,6 +97,15 @@
     line-height: 1.7;
     background-color: var(--color-night-950);
     color: var(--color-white);
+  }
+
+  /* Display headings ride Archivo's width axis so they read wide and
+     industrial. Set on the elements so no call site repeats font-stretch. */
+  h1 {
+    font-stretch: calc(var(--wdth-page-title) * 1%);
+  }
+  h2 {
+    font-stretch: calc(var(--wdth-statement) * 1%);
   }
 
   ::selection {
@@ -205,9 +232,6 @@
      gutter outside the centered container. Scoped to lg+ (64rem) because
      that's the only range where this image is reordered to sit rightmost. */
   @media (min-width: 64rem) {
-    .proof-bleed {
-      margin-right: calc((min(100vw, 80rem) - 100vw) / 2 - 3rem);
-    }
   }
 
   /* Seamless marquee loop — used by the product rail. Track renders two

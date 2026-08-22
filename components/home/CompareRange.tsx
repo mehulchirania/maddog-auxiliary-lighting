@@ -190,8 +190,8 @@ export default function CompareRange() {
         <div className="max-w-xl mb-11">
           <span className="readout tracking-[0.16em]">Compare the range</span>
           <h2
-            className="beam-lit mt-3 font-[560] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+            className="beam-lit mt-3 tracking-tight"
+            style={{ fontSize: "var(--text-statement)", fontWeight: "var(--fw-statement)", letterSpacing: "var(--ls-statement)" }}
           >
             Two at a time, side by side.
           </h2>
@@ -210,7 +210,7 @@ export default function CompareRange() {
                 onClick={() => pick(l.slug)}
                 className={`h-10 px-[18px] rounded-full text-[0.9375rem] transition-[background-color,color,border-color,transform] duration-[var(--dur-fast)] cursor-pointer border motion-safe:active:scale-[0.96] ${
                   on
-                    ? "bg-[var(--color-white)] text-[var(--color-night-950)] border-[var(--color-white)] font-[560]"
+                    ? "bg-[var(--color-white)] text-[var(--color-night-950)] border-[var(--color-white)]"
                     : "bg-transparent text-[var(--color-grey-300)] border-white/16"
                 }`}
               >

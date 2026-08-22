@@ -264,13 +264,32 @@ function FitForm() {
 
 export default function FitCta() {
   return (
-    <section id="fit" className="py-24 sm:py-32 border-t border-[var(--glass-stroke)] text-center">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12">
+    <section
+      id="fit"
+      className="relative overflow-hidden border-t border-[var(--glass-stroke)] text-center"
+      style={{ paddingTop: "var(--section)", paddingBottom: "var(--section)" }}
+    >
+      {/* Beam wash rising off the floor — the page closes on the same light it opened with. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-[-40%] h-[90%]"
+        style={{
+          background:
+            "radial-gradient(50% 60% at 50% 100%, color-mix(in srgb, var(--color-beam) 16%, transparent) 0%, transparent 65%)",
+        }}
+      />
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-12">
+        <span className="readout uppercase tracking-[0.28em]">05 / Fitment</span>
         <h2
-          className="text-[var(--color-white)] font-[560] tracking-tight"
-          style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+          className="mt-4 uppercase leading-[0.95] text-[var(--color-white)]"
+          style={{
+            fontSize: "var(--text-subpage-title)",
+            fontWeight: "var(--fw-subpage-title)",
+            letterSpacing: "var(--ls-subpage-title)",
+          }}
         >
-          Built for what you ride.
+          <span className="block">Built for what</span>{" "}
+          <span className="block">you ride</span>
         </h2>
 
         <div className="flex justify-center">
@@ -279,8 +298,8 @@ export default function FitCta() {
           </Suspense>
         </div>
 
-        <p className="readout mt-7 text-center">
-          One price, all year. Never discounted, never inflated.
+        <p className="readout mt-8 text-center uppercase tracking-[0.22em]">
+          One price, all year · never discounted, never inflated
         </p>
       </div>
     </section>

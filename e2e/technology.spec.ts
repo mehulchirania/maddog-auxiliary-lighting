@@ -37,35 +37,24 @@ test.describe("technology page — the scroll-trap regression", () => {
     });
     expect(jack.vh300).toBe(0);
     expect(jack.sticky).toBe(0);
-    // CAD callout cards render statically:
-    await expect(page.getByText("Nichia Automotive Emitters")).toBeVisible();
   });
 
-  test("lightbox: icon-only trigger, visible chrome, Escape restores scroll", async ({ page }) => {
+  test("exploded render + photometric cards are static (no lightbox), scroll still works", async ({
+    page,
+  }) => {
     await page.goto("/technology/");
-    const triggers = page.locator('button[aria-label^="View full size"]');
-    expect(await triggers.count()).toBeGreaterThanOrEqual(2);
+    // The redesign replaced the lightbox/CAD scene with the mockup's static
+    // parallax render panel and two tilt-framed photometric cards.
+    await expect(
+      page.getByRole("heading", { name: "Optical sub-assembly architecture" })
+    ).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Iso-Lux beam profile" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Dual-mode beam separation" })
+    ).toBeVisible();
+    expect(await page.locator('button[aria-label^="View full size"]').count()).toBe(0);
 
-    const first = triggers.first();
-    await first.scrollIntoViewIfNeeded();
-    // Always visible (not hover-gated):
-    expect(
-      parseFloat(await first.evaluate((el) => getComputedStyle(el).opacity))
-    ).toBeGreaterThanOrEqual(0.5);
-
-    await first.click();
-    const dialog = page.getByRole("dialog");
-    await expect(dialog).toBeVisible();
-    // Chrome bar: close button present and focused.
-    const close = dialog.getByRole("button", { name: /close/i });
-    await expect(close).toBeFocused();
-    expect(await page.evaluate(() => document.body.style.overflow)).toBe("hidden");
-
-    await page.keyboard.press("Escape");
-    await expect(dialog).toHaveCount(0);
-    expect(await page.evaluate(() => document.body.style.overflow)).not.toBe("hidden");
-
-    // Scroll must still work after close (the original trap).
+    // Scroll must still work around the parallax/tilt sections (the original trap).
     const before = await page.evaluate(() => window.scrollY);
     await page.mouse.wheel(0, 600);
     await page.waitForTimeout(400);

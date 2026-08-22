@@ -18,9 +18,10 @@ export default function Statement({
   return (
     <div className={`${align === "center" ? "text-center mx-auto" : "text-left"} ${className}`}>
       <h2
-        className="text-[var(--color-white)] tracking-tight font-[520]"
+        className="text-[var(--color-white)] tracking-tight"
         style={{
           fontSize: "var(--text-statement)",
+          fontWeight: "var(--fw-statement)",
           letterSpacing: "var(--ls-statement)",
         }}
       >

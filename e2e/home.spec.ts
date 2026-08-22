@@ -2,17 +2,55 @@ import { test, expect } from "@playwright/test";
 import { collectErrors, expectNoHorizontalOverflow } from "./helpers";
 
 test.describe("homepage", () => {
-  test("hero: load sweep settles at 270m and readout tracks the pointer", async ({ page }) => {
+  // The opening frame is its own act. It used to be fused onto the drag-compare
+  // module, which left the page with no landing frame and put the brand
+  // headline on top of an interactive control.
+  test("opening hero: full-viewport brand frame above the compare module", async ({ page }) => {
     await page.goto("/");
+
+    const hero = page.locator("section").first();
+    const h1 = hero.getByRole("heading", { level: 1 });
+    await expect(h1).toHaveText(/Light the road\.\s*Not the rider\./);
+
+    // It owns the viewport — anything materially shorter means it has been
+    // collapsed back into a band.
+    const box = (await hero.boundingBox())!;
+    const vh = page.viewportSize()!.height;
+    expect(box.height).toBeGreaterThanOrEqual(vh * 0.9);
+
+    // Display scale, not the smaller page-title/hero scale used elsewhere.
+    const fontSize = await h1.evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+    expect(fontSize).toBeGreaterThan(60);
+
+    // Both ways into the site.
+    await expect(hero.getByRole("link", { name: /Explore the range/ })).toHaveAttribute(
+      "href",
+      "/lights/"
+    );
+    await expect(hero.getByRole("link", { name: /The anti-glare story/ })).toHaveAttribute(
+      "href",
+      "/technology/"
+    );
+
+    // The compare module must come after it, not be it.
+    await expect(page.getByTestId("anti-glare-frame")).toHaveCount(1);
+    const heroBottom = box.y + box.height;
+    const frameTop = (await page.getByTestId("anti-glare-frame").boundingBox())!.y;
+    expect(frameTop).toBeGreaterThanOrEqual(heroBottom - 1);
+  });
+
+  test("compare: load sweep settles at 270m and readout tracks the pointer", async ({ page }) => {
+    await page.goto("/");
+    const frame = page.getByTestId("anti-glare-frame");
+    await frame.scrollIntoViewIfNeeded();
     const readout = page.locator("text=/\\d+m lit/").first();
     await expect(readout).toBeVisible();
 
     // Sweep runs 1.1s from x=0.95 (387) to x=0.5 (270). After it settles:
     await expect(readout).toHaveText(/^270m lit$/, { timeout: 4000 });
 
-    // Moving the pointer across the hero must change the number 1:1.
-    const hero = page.locator("section").first();
-    const box = (await hero.boundingBox())!;
+    // Moving the pointer across the frame must change the number 1:1.
+    const box = (await frame.boundingBox())!;
     await page.mouse.move(box.x + box.width * 0.85, box.y + box.height / 2);
     const after = await readout.textContent();
     expect(after).not.toBe("270m lit");
@@ -21,12 +59,13 @@ test.describe("homepage", () => {
     expect(n).toBeLessThanOrEqual(400);
   });
 
-  test("hero readouts stay legible at any drag position (glass-deep backing)", async ({
+  test("compare readouts stay legible at any drag position (glass-deep backing)", async ({
     page,
   }) => {
     await page.goto("/");
-    const hero = page.locator("section").first();
-    const box = (await hero.boundingBox())!;
+    const frame = page.getByTestId("anti-glare-frame");
+    await frame.scrollIntoViewIfNeeded();
+    const box = (await frame.boundingBox())!;
 
     for (const frac of [0.1, 0.5, 0.95]) {
       await page.mouse.move(box.x + box.width * frac, box.y + box.height / 2);
@@ -42,9 +81,11 @@ test.describe("homepage", () => {
     }
   });
 
-  test("hero copy: instruction paragraph replaced with brand line", async ({ page }) => {
+  test("compare copy: instruction sits beside the heading, not over the frame", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("Same light, same road — seen from both sides.")).toBeVisible();
+    await expect(
+      page.getByText("Drag across the frame — your view against what oncoming traffic sees.")
+    ).toBeVisible();
     await expect(page.getByText(/Move across the frame/)).toHaveCount(0);
   });
 
@@ -125,7 +166,7 @@ test.describe("homepage", () => {
 
   test("range grid headline is also beam-lit", async ({ page }) => {
     await page.goto("/");
-    const h2 = page.getByText("Everything the bike needs.");
+    const h2 = page.getByText("Everything the bike needs");
     await expect(h2).toHaveClass(/beam-lit/);
     await h2.scrollIntoViewIfNeeded();
     await expect(h2).toHaveClass(/is-lit/, { timeout: 3000 });

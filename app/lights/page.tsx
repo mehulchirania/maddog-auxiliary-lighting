@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import RangeCatalogue from "@/components/range/RangeCatalogue";
+import { products } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "The Range — Maddog Auxiliary Lighting & Systems",
@@ -12,8 +13,9 @@ export const metadata: Metadata = {
 export default function LightsPage() {
   return (
     <>
-      {/* 30-32svh Dark Hero — annotated night-road beam photo, full opacity, localized left scrim */}
-      <section className="relative h-[30svh] sm:h-[32svh] min-h-[280px] w-full flex items-center bg-[var(--color-night-950)] overflow-hidden border-b border-[var(--glass-stroke)]">
+      {/* Page head — mono eyebrow, two-line title, lede. Night-road beam photo
+          holds the right third at full opacity behind a left-weighted scrim. */}
+      <section className="relative flex items-end w-full min-h-[46svh] pt-32 pb-14 bg-[var(--color-night-950)] overflow-hidden border-b border-[var(--glass-stroke)]">
         <div className="absolute inset-0 z-0">
           <Image
             src="/media/products/MDL/original/product_1752410035_6210319.webp"
@@ -27,27 +29,46 @@ export default function LightsPage() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(90deg, rgba(10,10,11,0.90) 0%, rgba(10,10,11,0.55) 42%, transparent 72%)",
+                "linear-gradient(90deg, rgba(10,10,11,0.94) 0%, rgba(10,10,11,0.72) 48%, rgba(10,10,11,0.35) 100%)",
             }}
           />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 w-full">
+          <div className="flex items-center gap-4 readout uppercase tracking-[0.28em] text-[0.6875rem]">
+            <span className="h-px w-7 bg-[var(--glass-stroke)]" aria-hidden="true" />
+            <span>The catalogue · {products.length} products · one price all year</span>
+          </div>
+
           <h1
-            className="text-[var(--color-white)] tracking-tight"
+            className="mt-6 text-[var(--color-white)] uppercase leading-[0.92]"
             style={{
               fontSize: "var(--text-page-title)",
               fontWeight: "var(--fw-page-title)",
               letterSpacing: "var(--ls-page-title)",
             }}
           >
-            The range.
+            Every part,
+            <br />
+            <span
+              style={{
+                background:
+                  "linear-gradient(180deg, var(--color-beam-bright) 0%, var(--color-beam) 45%, color-mix(in srgb, var(--color-beam) 30%, transparent) 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+              }}
+            >
+              one place.
+            </span>
           </h1>
+
           <p
-            className="mt-3 text-[var(--color-grey-300)] max-w-lg leading-relaxed"
+            className="mt-7 max-w-[52ch] text-[var(--color-grey-300)] leading-relaxed"
             style={{ fontSize: "var(--text-body)" }}
           >
-            From the 3,000-lumen Scout to the 11,600-lumen Rage — every light shares the same calibrated 5000K TIR optics and IP-67 sealed billet chassis.
+            Lights, mounts, harnesses, filters and clamps — all IP-67 sealed where it matters, all
+            warrantied the same 18 months. Hover any card for the numbers.
           </p>
         </div>
       </section>

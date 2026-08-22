@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Tilt from "@/components/animations/Tilt";
 import Link from "next/link";
 import { products, type Category } from "@/lib/products";
 
@@ -88,7 +89,7 @@ function RangeTileCard({ tile }: { tile: RangeTile }) {
 
   return (
     <Link href={tile.href} className={`reveal group block h-full ${tile.span}`}>
-      <div className="machined h-full transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] group-hover:bg-[rgba(255,237,201,0.06)]">
+      <Tilt className="machined h-full transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] group-hover:bg-[rgba(255,237,201,0.06)]">
         <div className="machined-core relative flex h-full flex-col overflow-hidden bg-[var(--color-night-900)]">
           {tile.photo ? (
             // Radial fallback ground behind the image — if a network hiccup ever
@@ -123,7 +124,7 @@ function RangeTileCard({ tile }: { tile: RangeTile }) {
 
           <div className="flex items-baseline justify-between gap-4 px-6 pt-5">
             <h3
-              className="font-[560] tracking-tight text-[var(--color-white)] transition-colors duration-[var(--dur-fast)] group-hover:text-[var(--color-beam)]"
+              className="tracking-tight text-[var(--color-white)] transition-colors duration-[var(--dur-fast)] group-hover:text-[var(--color-beam)]"
               style={{ fontSize: "var(--text-title)" }}
             >
               {tile.name}
@@ -139,40 +140,43 @@ function RangeTileCard({ tile }: { tile: RangeTile }) {
             {count} product{count === 1 ? "" : "s"} · from {inr(minPrice)}
           </p>
         </div>
-      </div>
+      </Tilt>
     </Link>
   );
 }
 
 export default function RangeGrid() {
   return (
-    <section className="py-24 sm:py-32 bg-[var(--color-night-950)] border-t border-[var(--glass-stroke)]">
+    <section
+      className="bg-[var(--color-night-950)] border-t border-[var(--glass-stroke)]"
+      style={{ paddingTop: "var(--section)", paddingBottom: "var(--section)" }}
+    >
       <div className="max-w-7xl mx-auto px-6 sm:px-12">
-        <div className="max-w-xl mb-11">
-          <span className="readout tracking-[0.16em]">The range</span>
-          <h2
-            className="beam-lit mt-3 font-[560] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-          >
-            Everything the bike needs.
-          </h2>
-          <p className="mt-3.5 text-[var(--color-grey-300)]" style={{ fontSize: "var(--text-body)" }}>
-            Five categories, one billet standard — lights, mounts, harnesses and clamps, all IP-67 sealed
-            and warrantied the same way.
-          </p>
+        <div className="mb-11 flex flex-wrap items-end justify-between gap-x-8 gap-y-6">
+          <div className="max-w-xl">
+            <span className="readout uppercase tracking-[0.28em]">02 / The range</span>
+            <h2
+              className="beam-lit mt-4 uppercase tracking-tight"
+              style={{ fontSize: "var(--text-statement)", fontWeight: "var(--fw-statement)", letterSpacing: "var(--ls-statement)" }}
+            >
+              <span className="block">Everything</span>{" "}
+              <span className="block">the bike needs</span>
+            </h2>
+            <p className="mt-3.5 text-[var(--color-grey-300)]" style={{ fontSize: "var(--text-body)" }}>
+              Five categories, one billet standard — lights, mounts, harnesses and clamps, all IP-67 sealed
+              and warrantied the same way.
+            </p>
+          </div>
+          <Link href="/lights/" className="cta-link-quiet shrink-0">
+            <span>Compare the full range</span>
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:gap-6">
           {TILES.map((tile) => (
             <RangeTileCard key={tile.key} tile={tile} />
           ))}
-        </div>
-
-        <div className="mt-10">
-          <Link href="/lights/" className="cta-link-quiet">
-            <span>Compare the full range</span>
-            <span aria-hidden="true">→</span>
-          </Link>
         </div>
       </div>
     </section>

@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { brands, bikesForBrand, type Bike } from "@/lib/fitment";
-import { getProduct, products, type Product } from "@/lib/products";
+import { getProduct, type Product } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import SpecularButton from "@/components/ui/SpecularButton";
 import BrandMark from "@/components/ui/BrandMark";
@@ -85,7 +85,7 @@ function KitPillGroup({
             onKeyDown={(e) => handleKeyDown(e, idx)}
             className={`w-full h-11 px-4 flex items-center justify-between gap-3 rounded-[var(--radius-pill)] text-left text-sm transition-[background-color,color,border-color,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] cursor-pointer border motion-safe:active:scale-[0.96] ${
               isSelected
-                ? "bg-[var(--color-white)] text-[var(--color-night-950)] border-[var(--color-white)] font-[560]"
+                ? "bg-[var(--color-white)] text-[var(--color-night-950)] border-[var(--color-white)]"
                 : "bg-transparent text-[var(--color-grey-300)] border-[var(--glass-stroke)] hover:border-white/20 hover:text-white"
             }`}
           >
@@ -230,14 +230,14 @@ export default function FitFlow() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto flex flex-col items-center gap-12">
+    <div className="w-full mx-auto flex flex-col items-center gap-12">
       {/* Recommended & Customizable Setup View */}
       {selectedBike ? (
         <div
           ref={recommendedRef}
           role="region"
           aria-label={`Your ${selectedBike.brand} ${selectedBike.model} setup`}
-          className="w-full flex flex-col gap-10 animate-in fade-in duration-300 scroll-mt-24"
+          className="w-full max-w-5xl flex flex-col gap-10 animate-in fade-in duration-300 scroll-mt-24"
         >
           {/* Status Header */}
           <div className="glass p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
@@ -463,22 +463,14 @@ export default function FitFlow() {
           </div>
         </div>
       ) : (
-        /* Brand Grid + Dynamic Model Selection */
-        <div className="w-full max-w-4xl flex flex-col gap-8">
-          <div className="text-center max-w-xl mx-auto mb-2">
-            <h2 className="text-xl sm:text-2xl font-semibold text-white">
-              Select motorcycle brand
-            </h2>
-            <p className="text-xs text-[var(--color-grey-500)] mt-1.5">
-              Choose your manufacturer to view compatible lighting, wiring harnesses, and mounts.
-            </p>
-          </div>
-
-          {/* Brand Grid (Solid Cards) — flex-wrap + justify-center instead of a
-              fixed-column grid, so an incomplete trailing row (14 brands
-              doesn't divide evenly into 3 or 4 columns) centers itself
-              instead of a "12 then 2 stuck on the left" dangling row. */}
-          <div className="flex flex-wrap justify-center gap-3.5">
+        /* Brand tiles + mapped-model results */
+        <div className="w-full flex flex-col gap-10">
+          {/* Brand tiles. The mockup draws a rigid 7-column grid; 14 brands
+              divides evenly there but not at narrower breakpoints, so this
+              keeps flex-wrap + justify-center (an incomplete trailing row
+              centres itself instead of dangling left) and treats "7 across"
+              as a basis target at lg. */}
+          <div className="flex flex-wrap justify-center gap-2.5">
             {brands.map((b) => {
               const isSelected = selectedBrand === b;
               return (
@@ -487,22 +479,26 @@ export default function FitFlow() {
                   type="button"
                   aria-pressed={isSelected}
                   onClick={() => handleBrandSelect(b)}
-                  className={`group flex flex-col items-center gap-3 p-5 rounded-xl transition-[background-color,border-color,box-shadow,transform] duration-[var(--dur-fast)] ease-[var(--ease-out)] cursor-pointer text-center basis-[calc(50%-0.4375rem)] sm:basis-[calc(33.333%-0.584rem)] lg:basis-[calc(25%-0.657rem)] ${
+                  className={`group flex flex-col items-center gap-2.5 px-2 pt-[18px] pb-3.5 rounded-[var(--radius-card)] transition-[background-color,border-color,color] duration-[var(--dur-fast)] ease-[var(--ease-out)] cursor-pointer text-center basis-[calc(33.333%-0.417rem)] sm:basis-[calc(25%-0.469rem)] lg:basis-[calc(14.2857%-0.536rem)] border ${
                     isSelected
-                      ? "bg-[var(--color-night-700)] border-2 border-[var(--color-beam)] shadow-lg scale-[1.02]"
-                      : "bg-[var(--color-night-800)] border border-[var(--glass-stroke)] hover:border-white/20 hover:-translate-y-0.5"
+                      ? "border-[var(--color-beam)]/50 text-[var(--color-beam)]"
+                      : "bg-[var(--color-night-900)]/80 border-[var(--glass-stroke)] text-[var(--color-grey-300)] hover:border-[var(--color-beam)]/40"
                   }`}
+                  style={
+                    isSelected
+                      ? {
+                          backgroundColor:
+                            "color-mix(in srgb, var(--color-beam) 7%, transparent)",
+                        }
+                      : undefined
+                  }
                 >
-                  <div
-                    className={`h-12 flex items-center justify-center transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
-                      isSelected ? "text-[var(--color-beam)]" : "text-[var(--color-grey-300)] group-hover:text-white"
-                    }`}
-                  >
-                    <BrandMark brand={b} size={48} />
-                  </div>
+                  <BrandMark brand={b} size={30} />
                   <span
-                    className={`text-sm font-medium transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
-                      isSelected ? "text-white font-semibold" : "text-[var(--color-grey-300)] group-hover:text-white"
+                    className={`readout text-xs leading-tight tracking-[0.04em] transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] ${
+                      isSelected
+                        ? "text-[var(--color-white)]"
+                        : "text-[var(--color-grey-500)] group-hover:text-[var(--color-white)]"
                     }`}
                   >
                     {b}
@@ -512,46 +508,109 @@ export default function FitFlow() {
             })}
           </div>
 
-          {/* Model Selection Panel */}
+          {/* Mapped models for the selected brand */}
           {selectedBrand && (
-            <div
-              ref={modelSectionRef}
-              className="mt-6 p-6 sm:p-8 rounded-[var(--radius-card)] bg-[var(--color-night-900)] border border-[var(--glass-stroke)] shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300"
-            >
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-[var(--glass-stroke)]">
-                <div>
-                  <span className="readout text-xs text-[var(--color-beam)]">Step 2: Choose Model</span>
-                  <h3 className="text-lg sm:text-xl font-semibold text-white mt-1">
-                    {selectedBrand} Models
-                  </h3>
-                </div>
+            <div ref={modelSectionRef} className="animate-in fade-in duration-300 scroll-mt-24">
+              <div className="flex items-baseline justify-between gap-6 flex-wrap mb-6">
+                <h2
+                  className="text-[var(--color-white)] uppercase m-0"
+                  style={{
+                    fontSize: "var(--text-statement)",
+                    fontWeight: "var(--fw-statement)",
+                    letterSpacing: "var(--ls-statement)",
+                  }}
+                >
+                  {selectedBrand}
+                </h2>
                 <span className="readout text-xs text-[var(--color-grey-500)]">
-                  {availableBikes.length} {availableBikes.length === 1 ? "model" : "models"}
+                  {availableBikes.length} {availableBikes.length === 1 ? "model" : "models"} mapped
                 </span>
               </div>
 
               {availableBikes.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {availableBikes.map((bike) => (
-                    <button
-                      key={bike.id}
-                      type="button"
-                      onClick={() => setSelectedBike(bike)}
-                      className="p-4 text-left rounded-xl bg-[var(--color-night-800)] border border-[var(--glass-stroke)] hover:border-[var(--color-beam)] hover:bg-white/5 transition-all cursor-pointer group flex items-center justify-between"
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-white group-hover:text-[var(--color-beam)] transition-colors">
-                          {bike.model}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[18px]">
+                  {availableBikes.map((bike) => {
+                    const light = getProduct(bike.recommended.light);
+                    const power = getProduct(bike.recommended.power);
+                    const mount = bike.recommended.mount
+                      ? getProduct(bike.recommended.mount)
+                      : null;
+                    const beamMeta = light?.light
+                      ? `${light.light.lumens.toLocaleString()} lm · ${light.light.wattsPair}W · ${light.light.beamDistanceM} m`
+                      : light?.tagline ?? "";
+                    return (
+                      <button
+                        key={bike.id}
+                        type="button"
+                        onClick={() => setSelectedBike(bike)}
+                        className="group text-left border border-[var(--glass-stroke)] rounded-[var(--radius-card)] p-7 bg-[var(--color-night-900)] flex flex-col gap-4 cursor-pointer transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] hover:border-[var(--color-beam)]/40"
+                      >
+                        <div className="flex items-baseline justify-between gap-4">
+                          <h3
+                            className="m-0 text-[var(--color-white)] tracking-tight"
+                            style={{ fontSize: "var(--text-title)", fontWeight: 560 }}
+                          >
+                            {bike.model}
+                          </h3>
+                          <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)] border border-[var(--glass-stroke)] rounded-[var(--radius-pill)] px-3 py-1 shrink-0 capitalize">
+                            {bike.kind}
+                          </span>
+                        </div>
+
+                        <p className="m-0 text-[var(--color-grey-300)] text-[0.9375rem] leading-relaxed">
+                          {bike.rationale}
                         </p>
-                        <p className="readout text-[11px] text-[var(--color-grey-500)] mt-0.5 capitalize">
-                          {bike.kind} chassis
-                        </p>
-                      </div>
-                      <span className="text-white/40 group-hover:text-[var(--color-beam)] transition-colors">
-                        →
-                      </span>
-                    </button>
-                  ))}
+
+                        <div className="border-t border-[var(--glass-stroke)] pt-4 flex flex-col gap-2.5">
+                          <div className="flex justify-between gap-3 items-baseline">
+                            <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                              Light
+                            </span>
+                            <span className="text-[0.9375rem] text-[var(--color-white)] text-right">
+                              {light?.name ?? bike.recommended.light}{" "}
+                              {light ? (
+                                <span className="readout text-xs text-[var(--color-beam)]">
+                                  ₹{light.price.toLocaleString("en-IN")}
+                                </span>
+                              ) : null}
+                            </span>
+                          </div>
+                          {beamMeta && (
+                            <div className="flex justify-between gap-3 items-baseline">
+                              <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                                Beam
+                              </span>
+                              <span className="readout text-xs text-[var(--color-grey-300)] text-right">
+                                {beamMeta}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex justify-between gap-3 items-baseline">
+                            <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                              Power
+                            </span>
+                            <span className="text-[0.9375rem] text-[var(--color-grey-300)] text-right">
+                              {power?.name ?? bike.recommended.power}
+                            </span>
+                          </div>
+                          {mount && (
+                            <div className="flex justify-between gap-3 items-baseline">
+                              <span className="readout text-[0.625rem] uppercase tracking-[0.18em] text-[var(--color-grey-500)]">
+                                Mount
+                              </span>
+                              <span className="text-[0.9375rem] text-[var(--color-grey-300)] text-right">
+                                {mount.name}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <span className="mt-auto self-start readout text-xs uppercase tracking-[0.1em] text-[var(--color-grey-300)] border-b border-[var(--glass-stroke)] pb-[3px] transition-colors duration-[var(--dur-fast)] ease-[var(--ease-out)] group-hover:text-[var(--color-beam)] group-hover:border-[var(--color-beam)]">
+                          Configure this kit →
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-8 text-sm text-[var(--color-grey-500)]">
@@ -560,6 +619,10 @@ export default function FitFlow() {
               )}
             </div>
           )}
+
+          <p className="readout text-xs tracking-[0.08em] text-[var(--color-grey-500)] text-center">
+            Don&rsquo;t see your bike? WhatsApp us on +91 70191 30080 — fitment advice is free.
+          </p>
         </div>
       )}
     </div>

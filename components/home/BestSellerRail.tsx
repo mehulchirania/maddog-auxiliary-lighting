@@ -11,15 +11,22 @@ const RAIL_PRODUCTS = SEED_SLUGS.map((slug) => products.find((p) => p.slug === s
 
 export default function BestSellerRail() {
   return (
-    <section className="py-24 sm:py-32 bg-[var(--color-night-950)] border-t border-[var(--glass-stroke)]">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 mb-10">
-        <span className="readout tracking-[0.16em]">Best sellers</span>
-        <h2
-          className="mt-3 font-[560] tracking-tight text-[var(--color-white)]"
-          style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-        >
-          What riders reach for first.
-        </h2>
+    <section
+      className="bg-[var(--color-night-950)] border-t border-[var(--glass-stroke)]"
+      style={{ paddingTop: "var(--section)", paddingBottom: "var(--section)" }}
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
+        <div>
+          <span className="readout uppercase tracking-[0.28em]">03 / Best sellers</span>
+          <h2
+            className="mt-4 uppercase leading-[1.02] tracking-tight text-[var(--color-white)]"
+            style={{ fontSize: "var(--text-statement)", fontWeight: "var(--fw-statement)", letterSpacing: "var(--ls-statement)" }}
+          >
+            <span className="block">What riders</span>{" "}
+            <span className="block">reach for first</span>
+          </h2>
+        </div>
+        <p className="readout tracking-[0.08em]">One price, all year. Never discounted.</p>
       </div>
 
       <div className="rail-mask overflow-hidden">

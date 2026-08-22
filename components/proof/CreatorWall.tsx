@@ -1,47 +1,53 @@
-import { creators } from "@/lib/proof";
+import { creators, type Creator } from "@/lib/proof";
+
+function youtubeUrl(c: Creator) {
+  return (
+    c.url ||
+    `https://www.youtube.com/results?search_query=${encodeURIComponent(
+      `${c.channel} Maddog ${c.product}`,
+    )}`
+  );
+}
+
+function Chip({ c, duplicate }: { c: Creator; duplicate?: boolean }) {
+  return (
+    <a
+      href={youtubeUrl(c)}
+      target="_blank"
+      rel="noopener noreferrer"
+      tabIndex={duplicate ? -1 : undefined}
+      aria-hidden={duplicate || undefined}
+      aria-label={`Watch ${c.channel}'s review of the Maddog ${c.product} on YouTube`}
+      className="group flex shrink-0 items-center gap-3.5 rounded-[var(--radius-pill)] border border-[var(--glass-stroke)] bg-[var(--color-night-900)]/80 px-[22px] py-3 transition-colors duration-[var(--dur-fast)] hover:border-[var(--color-beam)]/40"
+    >
+      <span
+        className="h-2 w-2 shrink-0 rounded-[var(--radius-pill)] bg-[var(--color-signal)]"
+        aria-hidden
+      />
+      <span className="whitespace-nowrap font-[560] text-[0.9375rem] text-[var(--color-white)] transition-colors duration-[var(--dur-fast)] group-hover:text-[var(--color-beam)]">
+        {c.channel}
+      </span>
+      <span className="readout whitespace-nowrap text-[0.6875rem] uppercase tracking-[0.1em]">
+        reviewed {c.product}
+      </span>
+    </a>
+  );
+}
 
 export default function CreatorWall() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-      {creators.map((c) => {
-        const youtubeUrl =
-          c.url ||
-          `https://www.youtube.com/results?search_query=${encodeURIComponent(
-            `${c.channel} Maddog ${c.product}`
-          )}`;
-
-        return (
-          <a
-            key={c.channel}
-            href={youtubeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col justify-between p-5 rounded-[var(--radius-card)] bg-[var(--color-night-900)] border border-[var(--glass-stroke)] hover:border-white/20 transition-all duration-[var(--dur-fast)]"
-            aria-label={`Watch ${c.channel}'s review of Maddog ${c.product} on YouTube`}
-          >
-            <div className="flex items-center justify-between gap-2 mb-4">
-              <span className="text-[var(--color-signal)] flex items-center gap-1.5 font-mono text-[11px]">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-                <span>YouTube</span>
-              </span>
-              <span className="readout text-[11px]">
-                {c.product}
-              </span>
-            </div>
-
-            <div>
-              <p className="text-white font-medium group-hover:text-[var(--color-beam)] transition-colors line-clamp-1 text-sm sm:text-base">
-                {c.channel}
-              </p>
-              <p className="readout text-xs text-[var(--color-grey-500)] mt-2">
-                Watch review ↗
-              </p>
-            </div>
-          </a>
-        );
-      })}
+    <div className="rail-mask overflow-hidden">
+      {/* Two identical sets — .rail-track loops by exactly -50% minus half the
+          gap, so gap-6 here is load-bearing. The second set is inert to
+          assistive tech and to the tab order. */}
+      <div className="rail-track flex w-max gap-6 px-6 py-2 sm:px-12">
+        {creators.map((c) => (
+          <Chip key={c.channel} c={c} />
+        ))}
+        {creators.map((c) => (
+          <Chip key={`dup-${c.channel}`} c={c} duplicate />
+        ))}
+      </div>
     </div>
   );
 }

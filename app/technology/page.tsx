@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import CadExplodedScene from "@/components/tech/CadExplodedScene";
-import Lightbox from "@/components/ui/Lightbox";
+import CountUp from "@/components/animations/CountUp";
+import Parallax from "@/components/animations/Parallax";
+import Tilt from "@/components/animations/Tilt";
+import Reveal from "@/components/ui/Reveal";
 
 export const metadata: Metadata = {
   title: "Technology & Engineering — Maddog",
@@ -9,137 +11,246 @@ export const metadata: Metadata = {
     "TIR optics, 5000K daylight color science, 6063-T6 CNC billet housings, and IP67 weather sealing.",
 };
 
-const PHOTOMETRIC_DIAGRAMS = [
+/* Beam-gradient headline line — the mockup's second hero line. */
+const beamLine: React.CSSProperties = {
+  backgroundImage:
+    "linear-gradient(180deg, var(--color-beam-bright) 0%, var(--color-beam) 45%, color-mix(in srgb, var(--color-beam) 30%, transparent) 100%)",
+  WebkitBackgroundClip: "text",
+  backgroundClip: "text",
+  color: "transparent",
+};
+
+const PILLARS: {
+  figure: string;
+  count?: number;
+  suffix?: string;
+  title: string;
+  body: string;
+}[] = [
   {
-    title: "Iso-Lux Beam Profile",
-    sku: "OPTICAL BENCHMARK",
-    src: "/diagrams/isolux-profile.svg",
-    caption: "Collimated optical throw distribution focusing 80% luminous intensity onto the road surface.",
-    isLightDiagram: true,
+    figure: "5000K",
+    count: 5000,
+    suffix: "K",
+    title: "True daylight colour",
+    body: "Pure daylight white — not the blue-cast 6500K of grey-import LEDs. Colour your eyes resolve texture in.",
   },
   {
-    title: "Dual-Mode Beam Separation",
-    sku: "LYCAN · dual-mode array",
+    figure: "TIR",
+    title: "Anti-glare optics",
+    body: "Total-internal-reflection collimators put light on the road with a hard cutoff — first in India engineered not to blind oncoming traffic.",
+  },
+  {
+    figure: "6063-T6",
+    title: "Billet CNC chassis",
+    body: "Machined from aerospace billet aluminium, not cast — the housing is the heatsink.",
+  },
+  {
+    figure: "IP-67",
+    title: "Submersion sealed",
+    body: "Silicone-gasketed against dust and submersion. 50,000+ operating hours, 18-month replacement warranty.",
+  },
+];
+
+const PHOTOMETRICS = [
+  {
+    eyebrow: "Optical benchmark",
+    title: "Iso-Lux beam profile",
+    src: "/diagrams/isolux-profile.svg",
+    alt: "Iso-lux beam profile",
+    caption:
+      "Collimated optical throw distribution focusing 80% luminous intensity onto the road surface.",
+    lightPlate: true,
+  },
+  {
+    eyebrow: "Lycan · dual-mode array",
+    title: "Dual-mode beam separation",
     src: "/media/photometrics_images/MDL/photometrics_1786283198_6222650.webp",
-    caption: "Independent electronic optical gating for 3000K selective yellow fog and 5000K high-beam projection.",
-    isLightDiagram: false,
+    alt: "Lycan dual-mode beam separation",
+    caption:
+      "Independent electronic optical gating for 3000K selective yellow fog and 5000K high-beam projection.",
+    lightPlate: false,
   },
 ];
 
 export default function TechnologyPage() {
   return (
-    <article className="bg-[var(--color-night-950)] text-[var(--color-white)] min-h-screen">
-      {/* Typographic hero — the 8K exploded render gets its due prominence in the
-          Centerpiece section below at full scale; reusing it here as a small
-          object-contain crop only made its content unreadable, so this band
-          stays type-only, matching the /fit/ page's hero pattern. */}
-      <section className="border-b border-[var(--glass-stroke)] bg-[var(--color-night-950)] py-14 sm:py-20">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 w-full">
+    <article className="min-h-screen overflow-x-clip bg-[var(--color-night-950)] text-[var(--color-white)]">
+      {/* ── Act 1 · typographic hero (no image, by design) ── */}
+      <section className="relative overflow-hidden pt-32 sm:pt-44">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-[10%] -right-[10%] -top-[45%] h-[80%]"
+          style={{
+            background:
+              "radial-gradient(50% 60% at 50% 0%, color-mix(in srgb, var(--color-beam) 13%, transparent) 0%, transparent 65%)",
+          }}
+        />
+        <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-12">
+          <Reveal className="flex items-center gap-4">
+            <span className="h-px w-7 bg-[var(--glass-stroke)]" aria-hidden />
+            <span className="readout text-[0.6875rem] uppercase tracking-[0.28em]">
+              Technology &amp; engineering
+            </span>
+          </Reveal>
+
           <h1
-            className="text-[var(--color-white)] tracking-tight"
+            className="mt-6 uppercase text-[var(--color-white)]"
             style={{
               fontSize: "var(--text-page-title)",
               fontWeight: "var(--fw-page-title)",
               letterSpacing: "var(--ls-page-title)",
+              lineHeight: 0.92,
             }}
           >
-            Under the housing.
+            Under the
+            <br />
+            <span style={beamLine}>housing.</span>
           </h1>
-          <p
-            className="mt-3 text-[var(--color-grey-300)] max-w-lg leading-relaxed"
-            style={{ fontSize: "var(--text-body)" }}
-          >
-            Every Maddog auxiliary light is precision CNC machined from aerospace billet aluminum and engineered around true 5000K TIR optics.
-          </p>
+
+          <Reveal>
+            <p
+              className="mt-7 max-w-[52ch] text-[var(--color-grey-300)] leading-relaxed"
+              style={{ fontSize: "var(--text-body)" }}
+            >
+              Every Maddog auxiliary light is precision CNC machined from aerospace billet
+              aluminium and engineered around true 5000K TIR optics.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* CAD Exploded Assembly — static annotated diagram + callout cards */}
-      <section className="border-b border-[var(--glass-stroke)]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 pt-16 pb-6">
-          <h2
-            className="font-[520] text-[var(--color-white)] tracking-tight"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-          >
-            Exploded CAD architecture.
-          </h2>
+      {/* ── Act 2 · four engineering pillars ── */}
+      <section className="pt-[var(--section)]">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-[18px] px-6 sm:grid-cols-2 sm:px-12 lg:grid-cols-4">
+          {PILLARS.map((p, i) => (
+            <Reveal key={p.figure} delay={i * 60} className="h-full">
+              <div className="h-full rounded-[var(--radius-card)] border border-[var(--glass-stroke)] bg-[var(--color-night-900)] p-7">
+                <div className="readout text-[2rem] leading-none text-[var(--color-beam)]">
+                  {p.count ? (
+                    <CountUp to={p.count} suffix={p.suffix} separator="" />
+                  ) : (
+                    p.figure
+                  )}
+                </div>
+                <h3
+                  className="mt-3 text-[var(--color-white)]"
+                  style={{ fontSize: "var(--text-title)", fontWeight: 560 }}
+                >
+                  {p.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-grey-500)]">
+                  {p.body}
+                </p>
+              </div>
+            </Reveal>
+          ))}
         </div>
-        <CadExplodedScene />
       </section>
 
-      {/* Centerpiece: Full-Width 8000x4000 Exploded Rage Render */}
-      <section className="py-20 sm:py-28 bg-[var(--color-night-950)] border-b border-[var(--glass-stroke)]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+      {/* ── Act 3 · exploded render ── */}
+      <section className="pt-[var(--section)]">
+        <div className="mx-auto max-w-7xl px-6 sm:px-12">
+          <Reveal className="mb-7 flex flex-wrap items-baseline justify-between gap-6">
             <div>
-              <span className="readout text-xs text-[var(--color-beam)]">RAGE · 9-emitter array</span>
+              <span className="readout text-[0.6875rem] uppercase tracking-[0.28em] text-[var(--color-beam)]">
+                Rage · 9-emitter array
+              </span>
               <h2
-                className="font-[520] text-[var(--color-white)] tracking-tight mt-1"
-                style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
+                className="mt-3.5 uppercase text-[var(--color-white)]"
+                style={{
+                  fontSize: "var(--text-statement)",
+                  fontWeight: "var(--fw-statement)",
+                  letterSpacing: "var(--ls-statement)",
+                  lineHeight: 1,
+                }}
               >
-                Optical sub-assembly architecture.
+                Optical sub-assembly architecture
               </h2>
             </div>
-            <span className="readout text-xs text-[var(--color-grey-500)]">Click to zoom full 8K schematic ↗</span>
-          </div>
+            <span className="readout text-[0.6875rem] tracking-[0.1em]">
+              8000 × 4000 schematic
+            </span>
+          </Reveal>
 
-          <Lightbox
-            src="/media/photometrics_images/MDR/photometrics_1752757254_8652497.webp"
-            alt="Maddog Rage 8K Exploded Photometric Schematic"
-          >
-            <div className="relative aspect-[2/1] w-full rounded-[var(--radius-card)] overflow-hidden bg-[var(--color-night-900)] border border-[var(--glass-stroke)] shadow-2xl">
-              <Image
-                src="/media/photometrics_images/MDR/photometrics_1752757254_8652497.webp"
-                alt="Maddog Rage Exploded Architecture"
-                fill
-                sizes="100vw"
-                quality={90}
-                className="object-cover object-center"
-              />
+          <Reveal>
+            <div className="relative aspect-[2/1] w-full overflow-hidden rounded-[var(--radius-card)] border border-[var(--glass-stroke)] bg-[var(--color-night-900)]">
+              <Parallax speed={0.1} className="absolute inset-x-0 -inset-y-[8%]">
+                <div className="relative h-full w-full">
+                  <Image
+                    src="/media/photometrics_images/MDR/photometrics_1752757254_8652497.webp"
+                    alt="Maddog Rage exploded photometric schematic"
+                    fill
+                    sizes="100vw"
+                    quality={90}
+                    className="object-cover object-center"
+                  />
+                </div>
+              </Parallax>
             </div>
-          </Lightbox>
+          </Reveal>
         </div>
       </section>
 
-      {/* Photometrics Diagrams (2-Up Grid with correct background plates) */}
-      <section className="py-20 sm:py-28 bg-[var(--color-night-900)] border-b border-[var(--glass-stroke)]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
-          <h2
-            className="font-[520] text-[var(--color-white)] tracking-tight mb-4"
-            style={{ fontSize: "var(--text-statement)", letterSpacing: "var(--ls-statement)" }}
-          >
-            Photometric distribution.
-          </h2>
-          <p className="text-[var(--color-grey-300)] max-w-xl mb-12" style={{ fontSize: "var(--text-body)" }}>
-            Calibrated beam profiles engineered for long-distance punch without scattering glare into oncoming drivers.
-          </p>
+      {/* ── Act 4 · photometric distribution ── */}
+      <section className="pt-[var(--section)] pb-[var(--section)]">
+        <div className="mx-auto max-w-7xl px-6 sm:px-12">
+          <Reveal className="mb-9">
+            <span className="readout text-[0.6875rem] uppercase tracking-[0.28em]">
+              Photometrics
+            </span>
+            <h2
+              className="mt-4 uppercase text-[var(--color-white)]"
+              style={{
+                fontSize: "var(--text-statement)",
+                fontWeight: "var(--fw-statement)",
+                letterSpacing: "var(--ls-statement)",
+                lineHeight: 1,
+              }}
+            >
+              Photometric distribution
+            </h2>
+            <p
+              className="mt-4 max-w-[52ch] text-[var(--color-grey-300)] leading-relaxed"
+              style={{ fontSize: "var(--text-body)" }}
+            >
+              Calibrated beam profiles engineered for long-distance punch without scattering glare
+              into oncoming drivers.
+            </p>
+          </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
-            {PHOTOMETRIC_DIAGRAMS.map((item) => (
-              <div key={item.title} className="flex flex-col gap-4">
-                <Lightbox src={item.src} alt={item.title}>
-                  <div
-                    className={`relative aspect-[16/10] rounded-[var(--radius-card)] overflow-hidden border border-[var(--glass-stroke)] shadow-lg flex items-center justify-center ${
-                      item.isLightDiagram ? "bg-[var(--color-plate)] p-6" : "bg-[var(--color-night-950)]"
-                    }`}
+          <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2">
+            {PHOTOMETRICS.map((item, i) => (
+              <Reveal key={item.title} delay={i * 80}>
+                <Tilt
+                  className={`relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-[var(--radius-card)] border border-[var(--glass-stroke)] ${
+                    item.lightPlate
+                      ? "bg-[var(--color-plate)]"
+                      : "bg-[var(--color-night-950)]"
+                  }`}
+                >
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className={item.lightPlate ? "object-contain p-[5%]" : "object-cover"}
+                  />
+                </Tilt>
+                <div className="mt-3.5">
+                  <span className="readout text-[0.625rem] uppercase tracking-[0.22em] text-[var(--color-beam)]">
+                    {item.eyebrow}
+                  </span>
+                  <h3
+                    className="mt-1.5 text-[var(--color-white)]"
+                    style={{ fontSize: "var(--text-title)", fontWeight: 560 }}
                   >
-                    <Image
-                      src={item.src}
-                      alt={item.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className={item.isLightDiagram ? "object-contain p-4" : "object-cover"}
-                    />
-                  </div>
-                </Lightbox>
-                <div>
-                  <span className="readout text-xs text-[var(--color-beam)]">{item.sku}</span>
-                  <h3 className="text-base font-semibold text-white mt-1">{item.title}</h3>
-                  <p className="text-xs text-[var(--color-grey-500)] mt-1.5 leading-relaxed">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1.5 text-[var(--text-meta)] leading-relaxed text-[var(--color-grey-500)]">
                     {item.caption}
                   </p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
